@@ -1,110 +1,39 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-<head>
-  <meta charset="utf-8"/>
-  <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.35">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-	<style>
-		.header {
-			display: flex;
-			padding: 8px 8px 0 0;
-		}
-		.contact-info {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 8px 2px 8px 2px;
-			font-size: 14px;
-			width: 33%;
-			height: 50%;
-  		background-color: white;
-  		border: 1px solid black;
-			text-align: center;
-  		border-radius: 10px;
-		}
-		.sample-qr {
-			width: 35%;
-			display: flex;
-			align-items: center;
-  		background-color: white;
-			justify-content: flex-end;
-		}
-		.text-arrow {
-			font-size: 24px;
-			font-weight: bold;
-		}
-	</style>
-</head>
-<body>
-	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn">返回重填</button></a>
-	</div>
-  <div class="a4-landscape">
-		<div class="header">
-			<div class="contact-info">
-				請郵寄至：105936 台北光復郵局第 477 號信箱<br>
-				滿 7 份可撥打小蜜蜂收件專線：0965-240-548<br>
-				(撥打時間：10 點 - 20 點；收件地區：信義區、松山區)
-			</div>
-			<h1 style="font-size:42px;white-space:pre;text-align:center;width:30%;">同    意    書</h1>
-			<div class="sample-qr">
-				<div style="text-decoration:underline;">填寫範例請掃</div>&nbsp;
-				<div class="text-arrow">➔</div>&nbsp;
-				<img style="padding:0 0 8px 0; width:100px; height:100px;" src="{{.BaseURL}}/assets/images/taipei-7-qr.png" alt="">
-			</div>
-		</div>
-		<div style="padding:0 0 0 100px;">
-			<div style="text-align:center; font-size:30px; text-align:left; white-space:pre;">同意人：                          行動電話：{{.MobileNumber}}</div>
-			<ol style="font-size:20px;">
-				<li>相關資料只用於罷免徐巧芯之用。</li>
-				<li>本人同意於中選會審查第一階段過後，接獲通知後簽署成為第二階段連署人。</li>
-			</ol>
-		</div>
-		<div style="padding:30px 30px;">
-  		<table>
-  		  <tr>
-  		    <th colspan="15" style="height:40px; font-size:24px;">臺北市第七選區信義、南松山第 11 屆立法委員 徐巧芯 罷免案提議人名冊</th>
-  		  </tr>
-  		  <tr>
-  		    <th rowspan="2" style="width:6%;">編號</th>
-  		    <th colspan="10" style="width:29%; height:35px;">姓名</th>
-  		    <th rowspan="2" style="width:7%;">出生<br>年月日</th>
-  		    <th style="width:39%;">戶籍地址</th>
-  		    <th rowspan="2" style="width:13%;">簽名或蓋章</th>
-  		    <th rowspan="2" style="width:6%;">備註</th>
-  		  </tr>
-				<tr>
-  		    <th colspan="10" style="height:35px;">國民身分證統一編號</th>
-  		    <th style="padding:0 15px 0 8px; text-align:right;">臺北市            區            里            鄰<br>路(街、道)                  段            巷<br>弄            號           樓之    </th>
-				</tr>
-				<tr>
-					<td rowspan="2" style="border-right:4px solid;"></td>
-					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-					<td style="white-space:normal; word-break: break-word; border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"></td>
-					<td rowspan="2"></td>
-				</tr>
-				<tr>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
-				</tr>
-  		</table>
-		</div>
-		<div class="declaration" style="padding:10px;text-align:center;font-size:22px;">提議人之領銜人                                                   (簽名或蓋章)<br><br>中華民國            年            月            日造</div>
-  </div>
 
+<head>
+	{{ template "preview-head" . }}
+</head>
+
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
+		<div class="whereToSign aLine " style=" left: 39%; top: 17%;  width: 20%; height: 5%;"></div>
+		<div class="inputField lg center " style=" left: 80%; top: 16.0%;  ">
+			{{.MobileNumber}}
+		</div>
+		<div class="inputField center lg" style=" left: 23.1%; top: 67.2%;    letter-spacing:0.72em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center xl" style=" left: 22.9%; top: 56%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center md" style=" left:39.1%; top: 54.5%; ">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center md" style=" left:39.1%; top: 60.1%; ">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center md" style=" left:39.1%; top: 65.4%; ">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center  whiteBg" style=" left: 60%; top: 54.5%;  width: 33.8%; height: 16.5%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 84.8%; top: 62.5%;  width: 10%; height: 15%;"></div>
+	</div>
 </body>
+
 </html>

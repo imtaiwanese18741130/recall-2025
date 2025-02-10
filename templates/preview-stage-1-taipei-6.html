@@ -1,133 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="utf-8"/>
-  <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.35">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-	<style>
-		.note {
-			display: flex;
-			padding: 8px 8px 0 0;
-		}
-		.note-left {
-			padding: 2px 4px 2px 2px;
-			font-size: 14px;
-			width: 75%;
-			border-right: 2px dashed black;
-		}
-		.note-right {
-			width: 25%;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
-		.note-qr {
-			padding: 32px 16px 0 16px;
-			width: 120px;
-			height: 120px;
-			font-size: 12px;
-			margin-bottom: 90px;
-		}
-		.note-right .content {
-			text-align: left;
-			width: 100%;
-			margin: 0 auto;
-			box-sizing: border-box;
-		}
-		.consenter {
-			padding: 16px 0;
-		}
-		.consenter-underline-blank{
-			display: inline-block;
-			border-bottom: 1px solid black;
-			width: 250px;
-			text-align: center;
-		}
-	</style>
+	{{ template "preview-head" . }}
 </head>
+
 <body>
-	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn">返回重填</button></a>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-portrait " style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position_2.png" alt=""> -->
+		<div class="inputField center md" style=" left: 27.5%; top: 40%;    letter-spacing:0.42em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center lg" style=" left: 28%; top: 32%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center" style=" left: 40.4%; top: 28.5%;">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center" style=" left: 40.4%; top: 33%;">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center" style=" left: 40.4%; top:37.5%;">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center whiteBg" style=" left: 59%; top: 27%;  width: 31.5%; height:15%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign sm" style=" left: 79.7%; top: 35%;  width: 6%; height: 14%;"></div>
+		<div class="whereToSign aLine" style=" left: 30%; top: 85%;  width: 22%; height: 3%;"></div>
+		<div class="inputField center lg" style=" left:64.6%; top: 84.6%; ">
+			{{.MobileNumber}}
+
+		</div>
 	</div>
-  <div class="a4-portrait">
-		<h1 style="font-size: 16px">臺北市第 6 選舉區大安區第 11 屆立法委員羅智強罷免案</h1>
-  	<table>
-  	  <tr>
-  	    <th colspan="15" style="height:32px;">臺北市第 6 選舉區第 11 屆立法委員羅智強罷免案提議人名冊</th>
-  	  </tr>
-  	  <tr>
-  	    <th rowspan="2" style="width:5%;">編號</th>
-  	    <th colspan="10" style="width:30%;">姓名</th>
-  	    <th rowspan="2" style="width:5%;">出生<br>年月日</th>
-  	    <th style="width:45%;">戶籍地址</th>
-  	    <th rowspan="2" style="width:10%;">簽名<br>或<br>蓋章</th>
-  	    <th rowspan="2" style="width:5%;">備註</th>
-  	  </tr>
-			<tr>
-  	    <th colspan="10">國民身分證<br>統一編號</th>
-				<th style="padding:0 8px; text-align:right;">臺北市            區            里            鄰<br>路(街、道)                  段            巷<br>弄            號           樓之    </th>
-			</tr>
-			<tr>
-				<td rowspan="2" style="border-right:4px solid;"></td>
-				<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
-				<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-				<td style="white-space:normal; word-break: break-word; border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-				<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"></td>
-				<td rowspan="2"></td>
-			</tr>
-			<tr>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
-				<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
-			</tr>
-  	</table>
-		
-		<div class="declaration">提議人之領銜人                                  (簽名或蓋章)<br><br>中    華    民    國            年            月            日造</div>
-
-		<div style="border-bottom: 2px dashed black; margin: 32px 0 16px 0;"></div>
-
-		<div class="note">
-			<div class="note-left">
-				<b>注意事項：</b>
-				<ol>
-					<li>請只填「<b>粗框線內</b>」的欄位。</li>
-					<li>請小心填寫每一「格」，並請切「勿」突出任何格線。</li>
-					<li>請務必拿出身分證對照，寫法必須與身份證「<b>完全一樣</b>」。特別提醒：出生年請用⺠國年份；地址若有「段」，「樓」，須寫國字，例如<b>「二」段不能寫成「2」段</b>，<b>「八」樓不能寫成「8」樓</b>，其他文數字請完全依身分證登載填寫；另外，若地址無「一樓」則無須填寫。</li>
-					<li>請用<b>黑或藍色原子筆</b>填寫，切勿使用鉛筆。</li>
-					<li>表格「<b>不能塗改</b>」，寫錯請重填一張。</li>
-					<li>請用「<b>正楷</b>」簽名。</li>
-					<li>提議人名冊及本同意書中填寫資料，僅供預計於 <b>2025 年 2 月 1 日</b>後啟動之罷免立法委員羅智強專案使用，專案結束後將全部銷毁。</li>
-				</ol>
-				<b>本人同意在下列情況接受手機簡訊通知：</b>
-				<ol>
-					<li>本人書面不符中選會第一階段審查，須予修改；</li>
-					<li>中選會第一階段審查通過後，願意參與第二階段連署。</li>
-				</ol>
-			</div>
-			<div class="note-right">
-				<div class="note-qr">
-					<img style="padding: 0 0 8px 0; width: 100%; height: 100%;" src="{{.BaseURL}}/assets/images/taipei-6-qr.png" alt="">
-					掃描 QR Code 可讀取完整連署說明
-				</div>
-				<div class="note-right content">平信郵寄：<br><br>106 臺北仁愛路<br>郵局第 158 號信箱</div>
-			</div>
-		</div>
-		<div class="consenter">
-			同意人 <span class="consenter-underline-blank">&nbsp;</span>&nbsp;&nbsp;&nbsp;
-			行動電話 <span class="consenter-underline-blank">{{if .MobileNumber}}{{.MobileNumber}}{{else}}&nbsp;{{end}}</span><br>
-			<div style="text-align:right; padding:0 180px 0 0"><input type="checkbox" name="sms-notification" value="sms-notification" {{if .MobileNumber}}checked{{end}}>簡訊確認提議書已收訖</div>
-		</div>
-  </div>
 </body>
+
 </html>

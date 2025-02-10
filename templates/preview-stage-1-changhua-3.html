@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	{{ template "preview-head" . }}
+	<!-- <meta name="viewport" content="initial-scale=0.33"> -->
+</head>
+<style>
+	.idnumber-container {
+		/* customize attrs */
+		bottom: 278px;
+		left: 162px;
+	}
+
+	.idnumber-container table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: auto;
+		background-color: white;
+		table-layout: fixed;
+
+		/* customize attrs */
+		width: 252px;
+		height: 124px;
+	}
+
+	.idnumber-container td {
+		border: 1px solid black;
+		text-align: center;
+		font-weight: normal;
+	}
+
+	.name-container {
+		border: 1px solid black;
+		/* position attrs */
+		bottom: 401px;
+		left: 162px;
+		width: 252px;
+		height: 103px;
+	}
+
+	.birthdate-container {
+		border: 1px solid black;
+		background-color: white;
+		line-height: 1.6;
+		/* position attrs */
+		bottom: 278px;
+		left: 413px;
+		width: 52px;
+		height: 226px;
+	}
+
+	.address-container {
+		background-color: white;
+		border: 1px solid black;
+		padding: 0 8px;
+		word-break: break-word;
+		/* position attrs */
+		bottom: 278px;
+		left: 464px;
+		width: 401px;
+		height: 226px;
+	}
+
+	.petitioner-container {
+		/* position attrs */
+		bottom: 284px;
+		left: 863px;
+		width: 115px;
+		height: 221px;
+	}
+
+	.consenter-container {
+		/* position attrs */
+		bottom: 597px;
+		left: 203px;
+		width: 170px;
+		height: 32px;
+	}
+
+	.mobile-container {
+		font-size: 20px;
+		/* position attrs */
+		bottom: 596px;
+		right: 235px;
+	}
+
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, 0);
+	}
+
+	th,
+	td {
+		border: 1px solid black;
+		text-align: center;
+		font-weight: 400;
+		font-size: 14px;
+	}
+
+
+	th span.lg,
+	td span.lg {
+		padding-right: 36px;
+	}
+
+
+	th span.md,
+	td span.md {
+		padding-right: 24px;
+	}
+
+	th span.sm,
+	td span.sm {
+		padding-right: 12px;
+	}
+</style>
+
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-landscape" style=" ">
+		<table style="left: 50.8%; top: 15.4%; width: 81.4%; height: 49.5%; ">
+			<tr style="height: 10.5%; ">
+				<th colspan="19" style="font-size: 22px; letter-spacing: 0;">彰化縣第三選舉區 第十一屆立法委員謝衣鳳罷免案 提議人名冊</th>
+			</tr>
+			<tr style="height: 12%;">
+				<th rowspan="2" style="width: 5.5%; font-size: 18px;">編<br>號</th>
+				<th colspan="10" style="width: 27.5%; font-size: 18px; ">姓<span class="lg"></span>名
+				</th>
+				<th rowspan="2" style="width: 5.5%; font-size: 15px;">出<br>生<br>年<br>月<br>日</th>
+				<th colspan="1" style="width: 43.8%; font-size: 18px; letter-spacing: 2em;">戶籍地址</th>
+				<th rowspan="2" style="width: 13%; font-size: 18px; ">簽名或蓋章</th>
+				<th rowspan="2" style="font-size: 18px; ">備<br>註</th>
+			</tr>
+			<tr style="height: 20%;">
+				<th colspan="10" style="font-size: 18px;">國民身分證統一編號</th>
+				<th style="font-size: 15px; line-height: 2em;">
+					省（市）<span class="md"></span>縣（市）<span class="md"></span>鄉（鎮、市、區）<span class="md"></span>村（里）<br>
+					<span class="md"></span>鄰 <span class="md"></span>路（街）<span class="sm"></span>段<span
+						class="sm"></span>弄<span class="sm"></span>巷<span class="sm"></span>號<span class="sm"></span>樓 之
+				</th>
+			</tr>
+			<tr style="height: 26%;">
+				<td rowspan="2"></td>
+				<th colspan="10" style="font-size: 36px;">{{.Name}}</th>
+				<td rowspan="2" style="font-size: 18px; ">
+					<div style="position: absolute; transform: translate(50%,-50%);">
+						民<br>國<br>{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日
+					</div>
+				</td>
+				<td rowspan="2" style="font-size: 18px; padding: 28px; line-height: 1.8em;">{{.Address}}</td>
+				<td rowspan="2"></td>
+				<td rowspan="2"></td>
+			</tr>
+			<tr>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D0}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D1}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D2}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D3}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D4}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D5}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D6}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D7}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D8}}</td>
+				<td rowspan="1" style="font-size: 20px;">{{.IdNumber.D9}}</td>
+			</tr>
+		</table>
+		<div style="width: 100%; text-align: center; position: absolute;top: 67.5%;font-size: 16px;">
+			提議人之領銜人<span style="padding-right: 30%;"></span> (簽名或蓋章)<br>
+
+			<div style="padding-top: 2%; padding-right: 4.6%; font-size: 13px;">
+				<span style=" letter-spacing: 2.1em;">中華民國</span>
+				<span style="padding-left: 9%;">年</span>
+				<span style="padding-left: 10%;">月</span>
+				<span style="padding-left: 10%;">日造</span>
+			</div>
+		</div>
+		<div class="whereToSign" style="top:50.5%; left:82.4%; width:9%; height:24%"></div>
+
+
+	</div>
+	<div class="a4-landscape" style="">
+		<img src="{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp" alt=""
+			style="position: absolute; height: auto; top: 45.5%;left: 0;">
+		<div
+			style="width: 100%; text-align: left; position: absolute; top: 15%; left: 46.5%;font-size: 34px;font-weight: 400;">
+			同意書
+		</div>
+		<div
+			style="width: 80%; text-align: left; position: absolute; top: 22%; left: 10%;font-size: 23px;font-weight: 400;">
+			同意⼈：______________
+		</div>
+		<div
+			style="width: 80%; text-align: left; position: absolute; top: 22%; left: 56%;font-size: 23px;font-weight: 400;">
+			聯絡電話：_______________
+		</div>
+
+		<div
+			style="width: 80%; text-align: left; position: absolute; top: 30.5%; left: 10%;font-size: 19px;line-height: 2.5em;font-weight: 400;">
+			⼀.相關個⼈資料只⽤於謝衣鳯罷免案之⽤。<br>
+			⼆.本⼈同意於中選會審查第⼀階段通過後，接獲通知後簽署第⼆階段罷免連署⼈。
+		</div>
+
+		<div style="position: absolute; top: 47%; left: 10%;font-size: 20px;font-weight: 400;">
+			歡迎加入各種社群 罷免謝衣鳯 缺你不可 !
+		</div>
+
+		<div style="position: absolute; top: 78.5%; left: 10%;font-size: 32px;font-weight: 400; width: 80%;">
+			Line 社群<span style="padding-left: 10%;"></span>
+			臉書社團<span style="padding-left: 11.5%;"></span>
+			Instagram<span style="padding-left: 10%;"></span>
+			Threads
+		</div>
+		<div class="inputField mobile-container">{{.MobileNumber}}</div>
+		<div class="inputField consenter-container">
+			<div class="whereToSign" style="top:0; left:88px; width:160px; height:64px;"></div>
+		</div>
+	</div>
+</body>
+<script>
+	console.log(window.visualViewport.scale)
+</script>
+
+</html>

@@ -1,67 +1,209 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>阻止失能暴衝的立院, 我們需要你！</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.130">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
+	{{ template "common-head" . }}
+	<title>感謝您的連署</title>
+	<meta name="description" property="og:description"
+		content="多了您這份連署很重要，再幾個步驟就完成了！請按照以下步驟檢查您的連署書是否填寫正確，並找到您選區的繳回資訊，將連署書繳回給您選區的公民團體。">
 </head>
 <style>
 </style>
+
 <body>
-  <div class="banner">
+	<div class="banner">
 		<div class="section">
 			<a class="goback" href="{{.BaseURL}}">
 				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">回首頁</div>
 			</a>
-    	<h1 class="primary">感謝您的連署</h1>
-    	<div class="content-text">多了您這份連署很重要，再幾個步驟就完成了！</div>
+			<h1 class="primary">感謝您的連署</h1>
+			<div class="content-text">多了您這份連署很重要，再幾個步驟就完成了！</div>
 		</div>
-  </div>
+	</div>
 
-  <div class="section notification">
-		<h2>檢查您下載的連署書</h2>
-		<ol>
-			<li>請確認「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>住址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b>。請特別留意：國字和數字不得替換，也不可寫簡體字。</li>
-			<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
-			<li>如遇到連署書輸出格式跑版，請先改使用 Chrome 瀏覽器重新操作一次。也歡迎您來信 <a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a> 讓我們知道您使用的裝置與瀏覽器，我們會盡快處理。</li>
-			<li>檢查無誤後，按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。若連署書上沒有描述，請至 <a href="https://linktr.ee/apple004" target="_blank">https://linktr.ee/apple004</a> 找到您選區的繳回資訊。</a></li>
-			<li>如需重新填寫下載，請點擊 <a href="{{.RecallFormURL}}">{{.Topic}}</a></li>
-		</ol>
-  </div>
+	<div class="section notification">
+		<div class="section step">
+			<h3>1. 對照身分證，再次檢查連署書</h3>
+			<p>
+				請確認表單上的「<strong>姓名</strong>」「<strong>身分證字號</strong>」「<strong>出身年月日</strong>」與「<strong>住址</strong>」皆與您身分證上所謄寫的文字「完全相同」。
+			</p>
+			<div class="section strong">
+				<strong>注意：</strong>
+				<ul class="point">
+					<li>國字和數字不得替換，也不可寫簡體或俗體字。（例：二段不可寫成2段、區不可寫成区）</li>
+				</ul>
+			</div>
+			<p><a href="{{.RecallFormURL}}">發現寫錯？<u>重新填寫連署書</u></a></p>
+		</div>
 
-	<div class="section">
-		<div class="post-action-container">
-			<div class="post-action">
-				<button class="wide-btn-primary" onclick="copyLink('{{.BaseURL}}')">複製連結分享給親友</button>
-				<a href="#footer" style="text-decoration:none;"><button class="wide-btn-secondary">支持我們</button></a>
+
+		<div class="section step">
+			<h3>2. 紙本列印連署書，親筆簽名</h3>
+			<a href="https://print.ibon.com.tw/ibonprinter" target="_blank"><button class="btn-primary btn-black mb-sm">7-11超商雲端列印</button></a>
+			<p>
+				將下載的檔案紙本列印，僅在下載表單上的「<strong>簽名或蓋章</strong>」與「<strong>同意人</strong>」兩個欄位上以正楷簽名或蓋章
+			</p>
+			<div class="section strong">
+				<strong>注意：</strong>
+				<ul class="point">
+					<li>簽名與蓋章僅擇一</li>
+					<li>簽名務必正楷、每一筆畫都清楚分明不可連寫，切勿草寫；蓋章請確保完整清楚</li>
+					<li>表單其餘空白欄位切勿填寫</li>
+					<li>表單不得有任何塗改，如果寫錯請重新列印再次簽名</li>
+					<li>部分選區連署書的「<strong>同意人</strong>」寫為「<strong>立書人</strong>」，同為應親簽之欄位。
+				</ul>
+			</div>
+			<p>為保險起見，您可以至 <a href="https://bababa.tw/" target="_blank"><u>https://bababa.tw/</u></a> 找到您選區的罷免單填寫範本參考，再次確認填寫正確無誤。</p>
+		</div>
+
+		<div class="section step">
+			<h3>3. 將連署書繳回至指定地點</h3>
+
+			<div class="section strong">
+				<ul class="point">
+					<li>按照您的選區之公民團體提供的方法將連署書繳回。</li>
+					<li>部分選區連署書上有描述繳回辦法，若連署書上沒有描述，請至 <a href="https://bababa.tw/" target="_blank"><u>https://bababa.tw/</u></a> 找到您選區的繳回辦法。</li>
+				</ul>
 			</div>
 		</div>
 	</div>
 
-  <div class="section footer" id="footer">
-    <h2>服務政策與聲明</h2>
-		<ol>
-			<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與建置。</li>
-			<li>本網站不蒐集任何個資，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開服務原始碼</a>。</li>
-			<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
-			<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤，<b>本團隊未參與各選區公民團體之作業。</b></li>
-			<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。時程因素，尚未將所有選區連署書範本套製完畢，本團隊將盡快逐步完成。</li>
-			<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
-			<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
-			<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)</li>
-		</ol>
-		<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+	<div class="section mb-lg">
+		<div class="post-action-container">
+			<div class="post-action">
+				<div class="row">
+					<div class="col-6 col-sm-12">
+						<button class="btn-black lg w100" onclick="copyLink('{{.BaseURL}}')">複製連結分享給親友</button>
+					</div>
+					<div class="col-6 col-sm-12 mt-sm-sm">
+						<a href="#footer" style="text-decoration:none;"><button
+								class="btn-secondary lg w100">支持我們</button></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="section faq">
+		<h2>常見問題</h2>
+		<ul>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">只在簽名欄上親簽，其餘內容透過網站帶入，是合規的連署書嗎？</div>
+					<div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<div style="margin: auto 16px auto 16px;">
+						選罷法並沒有規定所有連署書上的應記載項目均只能手寫。<br><br>依民法第 3 條第 1 項規定：「依法律之規定，有使用文字之必要者，得不由本人自寫，但必須親自簽名。」<br><br>
+						依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a
+							href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a>
+					</div>
+				</div>
+			</li>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">製作並下載連署書後，接下來怎麼做？</div>
+					<div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<ol>
+						<li>請檢查「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>戶籍地址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b></li>
+						<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
+						<li>檢查無誤後，按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。若連署書上沒有描述，請至 <a
+								href="https://linktr.ee/apple004" target="_blank">https://linktr.ee/apple004</a>
+							找到您選區的繳回資訊</a></li>
+					</ol>
+				</div>
+			</li>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">我想支持網站製作團隊，可以怎麼做？</div>
+					<div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<ol>
+						<li>請先詳閱 <a href="#footer">服務政策與聲明</a></li>
+						<li>不拘金額捐款：<b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style"
+								onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b>
+								<div class="copy-icon"></div>
+							</a></li>
+						<li>捐款時請備註：<b>ourtaiwan</b></li>
+					</ol>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="footer" id="footer">
+		<div class="section">
+			<h2>服務政策與聲明</h2>
+			<ol>
+				<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與維運。</li>
+				<li><b>本網站不保留任何用戶個資</b>，<a href="https://github.com/imtaiwanese18741130/recall-2025"
+						target="_blank">公開網站原始碼</a>。</li>
+				<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
+				<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤。<b>本團隊未參與各選區公民團體之作業。</b>倘若您對本網站有任何疑慮，我們鼓勵您前往各地連署站進行實際連署。<br><br><b>本團隊不強求您相信我們</b>，我們只希望幫助各地連署順利過關，盡一點心力替每個選區增加連署數量。
+				</li>
+				<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。</li>
+				<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
+				<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a>
+				</li>
+				<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)、N (FrontEnd)、J (BackEnd)</li>
+			</ol>
+			<div class="sponsor-our-work">
+				本網站由設計師、律師、工程師等，利用自己的閒暇時間提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由本團隊成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
 				<div class="sponsor-info">
-					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a><br></div>
+					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style"
+							onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b>
+							<div class="copy-icon"></div>
+						</a><br></div>
 					捐款時請備註：<b>ourtaiwan</b>
 				</div>
-      </div>
+			</div>
 		</div>
-  </div>
+
+	</div>
+
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
-	<script>
-	</script>
+	<!-- <div class="dialog-mask"></div>
+	<div class="dialog">
+		<div class="content">
+			<h3>已上傳至7-11超商雲端列印</h3>
+			<div class="qrcode"></div>
+			<p class="red mb-xs"><strong>#FA7561</strong></p>
+			<p class="black mt-xs">
+				取件期限: 2025/02/02 01:31
+			</p>
+			<p>
+				請記下您的文件列印期限及「取件編號」或「取件QR code」，︀於有效期限內至全台7-ELEVEN門市ibon進行文件列印及櫃檯繳費
+			</p>
+		</div>
+		<div class="dialog-action">
+			<div class="row">
+				<div class="col-12">
+					<button class="btn-primary w100" onclick="console.log('action')">複製連結分享給親友</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog-close icon-text lg">Close</div>
+	</div> -->
 </body>
+<script>
+	document.querySelectorAll('.faq-row .faq-header').forEach(header => {
+		header.addEventListener('click', event => {
+			const item = header.parentElement;
+			const isExpanded = item.classList.contains('expanded');
+			document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
+				if (openItem !== item) {
+					openItem.classList.remove('expanded');
+					const arrow = openItem.querySelector('.arrow');
+					arrow.classList.remove('collapsed');
+				}
+			});
+			item.classList.toggle('expanded', !isExpanded);
+			const arrow = header.querySelector('.arrow');
+			arrow.classList.toggle('collapsed', !isExpanded);
+		});
+	});
+</script>
 </html>

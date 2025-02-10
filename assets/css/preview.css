@@ -1,0 +1,295 @@
+html {
+	overflow-x: inherit;
+}
+
+body {
+	margin: 0;
+	padding: 32px 0;
+	background-color: #dcdcdc;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+	overflow-x: inherit;
+}
+
+.a4-portrait,
+.a4-landscape {
+	position: relative;
+	margin: 0 auto;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.20);
+	box-sizing: border-box;
+	border-radius: 4px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #fff;
+	margin-bottom: 32px;
+}
+
+.a4-portrait img,
+.a4-landscape img {
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
+}
+
+.a4-portrait {
+	width: 210mm;
+	height: 297mm;
+}
+
+
+.a4-landscape {
+	width: 297mm;
+	height: 210mm;
+}
+
+
+
+
+/* *************************************
+	new
+**************************************** */
+.printBackground {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.inputField {
+	position: absolute;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+}
+
+.inputField.center {
+	transform: translateX(-50%);
+}
+
+.inputField.whiteBg {
+	background-color: #fff;
+	padding: 8px;
+}
+
+.inputField>table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: auto;
+	/* background-color: white; */
+	table-layout: fixed;
+}
+
+.inputField>table td {
+	border: 1px solid black;
+	text-align: center;
+	font-weight: normal;
+}
+
+.inputField.xl {
+	font-size: 32px;
+	letter-spacing: 0.2em
+}
+
+.inputField.lg {
+	font-size: 23px;
+	letter-spacing: 0.1em
+}
+
+.inputField.md {
+	font-size: 19px;
+	letter-spacing: 0.1em
+}
+
+.inputField.sm {
+	font-size: 15px;
+}
+
+.whereToSign {
+	width: 50%;
+	height: 40%;
+	position: absolute;
+	pointer-events: none;
+	z-index: 998;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transform: translate(-50%, -50%);
+}
+
+.whereToSign::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 100%;
+	height: 100%;
+	background-color: #ff000011;
+	border: 2px dashed #ec1c00;
+	border-radius: 5px;
+	animation: breathingFlash 2s infinite ease-in-out;
+}
+
+.whereToSign::after {
+	content: "列印後\A簽名處";
+	white-space: pre-line;
+	color: #da1900;
+	text-align: center;
+	padding: 2px;
+	font-size: 20px;
+}
+
+.whereToSign.aLine::after {
+	content: "列印後簽名處";
+}
+
+.whereToSign.sm::after {
+	font-size: 12px;
+}
+
+@keyframes breathingFlash {
+
+	0%,
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.03);
+	}
+
+	50% {
+		opacity: 0.3;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+.mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0.3s, opacity 0.3s;
+}
+
+.mask.active {
+	visibility: visible;
+	opacity: 1;
+}
+
+.spinner {
+	width: 80px;
+	height: 80px;
+	border: 8px solid rgba(0, 255, 156, 0.3);
+	border-top: 8px solid #00ff9c;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+
+
+
+
+/* *************************************
+ *************************************
+
+	下載列的 RWD
+
+**************************************** 
+**************************************** */
+
+#downloadArea.md {
+	padding: 18px;
+}
+
+#downloadArea.md button {
+	font-size: 24px;
+	padding: 16px 24px;
+}
+
+#downloadArea.md h6 {
+	font-size: 17px;
+	margin: 0.5em;
+}
+
+#downloadArea.md>div {
+	width: 40%;
+}
+
+#downloadArea.md>div:last-child {
+	width: 60%;
+}
+
+
+
+#downloadArea.sm>div {
+	width: 100%;
+}
+
+#downloadArea.sm>div:last-child {
+	width: 100%;
+}
+
+#downloadArea.sm>div {
+	text-align: center;
+}
+
+#downloadArea.sm {
+	padding: 24px;
+}
+
+#downloadArea.sm button {
+	font-size: 28px;
+	padding: 20px 28px;
+}
+
+#downloadArea.sm h6 {
+	font-size: 28px;
+	padding: 20px 28px;
+	margin: 0.5em;
+}
+
+
+
+
+#downloadArea.xs {
+	padding: 36px;
+}
+
+#downloadArea.xs button {
+	font-size: 40px;
+	padding: 28px 20px;
+}
+
+#downloadArea.xs h6 {
+	font-size: 38px;
+	padding: 28px 32px;
+	margin: 0.5em;
+}

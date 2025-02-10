@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	{{ template "preview-head" . }}
+</head>
+
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<div class="whereToSign" style=" left: 80.9%; top: 59.5%;  width: 10%; height: 11%;"></div>
+		<div class="inputField center md" style=" left: 25.7%; top: 61.5%;    letter-spacing:0.89em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center md" style=" left: 25%; top: 55%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center " style=" left: 41.5%; top: 58%; ">
+			{{.BirthYear}}.{{printf "%02d" .BirthMonth}}.{{printf "%02d" .BirthDate}}
+		</div>
+		<div class="inputField center sm" style=" left: 61%; top: 55%;  width: 28%;">
+			{{.Address}}
+		</div>
+	</div>
+</body>
+</html>

@@ -1,50 +1,102 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{ template "common-head" . }}
   <title>阻止失能暴衝的立院, 我們需要你！</title>
-	<meta name="description" content="不討論就表決，邊撤案邊修正，毀壞憲政體制、毀壞程序的立院你還看得下去嗎？你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.130">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
+  <meta name="description" property="og:description" content="不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎？身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！">
 </head>
 <body>
   <div class="banner">
 		<div class="section">
     	<h1 class="primary">阻止失能暴衝的立院, 我們需要你！</h1>
-    	<div class="content-text">不討論就表決，邊撤案邊修正，毀壞憲政體制、毀壞程序的立院你還看得下去嗎？<br>你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
+    	<div class="content-text">不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？<br>你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
 		</div>
   </div>
-  <div class="section candidates">
-    <h2>確認『戶籍地址所屬選區』找出你能罷免的立委</h2>
+  <div class="section candidates mt-md  mt-sm-xs">
+		<div class="zone-filters-container">
+			<div class="filters pb-sm">
+				<h2>輸入戶籍地，<br>找出您有權罷免的立委</h2>
+				<div class="row">
+					<div class="col-6 col-xs-12">
+						<select id="filter-municipalities">
+							<option value="" disabled selected>縣市</option>
+							{{range $a := .Areas}}
+							<option value="{{$a.Name}}">{{$a.Name}}</option>
+							{{end}}
+						</select>
+					</div>
+					<div class="col-6 col-xs-12">
+						<select id="filter-districts" disabled>
+							<option value="" disabled selected>行政區</option>
+						</select>
+					</div>
+					<div class="col-12">
+						<select id="filter-wards" disabled>
+							<option value="" disabled selected>鄉里名</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="filtered-candidate-container" id="filtered-candidate-container" style="display:none;">
+				<div class="candidate">
+					<div class="candidate-name"></div>
+					<div class="candidate-zone"></div>
+				</div>
+				<a><button class="btn-primary lg w100">連署罷免</button></a>
+			</div>
+			<div class="filtered-candidate-container safe">
+				<div class="candidate">
+					<div class="candidate-name">沒有符合您戶籍地址的選項嗎？</div>
+					<div class="candidate-zone">若找不到您戶籍地址的選項，代表您的選區不在活動範圍內。但我們還是需要您的力量，將資訊分享出去讓更多人參與。</div>
+				</div>
+				<button class="btn-black lg w100" onclick="copyCurrentLink()">幫忙分享資訊!</button>
+			</div>
+		</div>
+    <h2 class="mt-lg">全台罷免對象一覽</h2>
 		<ul>
-		{{range $city, $zones := .RecallList }}
+			{{range $a := .Areas }}
 			<li class="city-row">
 				<div class="city-header">
-					<div class="city-name">{{$city}}</div><div class="arrow">▶</div>
+					<div class="city-name">{{$a.Name}}</div><div class="arrow">▶</div>
 				</div>
 				<div class="city-content">
 					<ul>
-						{{range $z := $zones}}
-      			<li>
+						{{range $z := $a.Zones}}
+						<li>
 							<div class="candidate">
-      			  	<div class="candidate-name">{{$z.CandidateName}}</div>
-      			  	<div class="candidate-zone">{{$z.ZoneName}} ({{$z.Districts}})</div>
+								<div class="candidate-name">{{$z.CandidateName}}</div>
+								<div class="candidate-zone">{{$z.ZoneName}} ({{$z.Districts}})</div>
 							</div>
-      			  <div class="candidate-action">
-      			    <a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button>連署罷免</button></a>
-      			  </div>
-      			</li>
+							<div class="candidate-action">
+								{{if $z.Deployed}}
+								<a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button class="btn-primary">連署罷免</button></a>
+								{{else}}
+								<div style="color:#aaaaaa;">趕工中</div>
+								{{end}}
+							</div>
+						</li>
 						{{end}}
 					</ul>
 				</div>
 			</li>
-		{{end}}
-		<ul>
+			{{end}}
+		</ul>
   </div>
+
   <div class="section faq">
     <h2>常見問題</h2>
 		<ul>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">只在簽名欄上親簽，其餘內容透過網站帶入，是合規的連署書嗎？</div><div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<div style="margin: auto 16px auto 16px;">
+						選罷法並沒有規定所有連署書上的應記載項目均只能手寫。<br><br>依民法第 3 條第 1 項規定：「依法律之規定，有使用文字之必要者，得不由本人自寫，但必須親自簽名。」<br><br>
+						依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a>
+					</div>
+				</div>
+			</li>
 			<li class="faq-row">
 				<div class="faq-header">
 					<div class="question">製作並下載連署書後，接下來怎麼做？</div><div class="arrow">▶</div>
@@ -71,28 +123,34 @@
 			</li>
 		</ul>
   </div>
-  <div class="section footer" id="footer">
-    <h2>服務政策與聲明</h2>
-		<ol>
-			<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與建置。</li>
-			<li>本網站不蒐集任何個資，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開服務原始碼</a>。</li>
-			<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
-			<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤，<b>本團隊未參與各選區公民團體之作業。</b></li>
-			<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。時程因素，尚未將所有選區連署書範本套製完畢，本團隊將盡快逐步完成。</li>
-			<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
-			<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
-			<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)</li>
-		</ol>
-		<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+	<div class="footer" id="footer">
+		<div class="section">
+			<h2>服務政策與聲明</h2>
+			<ol>
+				<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與維運。</li>
+				<li><b>本網站不保留任何個資</b>，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開網站原始碼</a>。</li>
+				<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
+				<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤。<b>本團隊未參與各選區公民團體之作業。</b>倘若您對本網站有任何疑慮，我們鼓勵您前往各地連署站進行實際連署。<br><br><b>本團隊不強求您相信我們</b>，我們只希望幫助各地連署順利過關，盡一點心力替每個選區增加連署數量。</li>
+				<li>依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：<br>「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a></li>
+				<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。</li>
+				<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
+				<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
+				<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)、N (FrontEnd)、J (BackEnd)</li>
+			</ol>
+			<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
 				<div class="sponsor-info">
 					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a><br></div>
 					捐款時請備註：<b>ourtaiwan</b>
 				</div>
-      </div>
+			</div>
 		</div>
-  </div>
+	</div>
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
+		const zoneCandidates = JSON.parse('{{.ZoneCandidates}}');
+		const baseURL = '{{.BaseURL}}';
+		const stage1PathPrefix = baseURL + '/stage-1';
+
 		document.querySelectorAll('.faq-row .faq-header').forEach(header => {
 			header.addEventListener('click', event => {
 				const item = header.parentElement;
@@ -109,6 +167,7 @@
 				arrow.classList.toggle('collapsed', !isExpanded);
 			});
 		});
+
   	document.querySelectorAll('.city-row .city-header').forEach(header => {
   	  header.addEventListener('click', () => {
   	    const item = header.parentElement;
@@ -125,6 +184,133 @@
   	    arrow.classList.toggle('collapsed', !isExpanded);
   	  });
   	});
+
+		const filteredCandidateContainer = document.getElementById('filtered-candidate-container');
+		const filteredGoto = filteredCandidateContainer.querySelector('a');
+		const filteredCandidateName = filteredCandidateContainer.querySelector('.candidate-name');
+		const filteredZoneName = filteredCandidateContainer.querySelector('.candidate-zone');
+
+		filteredGoto.querySelector('button').addEventListener('click', function() {
+			filteredGoto.click();
+		});
+
+		async function sendAjaxRequest(municipality, district, ward) {
+			let params = new URLSearchParams();
+
+			if (municipality !== null && municipality !== undefined) {
+				params.append("municipality", municipality);
+			}
+			if (district !== null && district !== undefined) {
+				params.append("district", district);
+			}
+			if (ward !== null && ward !== undefined) {
+				params.append("ward", ward);
+			}
+
+			let fullUrl = `${baseURL}/filter?${params.toString()}`;
+
+			try {
+				let response = await fetch(fullUrl, {
+					method: "GET"
+				});
+
+				if (!response.ok) {
+					throw new Error(`HTTP Error: ${response.status}`);
+				}
+
+				let data = await response.json();
+				return data;
+			} catch (error) {
+				throw error;
+			}
+		}
+
+		document.addEventListener("DOMContentLoaded", () => {
+			const municipalitiesSelect = document.getElementById("filter-municipalities");
+			const districtsSelect = document.getElementById("filter-districts");
+			const wardsSelect = document.getElementById("filter-wards");
+
+			const resetSelect = (select) => {
+				const defaultOption = select.querySelector('option[value=""]');
+				select.disabled = true;
+				select.innerHTML = "";
+				if (defaultOption) {
+					select.appendChild(defaultOption.cloneNode(true));
+				}
+			};
+
+			const populateOptions = (select, options) => {
+				for (const key in options) {
+					const option = document.createElement("option");
+					option.value = options[key];
+					option.textContent = options[key];
+					select.appendChild(option);
+				}
+				select.disabled = false;
+			};
+
+			municipalitiesSelect.addEventListener("change", () => {
+				filteredCandidateContainer.style.display = "none";
+				resetSelect(districtsSelect);
+				resetSelect(wardsSelect);
+
+				sendAjaxRequest(municipalitiesSelect.value, null, null)
+					.then(data => {
+						if (data.result.zoneCode !== "") {
+							showFilteredCandidateContainer(data.result.zoneCode, municipalitiesSelect.value)
+						} else if (data.result.options.length > 0) {
+							populateOptions(districtsSelect, data.result.options);
+						}
+					})
+					.catch(error => console.error(error))
+			});
+
+			districtsSelect.addEventListener("change", () => {
+				filteredCandidateContainer.style.display = "none";
+				resetSelect(wardsSelect);
+
+				sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, null)
+					.then(data => {
+						if (data.result.zoneCode !== "") {
+							showFilteredCandidateContainer(data.result.zoneCode, municipalitiesSelect.value, districtsSelect.value)
+						} else if (data.result.options.length > 0) {
+							populateOptions(wardsSelect, data.result.options);
+						}
+					})
+					.catch(error => console.error(error))
+			});
+
+			wardsSelect.addEventListener("change", () => {
+				filteredCandidateContainer.style.display = "none";
+				sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, wardsSelect.value)
+					.then(data => {
+						if (data.result.zoneCode !== "") {
+							showFilteredCandidateContainer(data.result.zoneCode, municipalitiesSelect.value, districtsSelect.value, wardsSelect.value)
+						} else {
+							console.error("invalid ward");
+						}
+					})
+					.catch(error => console.error(error))
+			});
+		});
+
+		function showFilteredCandidateContainer(zoneCode, municipality, district, ward) {
+			let address = "";
+			if (municipality !== null && municipality !== undefined) {
+				address += municipality;
+			}
+			if (district !== null && district !== undefined) {
+				address += district;
+			}
+			if (ward !== null && ward !== undefined) {
+				address += ward;
+			}
+			filteredCandidateName.innerText = zoneCandidates[zoneCode].candidateName;
+			filteredZoneName.innerText = zoneCandidates[zoneCode].zoneName;
+			filteredGoto.setAttribute('href', stage1PathPrefix + "/" + zoneCode + "?address=" + address);
+			filteredCandidateContainer.style.display = "block";
+			filteredCandidateContainer.scrollIntoView({behavior: "smooth"});
+		}
 	</script>
 </body>
 </html>

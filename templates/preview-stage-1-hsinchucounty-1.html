@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	{{ template "preview-head" . }}
+</head>
+<style>
+	.idnumber-container {
+		/* customize attrs */
+		bottom: 70px;
+		left: 57px;
+	}
+	.idnumber-container table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: auto;
+		background-color: transparent;
+		table-layout: fixed;
+
+		/* customize attrs */
+		width: 194px;
+		height: 40px;
+	}
+	.idnumber-container td {
+		border: 1px solid black;
+		text-align: center;
+		font-weight: normal;
+	}
+	.name-container {
+		border: 1px solid black;
+		/* position attrs */
+		bottom: 109px;
+		left: 57px;
+		width: 194px;
+		height: 73px;
+	}
+	.birthdate-container {
+		border: 1px solid black;
+		/* position attrs */
+		bottom: 70px;
+		left: 250px;
+		width: 79px;
+		height: 112px;
+	}
+	.address-container {
+		border: 1px solid black;
+		padding: 0 8px;
+		word-break: break-word;
+		/* position attrs */
+		bottom: 70px; /* Same as .idnumber-container */
+		left: 328px;
+		width: 311px;
+		height: 112px; /* Same as .birth-container */
+	}
+	.petitioner-container {
+		/* position attrs */
+		bottom: 76px;
+		left: 637px;
+		width: 90px;
+		height: 107px;
+	}
+	.consenter-container {
+		/* position attrs */
+		bottom: 524px;
+		left: 158px;
+		width: 104px;
+		height: 32px;
+	}
+	.mobile-container {
+		font-size: 20px;
+		/* position attrs */
+		bottom: 520px;
+		right: 150px;
+	}
+</style>
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+  <div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp'); ">
+		<div class="inputField name-container">{{.Name}}</div>
+		<div class="inputField birthdate-container">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</div>
+		<div class="inputField address-container">{{.Address}}</div>
+		<div class="inputField mobile-container">{{.MobileNumber}}</div>
+		<div class="inputField petitioner-container"><div class="whereToSign" style="top:57px; left:49px; width:82px; height:100px;"></div></div>
+		<div class="inputField consenter-container"><div class="whereToSign" style="top:2px; left:56px; width:106px; height:58px;"></div></div>
+		<div class="inputField idnumber-container">
+			<table>
+				<tr>
+					<td>{{.IdNumber.D0}}</td>
+					<td>{{.IdNumber.D1}}</td>
+					<td>{{.IdNumber.D2}}</td>
+					<td>{{.IdNumber.D3}}</td>
+					<td>{{.IdNumber.D4}}</td>
+					<td>{{.IdNumber.D5}}</td>
+					<td>{{.IdNumber.D6}}</td>
+					<td>{{.IdNumber.D7}}</td>
+					<td>{{.IdNumber.D8}}</td>
+					<td>{{.IdNumber.D9}}</td>
+				</tr>
+			</table>
+		</div>
+  </div>
+</body>
+</html>

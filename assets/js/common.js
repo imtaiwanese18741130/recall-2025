@@ -1,32 +1,47 @@
-async function downloadPDF(containerSelector, filename, redirectURL) {
+async function downloadPDF(filename, redirectURL) {
 	const { jsPDF } = window.jspdf;
-	const containers = document.querySelectorAll(containerSelector);
-
+	const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
 	if (containers.length === 0) {
 		console.error('No elements found with the given class name.');
 		return;
 	}
 
-	const isLandscape = containerSelector === '.a4-landscape';
-	const orientation = isLandscape ? 'l' : 'p';
+	const mask = document.querySelector('.mask');
+	mask.classList.add('active');
 
-	const pdf = new jsPDF(orientation, 'mm', 'a4');
-	const pdfWidth = pdf.internal.pageSize.getWidth();
+	try {
+		let pdf;
 
-	for (const [index, container] of containers.entries()) {
-		const canvas = await html2canvas(container, { scale: 2 });
-		const imgData = canvas.toDataURL('image/png');
-		const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+		for (const [index, container] of containers.entries()) {
+			const isLandscape = container.classList.contains('a4-landscape');
+			const orientation = isLandscape ? 'l' : 'p';
 
-		if (index > 0) {
-			pdf.addPage();
+			if (index === 0) {
+				pdf = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
+			} else {
+				pdf.addPage('a4', orientation);
+			}
+
+			const pdfWidth = pdf.internal.pageSize.getWidth();
+
+			const canvas = await html2canvas(container, {
+				scale: 2,
+				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
+			});
+
+			const imgData = canvas.toDataURL('image/webp', 1.0);
+			const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 		}
 
-		pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+		pdf.save(`${filename}.pdf`);
+		window.location.href = redirectURL;
+	} catch (error) {
+		console.error('Error generating PDF:', error);
+	} finally {
+		mask.classList.remove('active');
 	}
-
-	pdf.save(filename + '.pdf');
-	window.location.href = redirectURL;
 }
 async function copyLink(url) {
 	navigator.clipboard.writeText(url)
@@ -72,9 +87,10 @@ async function copyInnerText(containerSelector) {
 		});
 }
 function isValidIdNumber(idNumber) {
-	if (idNumber.length !== 10) {
+	if (!/^[A-Z][12]\d{8}$/.test(idNumber)) {
 		return false;
 	}
+
 
 	const letterMap = {
 		A: 10, B: 11, C: 12, D: 13, E: 14,
@@ -86,11 +102,12 @@ function isValidIdNumber(idNumber) {
 	};
 
 	const firstLetter = idNumber[0];
-	if (!letterMap[firstLetter]) {
+	const firstDigit = letterMap[firstLetter];
+
+	if (!firstDigit) {
 		return false;
 	}
 
-	const firstDigit = letterMap[firstLetter];
 	const digits = [
 		Math.floor(firstDigit / 10),
 		firstDigit % 10,

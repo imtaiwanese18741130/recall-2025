@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	{{ template "preview-head" . }}
+</head>
+
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-portrait " style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position_2.png" alt=""> -->
+		<div class="inputField center md" style=" left: 19.8%; top: 91.1%;    letter-spacing:0.45em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center lg" style=" left: 20%; top: 85.5%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center" style=" left: 37%; top: 85.5%;">
+			{{.BirthYear}} 年
+		</div>
+		<div class="inputField center" style=" left: 37%; top: 88%;">
+			{{.BirthMonth}} 月
+		</div>
+		<div class="inputField center" style=" left: 37%; top:90.5%;">
+			{{.BirthDate}} 日
+		</div>
+		<div class="inputField center sm whiteBg" style=" left: 60.5%; top: 84%;  width: 36.5%; height:8%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 86.5%; top: 89%;  width: 10%; height: 8%;"></div>
+	</div>
+</body>
+
+</html>

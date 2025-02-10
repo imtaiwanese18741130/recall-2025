@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	{{ template "preview-head" . }}
+</head>
+
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
+		<div class="whereToSign aLine sm" style=" left: 74%; top: 12%;  width: 15%; height: 4%;"></div>
+		<div class="inputField center sm" style=" left: 72%; top: 14.3%;  ">
+			{{.MobileNumber}}
+		</div>
+		<div class="inputField center lg" style=" left: 27.5%; top: 83%;    letter-spacing:0.84em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center xl" style=" left: 27.5%; top: 70%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center lg" style=" left: 44.5%; top: 69.5%; ">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center lg" style=" left: 44.5%; top: 76.5%; ">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center lg" style=" left: 44.5%; top: 83.5%; ">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center md whiteBg" style=" left: 65%; top: 67%;  width: 29%; height: 22%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 83.9%; top: 78.3%;  width: 7%; height: 21%;"></div>
+	</div>
+</body>
+
+</html>

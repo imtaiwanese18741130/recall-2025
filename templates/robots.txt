@@ -1,0 +1,6 @@
+User-agent: *
+{{- range .DisallowPaths }}
+Disallow: {{ . }}
+{{- end }}
+
+Sitemap: {{.BaseURL}}/sitemap.xml

@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
+	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -23,10 +26,105 @@ func NewController(cfg *Config) *Controller {
 func (ctrl Controller) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home.html", gin.H{
-			"BaseURL":    ctrl.AppBaseURL.String(),
-			"RecallList": ctrl.ToRecallListViewData(),
+			"BaseURL":        ctrl.AppBaseURL.String(),
+			"Areas":          ctrl.Areas,
+			"ZoneCandidates": template.JS(ctrl.ZoneCandidates),
 		})
 	}
+}
+
+func (ctrl Controller) SearchZone() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		qp := RequestQuerySearchZone{}
+		if err := c.ShouldBindQuery(&qp); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, RespSearchZone{http.StatusText(http.StatusBadRequest), nil})
+			return
+		}
+
+		districts, exists := ctrl.AreaFilter[qp.Municipality]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			return
+		}
+
+		if qp.District == nil {
+			options := make([]string, len(districts))
+			i := 0
+			for k := range districts {
+				options[i] = k
+				i += 1
+			}
+
+			if options[0] == "" {
+				if zoneCode, exists := districts[""][""]; !exists {
+					c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+				} else {
+					c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+				}
+			} else {
+				sort.Slice(options, func(i, j int) bool {
+					return options[i] < options[j]
+				})
+
+				c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
+			}
+			return
+		}
+
+		wards, exists := districts[*qp.District]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			return
+		}
+
+		if qp.Ward == nil {
+			options := make([]string, len(wards))
+			i := 0
+			for k := range wards {
+				options[i] = k
+				i += 1
+			}
+
+			if options[0] == "" {
+				if zoneCode, exists := wards[""]; !exists {
+					c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+				} else {
+					c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+				}
+			} else {
+				sort.Slice(options, func(i, j int) bool {
+					return options[i] < options[j]
+				})
+
+				c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
+			}
+			return
+		}
+
+		zoneCode, exists := wards[*qp.Ward]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			return
+		}
+
+		c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+	}
+}
+
+type RequestQuerySearchZone struct {
+	Municipality string  `form:"municipality"`
+	District     *string `form:"district"`
+	Ward         *string `form:"ward"`
+}
+
+type RespSearchZone struct {
+	Message string            `json:"message"`
+	Result  *ResultSearchZone `json:"result,omitempty"`
+}
+
+type ResultSearchZone struct {
+	Options  []string `json:"options"`
+	ZoneCode string   `json:"zoneCode"`
 }
 
 func (ctrl Controller) FillForm() gin.HandlerFunc {
@@ -44,17 +142,21 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 			return
 		}
 
+		address := c.Query("address")
+		if address == "" {
+			address = z.Address
+		}
+
 		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
 
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
-			"Topic":            z.GetTopic(),
 			"ZoneCode":         z.ZoneCode,
 			"ZoneName":         z.ZoneName,
 			"Districts":        z.Districts,
 			"CandidateName":    z.CandidateName,
 			"Stage":            stage,
 			"BaseURL":          ctrl.AppBaseURL.String(),
-			"AddressPrefix":    z.AddressPrefix,
+			"Address":          address,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
 			"MaxBirthDate":     twentyYearsAgo,
 		})
@@ -78,17 +180,11 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 
 		qp := RequestQueryPreview{}
 		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
-			fmt.Println(err)
 			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		redirectURL := ctrl.AppBaseURL.JoinPath("thank-you")
-		query := redirectURL.Query()
-		query.Add("stage", stage)
-		query.Add("zone", zone)
-		redirectURL.RawQuery = query.Encode()
-
+		redirectURL := ctrl.AppBaseURL.JoinPath(stage, zone, "thank-you")
 		data, err := qp.ToPreviewData(ctrl.Config, stage, zone, z.GetTopic(), redirectURL.String())
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
@@ -109,7 +205,7 @@ type RequestQueryPreview struct {
 	IdNumber     string `form:"id-number" binding:"required"`
 	BirthDate    string `form:"birth-date" binding:"required"`
 	Address      string `form:"address" binding:"required"`
-	MobileNumber string `form:"mobile-number" binidng:"omitempty"`
+	MobileNumber string `form:"mobile-number" binidng:"required"`
 }
 
 func (r RequestQueryPreview) ToPreviewData(cfg *Config, stage, zone, topic, redirectURL string) (*PreviewData, error) {
@@ -201,6 +297,32 @@ type IdNumber struct {
 	D9 string
 }
 
+func (ctrl Controller) ThankYou() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		stage := c.Param("stage")
+		if stage != "stage-1" && stage != "stage-2" {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		zone := c.Param("zone")
+		z := ctrl.GetZone(zone)
+		if z == nil {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		topic := z.GetTopic()
+		recallFormURL := ctrl.AppBaseURL.JoinPath(stage, zone)
+
+		c.HTML(http.StatusOK, "thank-you.html", gin.H{
+			"BaseURL":       ctrl.AppBaseURL.String(),
+			"RecallFormURL": recallFormURL.String(),
+			"Topic":         topic,
+		})
+	}
+}
+
 func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		stage := c.Param("stage")
@@ -216,11 +338,7 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		redirectURL := ctrl.AppBaseURL.JoinPath("thank-you")
-		query := redirectURL.Query()
-		query.Add("stage", stage)
-		query.Add("zone", zone)
-		redirectURL.RawQuery = query.Encode()
+		redirectURL := ctrl.AppBaseURL.JoinPath(stage, zone, "thank-you")
 
 		tmpfile := "preview-" + stage + "-" + zone + ".html"
 		c.HTML(http.StatusOK, tmpfile, gin.H{
@@ -259,32 +377,60 @@ func (ctrl Controller) VerifyTurnstile() gin.HandlerFunc {
 	}
 }
 
-func (ctrl Controller) ThankYou() gin.HandlerFunc {
+func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		recallFormURL := ctrl.AppBaseURL
-		stage := c.Query("stage")
-		if stage == "stage-1" || stage == "stage-2" {
-			recallFormURL = recallFormURL.JoinPath(stage)
-		} else {
-			recallFormURL = nil
+		tmpl, err := template.ParseFiles("templates/robots.txt")
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Template Error")
+			return
 		}
 
-		topic := ""
-		zone := c.Query("zone")
-		z := ctrl.GetZone(zone)
-		if z != nil {
-			recallFormURL = recallFormURL.JoinPath(zone)
-			topic = z.GetTopic()
-		} else {
-			recallFormURL = nil
-		}
-
-		c.HTML(http.StatusOK, "thank-you.html", gin.H{
+		data := gin.H{
 			"BaseURL":       ctrl.AppBaseURL.String(),
-			"RecallFormURL": recallFormURL,
-			"Topic":         topic,
-		})
+			"DisallowPaths": ctrl.DisallowPaths,
+		}
+
+		c.Header("Content-Type", "text/plain; charset=utf-8")
+		if err := tmpl.Execute(c.Writer, data); err != nil {
+			c.String(http.StatusInternalServerError, "Render Error")
+		}
 	}
+}
+
+func (ctrl Controller) Sitemap() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		urls := []*SitemapURL{
+			&SitemapURL{ctrl.AppBaseURL.String(), "2025-02-02", "daily", "1.0"},
+		}
+
+		for _, z := range ctrl.Zones {
+			if z.Deployed {
+				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode).String(), "2025-02-02", "monthly", "0.8"})
+				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode, "thank-you").String(), "2025-02-05", "weekly", "0.8"})
+			}
+		}
+
+		sitemap := SitemapURLSet{
+			Xmlns:       "http://www.sitemaps.org/schemas/sitemap/0.9",
+			SitemapURLs: urls,
+		}
+
+		c.Header("Content-Type", "application/xml; charset=utf-8")
+		c.XML(http.StatusOK, sitemap)
+	}
+}
+
+type SitemapURL struct {
+	Loc        string `xml:"loc"`
+	LastMod    string `xml:"lastmod"`
+	ChangeFreq string `xml:"changefreq"`
+	Priority   string `xml:"priority"`
+}
+
+type SitemapURLSet struct {
+	XMLName     xml.Name      `xml:"urlset"`
+	Xmlns       string        `xml:"xmlns,attr"`
+	SitemapURLs []*SitemapURL `xml:"url"`
 }
 
 func (ctrl Controller) GetAsset() gin.HandlerFunc {
@@ -301,7 +447,11 @@ func (ctrl Controller) GetAsset() gin.HandlerFunc {
 			return
 		}
 
-		c.Header("Cache-Control", "public, max-age=3600")
+		if ctrl.AppEnv == "production" {
+			c.Header("Cache-Control", "public, max-age=3600")
+		} else {
+			c.Header("Cache-Control", "no-cache")
+		}
 		c.File(filePath)
 	}
 }

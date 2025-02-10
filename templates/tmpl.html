@@ -1,0 +1,80 @@
+{{ define "common-head" }}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png">
+<meta property="og:url" content="https://recall2025.ourtaiwan.tw">
+<link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.161">
+<script src="{{.BaseURL}}/assets/js/common.js?v0.0.20"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{{ end }}
+
+{{ define "preview-head" }}
+<meta charset="utf-8" />
+<title>第一階段罷免連署書 - {{.Topic}}</title>
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.161">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.12">
+<link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="{{.BaseURL}}/assets/js/common.js?v0.0.20"></script>
+{{ end }}
+
+{{ define "preview-control-panel" }}
+<div id="downloadArea" class="floating-btn-container row flex-jus-c">
+  <div class="col-3 col-sm-12 mr-md mr-xs-0 text-xs-center">
+    <h6>
+      請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」與您的身分證完全相同
+    </h6>
+  </div>
+  <div class="col-4 col-sm-12 row flex-align-c">
+    <div class="col-6">
+      <a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="btn-secondary lg w100">重新填寫</button></a>
+    </div>
+    <div class="col-6">
+      <button class="btn-primary lg w100"
+        onclick="downloadPDF('第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const controlPanel = document.getElementById("downloadArea")
+
+  let resizeTimeout;
+  window.addEventListener("resize", function () {
+    console.log(window.visualViewport.scale)
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      controlPanel.classList.remove("xs", "sm", "md");
+      if (window.visualViewport.scale < 0.45) {
+        controlPanel.classList.add("xs", "sm", "md");
+      } else if (window.visualViewport.scale < 0.65) {
+        controlPanel.classList.add("sm", "md");
+      } else if (window.visualViewport.scale < 0.8) {
+        controlPanel.classList.add("md");
+      }
+    }, 300);
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    controlPanel.classList.remove("xs", "sm", "md");
+    if (window.visualViewport.scale < 0.45) {
+      controlPanel.classList.add("xs", "sm", "md")
+    } else if (window.visualViewport.scale < 0.65) {
+      controlPanel.classList.add("sm", "md")
+    } else if (window.visualViewport.scale < 0.8) {
+      controlPanel.classList.add("md")
+    }
+  });
+</script>
+{{ end }}
+
+{{ define "mask" }}
+<div class="mask">
+  <div class="spinner"></div>
+</div>
+{{ end }}

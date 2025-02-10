@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>阻止失能暴衝的立院, 守護台灣，我們需要你！</title>
-	<meta name="description" content="{{.Topic}}">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.130">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+	{{ template "common-head" . }}
+  <title>我要罷免{{.CandidateName}} - {{.ZoneName}}</title>
+  <meta name="description" property="og:description" content="我是{{.ZoneName}}選民，我要罷免{{.CandidateName}}！">
 </head>
-<style>
-</style>
 <body>
+	<div class="browser-warning-container" id="browser-warning-container">
+		<div class="browser-waring-title">
+			您使用的瀏覽器無法下載連署書
+		</div>
+		<div class="browser-warning-content">
+			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
+		</div>
+	</div>
   <div class="banner">
 		<div class="section">
 			<a class="goback" href="{{.BaseURL}}">
-				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">回首頁</div>
+				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">罷免其他立委</div>
 			</a>
     	<h1 style="font-size:32px; color:#ffffff;">我是{{.ZoneName}}選民<br>我要罷免<span class="primary">『{{.CandidateName}}』</span></h1>
-    	<div class="content-text">{{.ZoneName}} ({{.Districts}})<br></div>
+    	<div class="content-text">{{.ZoneName}} ({{.Districts}})<br><br>提醒您！本網站不保留您填入的任何資料，資料也於傳輸前加密，請安心使用。</div>
 		</div>
   </div>
-	<div class="section browser-note-container">
-		<div class="browser-note">提醒您！若您用 LINE 或 Messenger 等通訊軟體開啟本網站，請點擊通訊軟體瀏覽器於右上或右下角的功能按鈕，以外部瀏覽器開啟。</div>
-	</div>
 	<div class="section fill-form">
 		<h2>請拿出國民身分證填寫以下資訊</h2>
-		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post" onsubmit="combineBirthDate()">
+		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post">
   	  <div class="form-group">
   	    <label for="name">姓名</label>
 				<div class="input-group">
@@ -36,20 +35,27 @@
   	  <div class="form-group">
   	    <label for="id-number">身分證字號</label>
 				<div class="input-group">
-  	    	<input type="text" id="id-number" name="id-number" pattern="^[A-Z][1-2]\d{8}$" required>
+  	    	<input type="text" id="id-number" name="id-number" required>
   	  	</div>
   	  </div>
   	  <div class="form-group birth-date">
-  	    <label>出生年 / 月 / 日</label>
+  	    <label>出生年月日</label>
 				<div class="input-group">
 					<input type="date" name="birth-date" max="{{.MaxBirthDate}}" required>
 				</div>
-				<div class="form-comment">系統將自動轉換西元出生年月日至民國</div>
+				<div class="form-comment">系統將自動轉換西元出生年月日至民國。<b>提醒手機用戶！先於月曆上挑好您出生的「月」與「日」，最後點擊月曆左上角的年份，可直接挑選您的出生年。</b></div>
+  	  </div>
+  	  <div class="form-group">
+  	    <label for="mobile-number">手機號碼</label>
+				<div class="input-group">
+  	    	<input type="tel" id="mobile-number" name="mobile-number" required pattern="^09\d{8}$">
+  	  	</div>
+				<div class="form-comment">僅用於輸出在連署書上，若公民團體檢查時發現填寫有誤、或時至第二階段連署時方便與您聯繫。<b>本網站不保留您的手機號碼</b>。若您的選區連署書上無手機號碼欄位，則不會輸出。</div>
   	  </div>
   	  <div class="form-group">
   	    <label for="address">戶籍地址</label>
 				<div class="input-group">
-  	    	<input type="text" id="address" name="address" value="{{.AddressPrefix}}" required>
+  	    	<input type="text" id="address" name="address" value="{{.Address}}" required>
   	  	</div>
 				<div class="form-comment">
 					請完全按照您國民身分證上<b>住址</b>欄位，<b>完全對照填寫</b>。特別留意以下情況：
@@ -66,13 +72,6 @@
 					</ul>
 				</div>
   	  </div>
-  	  <div class="form-group">
-  	    <label for="mobile-number">手機號碼</label>
-				<div class="input-group">
-  	    	<input type="tel" id="mobile-number" name="mobile-number" required pattern="^09\d{8}$">
-  	  	</div>
-				<div class="form-comment">僅用於輸出在連署書上，若公民團體檢查發現填寫資料有誤、或時至第二階段連署時方便與您聯繫。<b>本網站不保留您的手機號碼</b>。若您的選區連署書上無手機號碼欄位，則不會輸出。</div>
-  	  </div>
 			<div class="form-group">
   	    <label for="turnstile">人機驗證</label>
 				<div class="input-group">
@@ -81,33 +80,129 @@
 			</div>
   	  <div class="form-group">
 				<div class="input-group">
-  	  		<button type="submit" class="wide-btn-primary" style="margin-bottom:-16px;">製作連署書</button>
+  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作連署書</button>
   	  	</div>
   	  </div>
   	</form>
 		<div class="form-group">
 			<div class="input-group">
-				<button class="wide-btn-secondary" onclick="copyCurrentLink()">複製連結分享給親友</button>
+				<button class="btn-secondary lg w100" onclick="copyCurrentLink()">分享出去！邀請更多人參與</button>
 			</div>
 		</div>
 	</div>
-
+  <div class="section faq">
+    <h2>常見問題</h2>
+		<ul>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">只在簽名欄上親簽，其餘內容透過網站帶入，是合規的連署書嗎？</div><div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<div style="margin: auto 16px auto 16px;">
+						選罷法並沒有規定所有連署書上的應記載項目均只能手寫。<br><br>依民法第 3 條第 1 項規定：「依法律之規定，有使用文字之必要者，得不由本人自寫，但必須親自簽名。」<br><br>
+						依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a>
+					</div>
+				</div>
+			</li>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">製作並下載連署書後，接下來怎麼做？</div><div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<ol>
+						<li>請檢查「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>戶籍地址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b></li>
+						<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
+						<li>檢查無誤後，按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。若連署書上沒有描述，請至 <a href="https://linktr.ee/apple004" target="_blank">https://linktr.ee/apple004</a> 找到您選區的繳回資訊</a></li>
+					</ol>
+				</div>
+			</li>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><div class="arrow">▶</div>
+				</div>
+				<div class="answer">
+					<ol>
+						<li>請先詳閱 <a href="#footer">服務政策與聲明</a></li>
+						<li>不拘金額捐款：<b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a></li>
+						<li>捐款時請備註：<b>ourtaiwan</b></li>
+					</ol>
+				</div>
+			</li>
+		</ul>
+  </div>
+	<div class="footer" id="footer">
+		<div class="section">
+			<h2>服務政策與聲明</h2>
+			<ol>
+				<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與維運。</li>
+				<li><b>本網站不保留任何個資</b>，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開網站原始碼</a>。</li>
+				<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
+				<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤。<b>本團隊未參與各選區公民團體之作業。</b>倘若您對本網站有任何疑慮，我們鼓勵您前往各地連署站進行實際連署。<br><br><b>本團隊不強求您相信我們</b>，我們只希望幫助各地連署順利過關，盡一點心力替每個選區增加連署數量。</li>
+				<li>依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：<br>「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a></li>
+				<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。</li>
+				<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
+				<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
+				<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)、N (FrontEnd)、J (BackEnd)</li>
+			</ol>
+			<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+				<div class="sponsor-info">
+					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a><br></div>
+					捐款時請備註：<b>ourtaiwan</b>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
-    const form = document.getElementById("recall-form");
-    const idInput = document.getElementById("id-number");
+		const submitButton = document.querySelector("button[type='submit']");
+		const idInput = document.getElementById("id-number");
+
 		idInput.addEventListener("input", () => {
 			idInput.setCustomValidity("");
 		});
 
-		form.addEventListener("submit", (event) => {
-      const idValue = idInput.value;
-      if (!isValidIdNumber(idValue)) {
-        idInput.setCustomValidity("請輸入合法的身分證字號");
-        idInput.reportValidity();
-        event.preventDefault();
-      }
-    });
+		submitButton.addEventListener("click", (event) => {
+			idInput.setCustomValidity("");
+			if (!isValidIdNumber(idInput.value)) {
+				idInput.setCustomValidity("請輸入合法的身分證字號");
+
+				idInput.focus();
+				setTimeout(() => idInput.reportValidity(), 600);
+			}
+		});
+
+
+		(function() {
+			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+			const isLine = userAgent.toLowerCase().includes("line");
+			const isMessenger = userAgent.toLowerCase().includes("fbav") || userAgent.toLowerCase().includes("messenger");
+			const isWhatsApp = userAgent.toLowerCase().includes("whatsapp");
+			const isThreads = userAgent.toLowerCase().includes("barcelona");
+			const isWeChat = userAgent.toLowerCase().includes("micromessenger");
+
+			if (isLine || isMessenger || isWhatsApp || isThreads || isWeChat ) {
+				const warningElement = document.getElementById('browser-warning-container');
+				warningElement.style.display = 'flex';
+			}
+		})();
+
+		document.querySelectorAll('.faq-row .faq-header').forEach(header => {
+			header.addEventListener('click', event => {
+				const item = header.parentElement;
+				const isExpanded = item.classList.contains('expanded');
+				document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
+					if (openItem !== item) {
+						openItem.classList.remove('expanded');
+						const arrow = openItem.querySelector('.arrow');
+						arrow.classList.remove('collapsed');
+					}
+				});
+				item.classList.toggle('expanded', !isExpanded);
+				const arrow = header.querySelector('.arrow');
+				arrow.classList.toggle('collapsed', !isExpanded);
+			});
+		});
+
 	</script>
 	
 </body>

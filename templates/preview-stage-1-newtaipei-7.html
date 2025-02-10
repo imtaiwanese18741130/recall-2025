@@ -1,100 +1,42 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="utf-8"/>
-  <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.35">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-	<style>
-		.table-container {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 140px 32px 64px 32px;
-		}
-		.consent-title {
-			letter-spacing: 64px;
-			font-size: 40px;
-			text-align: center;
-			padding: 100px 0 50px 0;
-		}
-		.consent-content {
-			line-height: 3;
-			padding: 0 0 64px 32px;
-			font-size: 20px;
-		}
-		.consent-content ol {
-			list-style-type: none;
-		}
-		.consenter-container {
-			display: flex;
-			justify-content: flex-start;
-			padding-left: 64px;
-			font-size: 26px;
-		}
-	</style>
+	{{ template "preview-head" . }}
 </head>
+
 <body>
-	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn">返回重填</button></a>
-	</div>
-	<div class="a4-landscape">
-		<div class="table-container">
-			<table>
-				<tr>
-					<th colspan="15" style="height:40px; font-size:24px; font-weight:500;">新北市第七選區 第 11 屆立法委員葉元之罷免案提議人名冊</th>
-				</tr>
-				<tr>
-					<th rowspan="2" style="width:7%;">編<br>號</th>
-					<th colspan="10" style="width:26%; height:50px; letter-spacing:10px;">姓名</th>
-					<th rowspan="2" style="width:10%;">出生年月日<br>(民國)</th>
-					<th style="width:40%; letter-spacing:10px;">戶籍地址</th>
-					<th rowspan="2" style="width:10%;">簽名</th>
-					<th rowspan="2" style="width:7%;">備<br>註</th>
-				</tr>
-				<tr>
-					<th colspan="10" style="height:80px;">國民身分證統一編號</th>
-					<th style="padding:4px 12px;text-align:left;line-height:2;">新北市                區                村(里)                鄰                路(街)<br>        段               巷                弄                號              樓之    </th>
-				</tr>
-				<tr>
-					<td rowspan="2" style="border-right:4px solid;"></td>
-					<td colspan="10" style="height:75px; border-top:4px solid;">{{.Name}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-					<td style="white-space:normal; word-break: break-word; border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"></td>
-					<td rowspan="2"></td>
-				</tr>
-				<tr>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
-				</tr>
-			</table>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
+
+		<div class="inputField center xl" style=" left: 21.2%; top: 47.5%;  ">
+			{{.Name}}
 		</div>
-		<div class="declaration" style="padding:26px 32px 0 0;text-align:right;font-size:22px;">提議人之領銜人                                           (簽名或蓋章)<br><br><br>            年                    月                    日造</div>
-	</div>
-	<div class="a4-landscape">
-		<h1 class="consent-title">同意書</h1>
-		<div class="consent-content">
-			<ol>
-				<li>一、相關個人資料只用於罷免葉元之之用。</li>
-				<li>二、本人同意於中選會審查第一階段過後，接獲通知後簽署成為第二階段連署人。</li>
-			</ol>
+		<div class="inputField center lg" style=" left: 21.4%; top: 56.0%;    letter-spacing:0.52em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
 		</div>
-		<div class="consenter-container">
-			<b style="padding-right:280px;">同意人：</b>
-			<b>行動電話：</b><div style="margin-top:2px;">{{.MobileNumber}}</div>
+		<div class="inputField center  " style=" left: 36.5%; top: 48%; ">
+			{{.BirthYear}} 年
+		</div>
+		<div class="inputField center  " style=" left: 36.5%; top: 52%; ">
+			{{printf "%02d" .BirthMonth}} 月
+		</div>
+		<div class="inputField center  " style=" left: 36.5%; top: 56%; ">
+			{{printf "%02d" .BirthDate}} 日
+		</div>
+		<div class="inputField center  whiteBg" style=" left: 60.6%; top: 46.5%;  width: 37%; height: 12%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 84.9%; top: 53%;  width: 9%; height: 11%;"></div>
+	</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
+		<div class="whereToSign aLine" style=" left: 29%; top: 60%;  width: 25%; height: 10%;"></div>
+		<div class="inputField center lg" style=" left: 65%; top:59%; ">
+			{{.MobileNumber}}
 		</div>
 	</div>
 </body>
+
 </html>

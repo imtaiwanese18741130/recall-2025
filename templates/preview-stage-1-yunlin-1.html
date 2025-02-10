@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	{{ template "preview-head" . }}
+</head>
+
+<body>
+	{{ template "mask" }}
+	{{ template "preview-control-panel" . }}
+	<div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
+		<div class="inputField center xl" style=" left: 19.9%; top: 23.8%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center " style=" left: 20.4%; top: 29.9%;    letter-spacing:0.65em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center " style=" left: 38.5%; top: 25.5%; ">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center " style=" left: 38.5%; top: 27.4%; ">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center " style=" left: 38.5%; top: 29.4%; ">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center sm  whiteBg" style=" left: 61.5%; top: 23.8%;  width: 34%; height: 9%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 86.35%; top: 28.25%;  width: 12%; height: 8%;"></div>
+	</div>
+	<div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
+		<div class="whereToSign aLine" style=" left: 40%; top: 22%;  width: 26%; height: 6%;"></div>
+		<div class="inputField center md" style=" left: 87%; top:21.2%; ">
+			{{.MobileNumber}}
+		</div>
+	</div>
+</body>
+
+</html>

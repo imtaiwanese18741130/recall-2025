@@ -320,35 +320,45 @@
 		// -------------------------------
 		// filter city tag
 		// -------------------------------
-		const selectedCities = new Set();
+		let selectedCity = null;
 		const tags = document.querySelectorAll(".tag-filter");
 		const cityRows = document.querySelectorAll(".city-row");
+
 
 		tags.forEach(tag => {
 			tag.addEventListener("click", function () {
 				const city = this.getAttribute("data-city");
-
-				if (this.classList.contains("active")) {
-					this.classList.remove("active");
-					selectedCities.delete(city);
+				tags.forEach(t => t.classList.remove("active"));
+				if (selectedCity === city) {
+					selectedCity = null;
 				} else {
 					this.classList.add("active");
-					selectedCities.add(city);
+					selectedCity = city;
 				}
-				updateFilter();
+				updateFilter()
 			});
 		});
-
 		function updateFilter() {
-			if (selectedCities.size === 0) {
-				cityRows.forEach(row => row.style.display = "block");
-			} else {
-				cityRows.forEach(row => {
-					const city = row.getAttribute("data-city");
-					row.style.display = selectedCities.has(city) ? "block" : "none";
-				});
-			}
+			cityRows.forEach(row => {
+				const city = row.getAttribute("data-city");
+
+				if (selectedCity === null) {
+					row.style.display = "block"
+					row.classList.remove("expanded")
+				} else if (city === selectedCity) {
+					row.style.display = "block"
+					row.classList.add("expanded")
+
+				} else {
+					row.style.display = "none"
+					row.classList.remove("expanded")
+				}
+
+
+			});
 		}
+
+
 	</script>
 </body>
 

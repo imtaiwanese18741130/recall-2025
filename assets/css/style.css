@@ -258,10 +258,18 @@ button.btn-black:hover {
 	border: 1px solid #E5E5E5;
 	margin: 4px;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 }
 
 .tag-filter.active {
 	background: var(--pri-color);
+}
+
+.tag-filter.active::before {
+	content: "done";
+	font-family: 'Material Symbols Outlined';
+	margin-right: 6px;
 }
 
 /* *************************************

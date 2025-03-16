@@ -345,7 +345,7 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 				BirthMonth:       11,
 				BirthDate:        30,
 				MobileNumber:     "0987654321",
-				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
 			}
 		} else {
 			participateURL := ctrl.AppBaseURL.JoinPath("mayor")

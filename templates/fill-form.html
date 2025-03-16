@@ -4,7 +4,7 @@
 	{{ template "common-head" . }}
   <title>我要罷免{{.Legislator.PoliticianName}} - {{.Legislator.ConstituencyName}}</title>
   <meta name="description" property="og:description" content="我是{{.Legislator.ConstituencyName}}選民，我要罷免{{.Legislator.PoliticianName}}！">
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.14">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 </head>
@@ -30,56 +30,50 @@
 			<h2>拿出『身分證』對照填寫，<br>製作連署書並印出</h2>
 			<div class="fill-form-notification">本網站不會保存您的個人資料，填寫資訊經加密處理且僅用於一次性生成連署書下載，請安心填寫。詳情請見<a href="#footer">服務政策與聲明</a>。</div>
 		</div>
-		<form class="recall-form" action="{{.PreviewURL}}" id="recall-form" method="post">
-  	  <div class="form-group">
-  	    <label for="name">姓名</label>
+		<div class="recall-form">
+  		<div class="form-group">
+  		  <label for="name">姓名</label>
 				<div class="input-group">
-  	    	<input type="text" id="name" name="name" required>
+  		  	<input type="text" id="name" name="name" required>
 				</div>
-  	  </div>
-  	  <div class="form-group">
-  	    <label for="id-number">身分證字號</label>
+  		</div>
+  		<div class="form-group">
+  		  <label for="id-number">身分證字號</label>
 				<div class="input-group">
-  	    	<input type="text" id="id-number" name="id-number" required>
-  	  	</div>
-  	  </div>
-  	  <div class="form-group birth-date">
-  	    <label>民國出生年月日</label>
+  		  	<input type="text" id="id-number" name="id-number" required>
+  			</div>
+  		</div>
+  		<div class="form-group birth-date">
+  		  <label>民國出生年月日</label>
 				<div class="input-group">
 					<input type="number" name="birth-year" max="94" style="text-align:center;" required> 年
 					<input type="number" name="birth-month" min="1" style="text-align:center;" max="12" required> 月
 					<input type="number" name="birth-day" min="1" style="text-align:center;" max="31" required> 日
 				</div>
-  	  </div>
-  	  <div class="form-group">
-  	    <label for="address">戶籍地址</label>
+  		</div>
+  		<div class="form-group">
+  		  <label for="address">戶籍地址</label>
 				<div class="input-group">
-  	    	<textarea class="input-address" type="text" id="address" name="address" required>{{.Address}}</textarea>
-  	  	</div>
+  		  	<textarea class="input-address" type="text" id="address" name="address" required>{{.Address}}</textarea>
+  			</div>
 				<div class="form-comment">請完全按照您國民身分證上<strong>住址</strong>欄位，<strong>完全對照填寫</strong></div>
-  	  </div>
-			<div class="form-group">
-  	    <label for="turnstile">人機驗證</label>
-				<div class="input-group">
-					<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}" data-theme="light"></div>
-				</div>
-			</div>
-  	  <div class="form-group">
+  		</div>
+  		<div class="form-group">
 				<div class="input-group">
 					{{- if .Legislator.FormDeployed}}
-  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作第 {{.Legislator.RecallStage}} 階段連署書</button>
+  				<button class="btn-primary lg w100" id="submit-btn" style="margin-bottom:-16px;">製作第 {{.Legislator.RecallStage}} 階段連署書</button>
 					{{- else}}
-  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;" disabled>{{.Legislator.RecallStage}} 階準備中</button>
+  				<button class="btn-primary lg w100" style="margin-bottom:-16px;" disabled>{{.Legislator.RecallStage}} 階準備中</button>
 					{{- end}}
-  	  	</div>
-  	  </div>
-  	  <div class="form-group">
+  			</div>
+  		</div>
+  		<div class="form-group">
 				<div class="input-group">
 					<button type="button" class="btn-secondary lg w100" onclick="copyCurrentLink();">分享出去！邀請更多人參與</button>
 					<div class="show-qrcode"><a class="hyperlink-style"><i class="icon-qrcode"></i>取得本網頁 QR 碼</a></div>
-  	  	</div>
-  	  </div>
-  	</form>
+  			</div>
+  		</div>
+		</div>
 	</div>
 
 	{{ template "faq" . }}
@@ -95,8 +89,27 @@
 			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
 		</div>
 	</div>
+
+	<div class="preview-mask">
+		{{ template "preview-control-panel" . }}
+		<div class="a4-landscape">
+			<div class="img-container">
+				<img src="{{.BaseURL}}/assets/images/stage-2-{{.Legislator.PoliticianName}}.png">
+			</div>
+			<div class="inputField center md" style="left:22.4%; top:29.7%; letter-spacing:0.73em">
+			</div>
+			<div class="inputField center md" style="left:22.4%; top:34.4%; letter-spacing:0.72em">
+			</div>
+			<div class="inputField center sm" style="left:38.6%; top:33%; letter-spacing:0.02em">
+			</div>
+			<div class="inputField center xsm" style="left:61.4%; top:21.7%; width:32.8%; height:25%;">
+			</div>
+			<div class="whereToSign" style="left:82.6%; top:34.2%; width:7.6%; height:7.4%;"></div>
+		</div>
+	</div>
+
 	<script>
-		const submitButton = document.querySelector("button[type='submit']");
+		const submitButton = document.getElementById("submit-btn");
 		const idInput = document.getElementById("id-number");
 		const birthYear = document.querySelector("input[name='birth-year']");
 		const birthMonth = document.querySelector("input[name='birth-month']");
@@ -146,24 +159,26 @@
 			}));
 
 			submitButton.addEventListener("click", (event) => {
-				idInput.setCustomValidity("");
-				if (!isValidIdNumber(idInput.value)) {
-					idInput.setCustomValidity("請輸入合法的身分證字號");
+				const previewMask = document.querySelector(".preview-mask")
+				previewMask.style.display = "block";
+				//idInput.setCustomValidity("");
+				//if (!isValidIdNumber(idInput.value)) {
+				//	idInput.setCustomValidity("請輸入合法的身分證字號");
 
-					idInput.focus();
-					setTimeout(() => idInput.reportValidity(), 600);
-				}
+				//	idInput.focus();
+				//	setTimeout(() => idInput.reportValidity(), 600);
+				//}
 
-				const year = parseInt(birthYear.value.trim(), 10);
-				const month = parseInt(birthMonth.value.trim(), 10);
-				const day = parseInt(birthDay.value.trim(), 10);
+				//const year = parseInt(birthYear.value.trim(), 10);
+				//const month = parseInt(birthMonth.value.trim(), 10);
+				//const day = parseInt(birthDay.value.trim(), 10);
 
-				if (!year || !month || !day || !isValidDate(year, month, day)) {
-					alert("輸入的日期不合法，請重新檢查！");
-					event.preventDefault();
-					birthDay.focus();
-					return;
-				}
+				//if (!year || !month || !day || !isValidDate(year, month, day)) {
+				//	alert("輸入的日期不合法，請重新檢查！");
+				//	event.preventDefault();
+				//	birthDay.focus();
+				//	return;
+				//}
 			});
 
 			function isValidDate(year, month, day) {
@@ -186,7 +201,6 @@
 				const warningElement = document.getElementById("browser-warning-container");
 				warningElement.style.display = "flex";
 			}
-
 
 		});
 	</script>

@@ -34,7 +34,7 @@ func main() {
 	r.GET("/apis/constituencies", c.SearchRecallConstituency())
 	r.GET("/preview/stages/:stage/:name", c.PreviewOriginalLocalForm())
 	r.GET("/legislators/:name", c.Participate())
-	r.POST("/legislators/:name/preview", c.VerifyTurnstile(), c.PreviewLocalForm())
+	r.POST("/legislators/:name/preview", c.PreviewLocalForm())
 	r.GET("/legislators/:name/thank-you", c.ThankYou())
 	r.GET("/mayor", c.MParticipate())
 	r.POST("/mayor/preview", c.VerifyTurnstile(), c.MPreviewLocalForm())

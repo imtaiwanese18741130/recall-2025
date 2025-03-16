@@ -30,7 +30,16 @@ async function downloadPDF(filename, redirectURL) {
 			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 		}
 
-		pdf.save(`${filename}.pdf`);
+		if (isMobile()) {
+			// returnPromise does not work on mobile, so new Promise is used to simulate and resolve after 500ms
+			await new Promise((resolve) => {
+				pdf.save(`${filename}.pdf`, { returnPromise: false });
+				setTimeout(resolve, 500);
+			});
+		} else {
+			await pdf.save(`${filename}.pdf`, { returnPromise: true })
+		}
+
 		window.location.href = redirectURL;
 	} catch (error) {
 		console.error('Error generating PDF:', error);
@@ -38,6 +47,11 @@ async function downloadPDF(filename, redirectURL) {
 		mask.classList.remove('active');
 	}
 }
+
+function isMobile() {
+	return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
+}
+
 async function copyLink(url) {
 	navigator.clipboard.writeText(url)
 		.then(() => {

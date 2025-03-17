@@ -81,11 +81,11 @@ async function copyInnerText(containerSelector) {
 			console.error('cannot copy', err);
 		});
 }
+
 function isValidIdNumber(idNumber) {
 	if (!/^[A-Z][12]\d{8}$/.test(idNumber)) {
 		return false;
 	}
-
 
 	const letterMap = {
 		A: 10, B: 11, C: 12, D: 13, E: 14,
@@ -146,6 +146,15 @@ function generateQRCode(data, size) {
 	logo.innerHTML = "OurTaiwan<br>製作連署書";
 	logo.style.fontSize = `${size * 0.075}px`;
 	logo.style.padding = `${size * 0.01}px ${size * 0.025}px`;
+}
+
+function isValidDate(year, month, day) {
+	if (month < 1 || month > 12 || day < 1 || day > 31) {
+		return false;
+	}
+	const fullYear = 1911 + parseInt(year, 10);
+	const date = new Date(fullYear, month - 1, day);
+	return date.getFullYear() === fullYear && date.getMonth() === month - 1 && date.getDate() === day;
 }
 
 async function downloadQRCode(data) {

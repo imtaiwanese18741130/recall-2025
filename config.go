@@ -64,6 +64,10 @@ func LoadConfig() (*Config, error) {
 		rootPath = cfg.AppHostname + cfg.AppPath
 	}
 
+	if !((scheme == "https" && cfg.AppPort == "443") || (scheme == "http" && cfg.AppPort == "80")) {
+		rootPath = rootPath + ":" + cfg.AppPort
+	}
+
 	var err error
 
 	cfg.AppBaseURL, err = url.ParseRequestURI(scheme + "://" + rootPath)

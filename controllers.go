@@ -380,6 +380,10 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 
 func (ctrl Controller) VerifyTurnstile() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if ctrl.AppEnv == "dev" {
+			c.Next()
+			return
+		}
 		token := c.PostForm("cf-turnstile-response")
 		if token == "" {
 			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))

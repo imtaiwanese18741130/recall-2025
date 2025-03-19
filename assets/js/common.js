@@ -31,7 +31,6 @@ async function downloadPDF(filename, redirectURL) {
 		}
 
 		if (isMobile()) {
-			// returnPromise does not work on mobile, so new Promise is used to simulate and resolve after 500ms
 			await new Promise((resolve) => {
 				pdf.save(`${filename}.pdf`, { returnPromise: false });
 				setTimeout(resolve, 500);
@@ -40,7 +39,9 @@ async function downloadPDF(filename, redirectURL) {
 			await pdf.save(`${filename}.pdf`, { returnPromise: true })
 		}
 
-		window.location.href = redirectURL;
+		setTimeout(() => {
+			window.location.href = redirectURL;
+		});
 	} catch (error) {
 		console.error('Error generating PDF:', error);
 	} finally {

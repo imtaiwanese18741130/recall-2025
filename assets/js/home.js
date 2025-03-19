@@ -161,7 +161,7 @@ function showFilteredCandidateContainer(legislators, address) {
 						<h4>您選區的連署未能及時送件...</h4>
 						別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
 					</div>`;
-					candidateAction = `<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>`;
+					candidateAction = `<button class="btn-black lg w100" onclick="shareCurrentLink('')"><i class="icon-link"></i>幫忙分享資訊！</button>`;
 					break;
 
 				case "FAILED":
@@ -170,7 +170,7 @@ function showFilteredCandidateContainer(legislators, address) {
 						<h4>您選區的連署未通過...</h4>
 						別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
 					</div>`;
-					candidateAction = `<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>`;
+					candidateAction = `<button class="btn-black lg w100" onclick="shareCurrentLink('')"><i class="icon-link"></i>幫忙分享資訊！</button>`;
 					break;
 
 				default:

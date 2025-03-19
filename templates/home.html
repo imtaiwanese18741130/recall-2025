@@ -5,14 +5,14 @@
 	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.10" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
-	<title>阻止失能暴衝的立院，我們需要你！</title>
-	<meta name="description" property="og:description" content="不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎？身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！">
+	<title>守護我們珍愛的臺灣，我們需要你！</title>
+	<meta name="description" property="og:description" content="臺灣是個溫暖內斂、豐富多元的土地。但曾幾何時，我們有了這些蠻橫無理的公僕：霸凌助理、霸凌醫護人員、護航虐童兇手、聲援中配武統言論、粗暴地將年近八旬的老師架離會場… 我們是臺灣人，溫柔而堅毅。每個犧牲休息、吹風淋雨的罷團志工、每張細心撰寫的連署書，都是為了守護這塊土地，溫柔而堅定的決心。無論你在哪裡，我們需要你的加入，與我們一起守護臺灣。">
 </head>
 <body>
 	<div class="banner">
 		<div class="section">
-			<h1 class="primary">阻止失能暴衝的立院，<br>我們需要你！</h1>
-			<div class="content-text">不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？<br>你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎？身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
+			<h1 class="primary">守護我們珍愛的臺灣，<br>我們需要你！</h1>
+			<div class="content-text">臺灣是個溫暖內斂、豐富多元的土地。但曾幾何時，我們有了這些蠻橫無理的公僕：霸凌助理、霸凌醫護人員、護航虐童兇手、聲援中配武統言論、粗暴地將年近八旬的老師架離會場…<br><br>我們是臺灣人，溫柔而堅毅。<br><br>每個犧牲休息、吹風淋雨的志工、每張細心撰寫的連署書，都是為了守護這塊土地，溫柔又堅定的行動。無論你在哪裡，我們需要你的加入，與我們一起守護臺灣。</div>
 		</div>
 	</div>
 	<div class="section candidates">
@@ -49,7 +49,7 @@
 					<div class="candidate-name">您的選區不在本次活動範圍</div>
 					<div class="candidate-zone">但我們也需要您的力量，幫忙分享資訊讓更多人參與！</div>
 				</div>
-				<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>
+				<button class="btn-black lg w100" onclick="shareCurrentLink('')"><i class="icon-link"></i>幫忙分享資訊！</button>
 			</div>
 		</div>
 	</div>
@@ -119,7 +119,7 @@
 		{{- end}}
 		<div class="pep-talk" style="display:none;">
 			<div><i class="icon-notify"></i><strong>您的選區連署未通過嗎？</strong>別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！</div>
-			<button class="btn-black lg" onclick="copyCurrentLink()"><i class="icon-link"></i>分享</button>
+			<button class="btn-black lg" onclick="shareCurrentLink('')"><i class="icon-link"></i>分享</button>
 		</div>
 	</div>
 	{{ template "faq" }}

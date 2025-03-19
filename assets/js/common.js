@@ -43,26 +43,18 @@ async function downloadPDF(filename, redirectURL) {
 	}
 }
 
-async function copyLink(url) {
-	navigator.clipboard.writeText(url)
-		.then(() => {
-			const popout = document.getElementById('popout');
-			popout.classList.remove('hidden');
-			popout.classList.add('visible');
+async function shareLink(text, url) {
+	try {
+		await navigator.share({title: "守護我們珍愛的臺灣，我們需要你！", text: text, url: url});
+	} catch (err) {
+		console.error("share failed:", err);
+	}
+}
 
-			setTimeout(() => {
-				popout.classList.remove('visible');
-				popout.classList.add('hidden');
-			}, 2000);
-		})
-		.catch(err => {
-			console.error('cannot copy:', err);
-		});
+async function shareCurrentLink(text) {
+	shareLink(text, window.location.href)
 }
-async function copyCurrentLink() {
-	const currentUrl = window.location.href;
-	copyLink(currentUrl)
-}
+
 async function copyInnerText(containerSelector) {
 	const container = document.querySelector(containerSelector);
 

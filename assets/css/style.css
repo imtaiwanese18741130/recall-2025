@@ -126,14 +126,6 @@ ul.point li {
 	box-sizing: border-box;
 }
 
-.banner .section.nav {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 28px 24px 0 28px;
-}
-
 .section.nav {
 	display: flex;
 	padding: 32px 0 0 28px;
@@ -540,8 +532,10 @@ button.btn-black:hover {
 	background-color: #2d2d2d;
 	text-align: center;
 	background-size: cover;
-	background-position: center center;
+	background-position: center;
 	background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
 }
 
 .banner .section {
@@ -550,6 +544,14 @@ button.btn-black:hover {
 	align-items: center;
 	padding: 32px 0 32px 0;
 	gap: 24px;
+}
+
+.banner .section.nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 28px 24px 0 28px;
 }
 
 .banner h1 {
@@ -1436,4 +1438,30 @@ button.btn-black:hover {
 	overflow-wrap: break-word;
 	box-sizing: border-box;
 	padding: 4px 4px;
+}
+
+.team-ourtaiwan {
+	width: 67px;
+	height: 19px;
+	padding: 4px;
+}
+
+.team-ourtaiwan img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.logo {
+	width: 84px;
+	height: 22px;
+	padding: 4px;
+	display: block;
+}
+
+.logo img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	opacity: 0.5;
 }

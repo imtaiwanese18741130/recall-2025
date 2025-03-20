@@ -1032,15 +1032,32 @@ button.btn-black:hover {
 	padding: 12px 24px;
 }
 
+.browser-warning-mask {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0.3s, opacity 0.3s;
+}
+
+.browser-warning-mask.active {
+	visibility: visible;
+	opacity: 1;
+}
+
 .browser-warning-container {
-	display: none;
+	display: flex;
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	background-color: #fff8dc;
 	box-shadow: 0 -6px 15px rgba(0, 0, 0, 0.3), 0 -10px 25px rgba(0, 0, 0, 0.2);
-	z-index: 1000;
 
 	flex-direction: column;
 	justify-content: center;

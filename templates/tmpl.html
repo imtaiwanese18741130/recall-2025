@@ -3,11 +3,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta property="og:locale" content="zh_TW">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png">
+  <meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png?v1">
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.4">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.5">
 	<script src="{{.BaseURL}}/assets/js/common.js?v0.1.6" defer></script>
 {{- end }}
 
@@ -15,7 +15,7 @@
   <meta charset="utf-8">
   <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.4">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.5">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.15">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -237,6 +237,7 @@
 				<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的分發或商業用途。所有權利受法律保護，違者必究。</li>
 				<li><strong>本團隊不代表任何選區之公民團體，也未參與各選區公民團體之作業。</strong>僅按照各選區公民團體發佈的連署書範本進行套製。</li>
 				<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤。倘若您對本網站有任何疑慮，我們鼓勵您前往各地連署站進行實際連署。</li>
+				<li>本團隊也支援<a href="{{.BaseURL}}/mayor">罷免高虹安</a></li>
 				<li>本團隊委託廖國翔律師為本團隊、及本團隊開發營運之應用服務的代理人。詳情請見<a href="{{.BaseURL}}/authorization-letter" target="_blank">團隊委託代理聲明</a>。</li>
 				<li>如有任何問題或建議，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
 				<li>歡迎各選區罷團認養您所屬選區的罷免行事曆。請來信 <a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a>，經身份驗證後，我們會將您所屬選區的行事曆編輯權限分享給您。</li>
@@ -252,29 +253,4 @@
 			</div>
 		</div>
 	</div>
-{{- end }}
-
-{{- define "stage-2-form-input-row"}}
-<tr>
-	<td class="input-num" rowspan="2"></td>
-	<td class="input-name" colspan="10"></td>
-	<td rowspan="2">
-		<div></div>
-	</td>
-	<td rowspan="2"></td>
-	<td rowspan="2"></td>
-	<td rowspan="2"></td>
-</tr>
-<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
 {{- end }}

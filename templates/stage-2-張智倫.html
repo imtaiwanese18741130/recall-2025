@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
 	{{ template "preview-head" . }}
 </head>
+<style>
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+
+		#print-section,
+		#print-section * {
+			visibility: visible;
+		}
+
+		#print-section {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+	}
+</style>
+
 <body>
 	{{ template "mask" }}
 	{{ template "preview-control-panel" . }}
-	<div class="a4-landscape">
+	<div class="a4-landscape" id="print-section">
 		<div class="a4-inner-container">
 			<div class="img-container">
 				<img src="{{.BaseURL}}/assets/images/stage-2-{{.PoliticianName}}.png" style="transform:rotate(0.1deg);">
@@ -27,4 +47,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

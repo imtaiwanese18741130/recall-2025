@@ -1,26 +1,26 @@
 {{- define "common-head" }}
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:locale" content="zh_TW">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png?v=1">
-  <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
-  <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.5">
-	<script src="{{.BaseURL}}/assets/js/common.js?v0.1.6" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png?v1">
+<meta property="og:url" content="https://recall2025.ourtaiwan.tw">
+<link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.5">
+<script src="{{.BaseURL}}/assets/js/common.js?v0.1.7" defer></script>
 {{- end }}
 
 {{- define "preview-head" }}
-  <meta charset="utf-8">
-  <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.15">
-  <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.1.6" defer></script>
+<meta charset="utf-8">
+<title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.5">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.15">
+<link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
+<script src="{{.BaseURL}}/assets/js/common.js?v0.1.7" defer></script>
 {{- end }}
 
 {{- define "preview-control-panel" }}
@@ -37,48 +37,52 @@
 				<span class="print-setting"></span>7-11 超商 ibon 列印專用尺寸
 			</label>
 		</div>
-	  <div class="action-btn">
-	    <div class="col-4">
-	      <a href="{{.ParticipateURL}}"><button class="btn-secondary lg w100">重新填寫</button></a>
-	    </div>
-	    <div class="col-6">
-	      <button id="download-btn" class="btn-primary lg w100 flex-center"><i class="icon-download"></i>確認下載</button>
-	    </div>
-	  </div>
+		<div class="action-btn">
+			<a href="{{.ParticipateURL}}">取消</a>
+			<div class="col-5">
+				<button id="print-btn" class="btn-secondary lg w100 flex-center"><i
+					class="icon-print"></i>列印</button>
+			</div>
+			<div class="col-5">
+				<button id="download-btn" class="btn-primary lg w100 flex-center"><i
+					class="icon-download"></i>確認下載</button>
+			</div>
+		</div>
 	</div>
 </div>
 
 <script>
 	const panelContainer = document.querySelector(".panel-container");
 	const downloadBtn = document.getElementById("download-btn");
+	const printBtn = document.getElementById("print-btn");
 	let printSetting;
-  let resizeTimeout;
+	let resizeTimeout;
 
-  window.addEventListener("resize", function () {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      panelContainer.classList.remove("xs", "sm", "md");
-      if (window.visualViewport.scale < 0.45) {
-        panelContainer.classList.add("xs", "sm", "md");
-      } else if (window.visualViewport.scale < 0.65) {
-        panelContainer.classList.add("sm", "md");
-      } else if (window.visualViewport.scale < 0.8) {
-        panelContainer.classList.add("md");
-      }
-    }, 300);
-  });
+	window.addEventListener("resize", function () {
+		clearTimeout(resizeTimeout);
+		resizeTimeout = setTimeout(() => {
+			panelContainer.classList.remove("xs", "sm", "md");
+			if (window.visualViewport.scale < 0.45) {
+				panelContainer.classList.add("xs", "sm", "md");
+			} else if (window.visualViewport.scale < 0.65) {
+				panelContainer.classList.add("sm", "md");
+			} else if (window.visualViewport.scale < 0.8) {
+				panelContainer.classList.add("md");
+			}
+		}, 300);
+	});
 
-  document.addEventListener("DOMContentLoaded", () => {
+	document.addEventListener("DOMContentLoaded", () => {
 		printSetting = "general";
 
-    panelContainer.classList.remove("xs", "sm", "md");
-    if (window.visualViewport.scale < 0.45) {
-      panelContainer.classList.add("xs", "sm", "md")
-    } else if (window.visualViewport.scale < 0.65) {
-      panelContainer.classList.add("sm", "md")
-    } else if (window.visualViewport.scale < 0.8) {
-      panelContainer.classList.add("md")
-    }
+		panelContainer.classList.remove("xs", "sm", "md");
+		if (window.visualViewport.scale < 0.45) {
+			panelContainer.classList.add("xs", "sm", "md")
+		} else if (window.visualViewport.scale < 0.65) {
+			panelContainer.classList.add("sm", "md")
+		} else if (window.visualViewport.scale < 0.8) {
+			panelContainer.classList.add("md")
+		}
 
 		function scaleA4(scaleFactor) {
 			const div = document.querySelector('.a4-inner-container');
@@ -100,15 +104,21 @@
 		downloadBtn.addEventListener("click", (() => {
 			const printVer = (printSetting === "ibon") ? "ibon列印" : "一般列印"
 			const filename = `第{{.RecallStage}}階段連署書-{{.PoliticianName}}-${printVer}`;
-			downloadPDF(filename, '{{.RedirectURL}}');
+			preparePDF(filename, '{{.RedirectURL}}', true);
 		}));
-  });
+
+		printBtn.addEventListener("click", (() => {
+			const printVer = (printSetting === "ibon") ? "ibon列印" : "一般列印"
+			const filename = `第{{.RecallStage}}階段連署書-{{.PoliticianName}}-${printVer}`;
+			preparePDF(filename, '{{.RedirectURL}}', false);
+		}));
+	});
 </script>
 {{- end }}
 
 {{- define "mask" }}
 <div class="mask">
-  <div class="spinner"></div>
+	<div class="spinner"></div>
 </div>
 <script>
 	const mask = document.querySelector('.mask');
@@ -148,7 +158,7 @@
 		}, 310);
 	}
 
-	dialogMask.addEventListener("click", function(event) {
+	dialogMask.addEventListener("click", function (event) {
 		if (event.target === dialogClose || dialogClose.contains(event.target)) {
 			hideDialog();
 			return;
@@ -162,97 +172,111 @@
 {{- end}}
 
 {{- define "faq" }}
-  <div class="section faq">
-    <h2>常見問題</h2>
-		<ul>
-			<li class="faq-row">
-				<div class="faq-header">
-					<div class="question">電腦打字印出後親簽的連署書，合規嗎？</div><i class="icon-arrow"></i>
-				</div>
-				<div class="answer">
-					選罷法並沒有規定所有連署書上的應記載項目均只能手寫。<br><br>依民法第 3 條第 1 項規定：「依法律之規定，有使用文字之必要者，得不由本人自寫，但必須親自簽名。」<br><br>依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a>
-				</div>
-			</li>
-			<li class="faq-row">
-				<div class="faq-header">
-					<div class="question">製作並下載連署書後，接下來怎麼做？</div><i class="icon-arrow"></i>
-				</div>
-				<div class="answer">
-					<ol>
-						<li>請檢查「<strong>姓名</strong>」「<strong>國民身分證統一編號</strong>」「<strong>出身年月日</strong>」與「<strong>戶籍地址</strong>」皆與您身分證上所謄寫的文字完全相同</li>
-						<li>請僅在下載表單上的「<strong>簽名或蓋章</strong>」欄位上簽名或蓋章，<strong>其餘空白欄位切勿填寫</strong></li>
-						<li>檢查無誤後，按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。若連署書上沒有描述，請至 <a href="https://bababa.tw/" target="_blank">https://bababa.tw/</a> 找到您選區的繳回資訊</a></li>
-					</ol>
-				</div>
-			</li>
-			<li class="faq-row">
-				<div class="faq-header">
-					<div class="question">輸出的連署書跑版，怎麼辦？</div><i class="icon-arrow"></i>
-				</div>
-				<div class="answer">
-					請嘗試使用其他裝置或瀏覽器，如仍有問題，請聯繫 <a href="mailto:imtaiwanese18741130@gmail.com" target="_blank">imtaiwanese18741130@gmail.com</a>
-				</div>
-			</li>
-			<li class="faq-row">
-				<div class="faq-header">
-					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><i class="icon-arrow"></i>
-				</div>
-				<div class="answer">
-					<ol>
-						<li>請先詳閱<a href="#footer">服務政策與聲明</a></li>
-						<li>不拘金額捐款：台北富邦 (012) <a class="hyperlink-style" onclick="copyInnerText('#bank-account');"><span id="bank-account">728168204519</span><span class="copy-icon"></span></a></li>
-						<li>捐款時請備註：ourtaiwan</li>
-					</ol>
-				</div>
-			</li>
-		</ul>
-  </div>
-	<script>
-		document.querySelectorAll('.faq-row .faq-header').forEach(header => {
-			header.addEventListener('click', event => {
-				const item = header.parentElement;
-				const isExpanded = item.classList.contains('expanded');
-				document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
-					if (openItem !== item) {
-						openItem.classList.remove('expanded');
-						const arrow = openItem.querySelector('.icon-arrow');
-						arrow.classList.remove('collapsed');
-					}
-				});
-				item.classList.toggle('expanded', !isExpanded);
-				const arrow = header.querySelector('.icon-arrow');
-				arrow.classList.toggle('collapsed', !isExpanded);
+<div class="section faq">
+	<h2>常見問題</h2>
+	<ul>
+		<li class="faq-row">
+			<div class="faq-header">
+				<div class="question">電腦打字印出後親簽的連署書，合規嗎？</div><i class="icon-arrow"></i>
+			</div>
+			<div class="answer">
+				選罷法並沒有規定所有連署書上的應記載項目均只能手寫。<br><br>依民法第 3 條第 1
+				項規定：「依法律之規定，有使用文字之必要者，得不由本人自寫，但必須親自簽名。」<br><br>依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a
+					href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a>
+			</div>
+		</li>
+		<li class="faq-row">
+			<div class="faq-header">
+				<div class="question">製作並下載連署書後，接下來怎麼做？</div><i class="icon-arrow"></i>
+			</div>
+			<div class="answer">
+				<ol>
+					<li>請檢查「<strong>姓名</strong>」「<strong>國民身分證統一編號</strong>」「<strong>出身年月日</strong>」與「<strong>戶籍地址</strong>」皆與您身分證上所謄寫的文字完全相同
+					</li>
+					<li>請僅在下載表單上的「<strong>簽名或蓋章</strong>」欄位上簽名或蓋章，<strong>其餘空白欄位切勿填寫</strong></li>
+					<li>檢查無誤後，按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。若連署書上沒有描述，請至 <a href="https://bababa.tw/"
+							target="_blank">https://bababa.tw/</a> 找到您選區的繳回資訊</a></li>
+				</ol>
+			</div>
+		</li>
+		<li class="faq-row">
+			<div class="faq-header">
+				<div class="question">輸出的連署書跑版，怎麼辦？</div><i class="icon-arrow"></i>
+			</div>
+			<div class="answer">
+				請嘗試使用其他裝置或瀏覽器，如仍有問題，請聯繫 <a href="mailto:imtaiwanese18741130@gmail.com"
+					target="_blank">imtaiwanese18741130@gmail.com</a>
+			</div>
+		</li>
+		<li class="faq-row">
+			<div class="faq-header">
+				<div class="question">我想支持網站製作團隊，可以怎麼做？</div><i class="icon-arrow"></i>
+			</div>
+			<div class="answer">
+				<ol>
+					<li>請先詳閱<a href="#footer">服務政策與聲明</a></li>
+					<li>不拘金額捐款：台北富邦 (012) <a class="hyperlink-style" onclick="copyInnerText('#bank-account');"><span
+								id="bank-account">728168204519</span><span class="copy-icon"></span></a></li>
+					<li>捐款時請備註：ourtaiwan</li>
+				</ol>
+			</div>
+		</li>
+	</ul>
+</div>
+<script>
+	document.querySelectorAll('.faq-row .faq-header').forEach(header => {
+		header.addEventListener('click', event => {
+			const item = header.parentElement;
+			const isExpanded = item.classList.contains('expanded');
+			document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
+				if (openItem !== item) {
+					openItem.classList.remove('expanded');
+					const arrow = openItem.querySelector('.icon-arrow');
+					arrow.classList.remove('collapsed');
+				}
 			});
+			item.classList.toggle('expanded', !isExpanded);
+			const arrow = header.querySelector('.icon-arrow');
+			arrow.classList.toggle('collapsed', !isExpanded);
 		});
-	</script>
+	});
+</script>
 {{- end }}
 
 {{- define "footer" }}
-	<div class="footer" id="footer">
-		<div class="section">
-			<h2>服務政策與聲明</h2>
-			<ol>
-				<li>本網站由 OurTaiwan (以下簡稱本團隊) 所設計、開發與維運。</li>
-				<li><strong>本網站不保留任何個資</strong>，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開網站原始碼</a>。</li>
-				<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的分發或商業用途。所有權利受法律保護，違者必究。</li>
-				<li><strong>本團隊不代表任何選區之公民團體，也未參與各選區公民團體之作業。</strong>僅按照各選區公民團體發佈的連署書範本進行套製。</li>
-				<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤。倘若您對本網站有任何疑慮，我們鼓勵您前往各地連署站進行實際連署。</li>
-				<li>本團隊也支援<a href="{{.BaseURL}}/mayor">罷免高虹安</a></li>
-				<li>本團隊委託廖國翔律師為本團隊、及本團隊開發營運之應用服務的代理人。詳情請見<a href="{{.BaseURL}}/authorization-letter" target="_blank">團隊委託代理聲明</a>。</li>
-				<li>如有任何問題或建議，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
-				<li>歡迎各選區罷團認養您所屬選區的罷免行事曆。請先以罷團官方管道聯繫廖律師 <a href="mailto:taiwandreamer@outlook.com">taiwandreamer@outlook.com</a>，並提供預計接管行事曆之 Email，經驗證後我們會將您所屬選區的行事曆編輯權限分享給您。</li>
-				<li>團隊成員：K (設計師)、S (DevOps)、N (FrontEnd)、J (BackEnd)、B (策劃與整合營運)</li>
-				<li>特別感謝：F (律師)、<a href="https://www.threads.net/@taiwandreamer" target="_blank">廖國翔律師</a>、<a href="https://www.threads.net/@hsiehchinfan" target="_blank">Hsieh Chin Fan</a></li>
-				<li>致謝：<a href="https://www.linkedin.com/in/leeym/" target="_blank">Yen-Ming Lee</a>、<a href="https://www.threads.net/@shesee" target="_blank">Carol Hsu (shesee)</a></li>
-			</ol>
-			<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 OurTaiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
-				<div class="sponsor-info">
-					<div class="bank-account">
-						台北富邦 (012)<a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><span id="bank-account">728168204519</span><span class="copy-icon"></span></a>
-					</div>
-					捐款時請備註：ourtaiwan
+<div class="footer" id="footer">
+	<div class="section">
+		<h2>服務政策與聲明</h2>
+		<ol>
+			<li>本網站由 OurTaiwan (以下簡稱本團隊) 所設計、開發與維運。</li>
+			<li><strong>本網站不保留任何個資</strong>，<a href="https://github.com/imtaiwanese18741130/recall-2025"
+					target="_blank">公開網站原始碼</a>。</li>
+			<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的分發或商業用途。所有權利受法律保護，違者必究。</li>
+			<li><strong>本團隊不代表任何選區之公民團體，也未參與各選區公民團體之作業。</strong>僅按照各選區公民團體發佈的連署書範本進行套製。</li>
+			<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤。倘若您對本網站有任何疑慮，我們鼓勵您前往各地連署站進行實際連署。</li>
+			<li>本團隊也支援<a href="{{.BaseURL}}/mayor">罷免高虹安</a></li>
+			<li>本團隊委託廖國翔律師為本團隊、及本團隊開發營運之應用服務的代理人。詳情請見<a href="{{.BaseURL}}/authorization-letter"
+					target="_blank">團隊委託代理聲明</a>。</li>
+			<li>如有任何問題或建議，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
+			<li>歡迎各選區罷團認養您所屬選區的罷免行事曆。請先以罷團官方管道聯繫廖律師 <a
+					href="mailto:taiwandreamer@outlook.com">taiwandreamer@outlook.com</a>，並提供預計接管行事曆之
+				Email，經驗證後我們會將您所屬選區的行事曆編輯權限分享給您。</li>
+			<li>團隊成員：K (設計師)、S (DevOps)、N (FrontEnd)、J (BackEnd)、B (策劃與整合營運)</li>
+			<li>特別感謝：F (律師)、<a href="https://www.threads.net/@taiwandreamer" target="_blank">廖國翔律師</a>、<a
+					href="https://www.threads.net/@hsiehchinfan" target="_blank">Hsieh Chin Fan</a></li>
+			<li>致謝：<a href="https://www.linkedin.com/in/leeym/" target="_blank">Yen-Ming Lee</a>、<a
+					href="https://www.threads.net/@shesee" target="_blank">Carol Hsu (shesee)</a></li>
+		</ol>
+		<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 OurTaiwan
+			成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+			<div class="sponsor-info">
+				<div class="bank-account">
+					台北富邦 (012)<a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><span
+							id="bank-account">728168204519</span><span class="copy-icon"></span></a>
 				</div>
+				捐款時請備註：ourtaiwan
 			</div>
 		</div>
 	</div>
+</div>
 {{- end }}

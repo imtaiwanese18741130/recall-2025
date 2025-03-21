@@ -1,4 +1,4 @@
-async function downloadPDF(filename, redirectURL) {
+async function preparePDF(filename, redirectURL, isDownload) {
 	const { jsPDF } = window.jspdf;
 	const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
 	if (containers.length === 0) {
@@ -30,10 +30,11 @@ async function downloadPDF(filename, redirectURL) {
 			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 		}
 
-		await new Promise((resolve) => {
-			pdf.save(`${filename}.pdf`, { returnPromise: false });
-			setTimeout(resolve, 500);
-		});
+		if (isDownload) {
+			await downloadPDF(pdf, filename);
+		} else {
+			await previewPDF(pdf);
+		}
 
 		window.location.href = redirectURL;
 	} catch (error) {
@@ -41,6 +42,30 @@ async function downloadPDF(filename, redirectURL) {
 	} finally {
 		mask.classList.remove('active');
 	}
+}
+
+async function downloadPDF(pdf, filename) {
+	await new Promise((resolve) => {
+		pdf.save(`${filename}.pdf`, { returnPromise: false });
+		setTimeout(resolve, 500);
+	});
+}
+
+async function previewPDF(pdf) {
+	await new Promise((resolve) => {
+		const url = window.URL.createObjectURL(pdf.output('blob'));
+		const newWindow = window.open(url, '_blank');
+
+		if (newWindow) {
+			const checkWindowClosed = setInterval(() => {
+				if (newWindow.closed) {
+					window.URL.revokeObjectURL(url);
+					clearInterval(checkWindowClosed);
+				}
+			}, 1000);
+		}
+		setTimeout(resolve, 500);
+	});
 }
 
 async function shareLink(text, url) {

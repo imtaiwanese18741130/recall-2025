@@ -1,4 +1,4 @@
-async function preparePDF(filename, redirectURL, isDownload) {
+async function preparePDF(filename, redirectURL, nextAction) {
 	const { jsPDF } = window.jspdf;
 	const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
 	if (containers.length === 0) {
@@ -30,10 +30,12 @@ async function preparePDF(filename, redirectURL, isDownload) {
 			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 		}
 
-		if (isDownload) {
+		if (nextAction === 'download') {
 			await downloadPDF(pdf, filename);
-		} else {
+		} else if (nextAction === 'preview') {
 			await previewPDF(pdf);
+		} else {
+			console.error('Invalid next action:', nextAction);
 		}
 
 		window.location.href = redirectURL;

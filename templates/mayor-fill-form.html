@@ -81,12 +81,14 @@
 	{{ template "footer" }}
 	{{ template "dialog" . }}
 	{{ template "mask" }}
-	<div class="browser-warning-container" id="browser-warning-container">
-		<div class="browser-waring-title">
-			您使用的瀏覽器無法下載連署書
-		</div>
-		<div class="browser-warning-content">
-			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選<strong>以預設 (外部) 瀏覽器開啟</strong>。
+	<div class="browser-warning-mask" id="browser-warning-mask">
+		<div class="browser-warning-container">
+			<div class="browser-waring-title">
+				您使用的瀏覽器無法下載連署書
+			</div>
+			<div class="browser-warning-content">
+				您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選<strong>以預設 (外部) 瀏覽器開啟</strong>。
+			</div>
 		</div>
 	</div>
 	<script>
@@ -177,8 +179,7 @@
 			const isWeChat = userAgent.toLowerCase().includes("micromessenger");
 
 			if (isLine || isMessenger || isWhatsApp || isThreads || isWeChat ) {
-				const warningElement = document.getElementById("browser-warning-container");
-				warningElement.style.display = "flex";
+				document.getElementById("browser-warning-mask").classList.add('active');
 			}
 		});
 

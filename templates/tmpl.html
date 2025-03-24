@@ -7,7 +7,7 @@
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.2">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.3">
 	<script src="{{.BaseURL}}/assets/js/common.js?v0.1.3" defer></script>
 {{- end }}
 
@@ -15,8 +15,8 @@
   <meta charset="utf-8" />
   <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.2">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.14">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.3">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.15">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
@@ -24,48 +24,84 @@
 {{- end }}
 
 {{- define "preview-control-panel" }}
-<div id="downloadArea" class="floating-btn-container row flex-jus-c">
-  <div class="col-3 col-sm-12 mr-md mr-xs-0 text-xs-center">
-    <h6>
-      請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」與您的身分證完全相同
-    </h6>
-  </div>
-  <div class="col-4 col-sm-12 row flex-align-c">
-    <div class="col-6">
-      <a href="{{.ParticipateURL}}"><button class="btn-secondary lg w100">重新填寫</button></a>
-    </div>
-    <div class="col-6">
-      <button class="btn-primary lg w100 flex-center" onclick="downloadPDF('第{{.RecallStage}}階段連署書-{{.PoliticianName}}', '{{.RedirectURL}}')"><i class="icon-download"></i>確認下載</button>
-    </div>
-  </div>
+<div class="preview-control-panel">
+	<div class="panel-container">
+		<h6>請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」皆與身分證內容完全相同。若縣市改制則以新制地址填寫。</h6>
+		<div class="print-setting-container">
+			<label>
+				<input type="radio" name="print-setting" value="general" checked>
+				<span class="print-setting"></span>一般列印尺寸
+			</label>
+			<label>
+				<input type="radio" name="print-setting" value="ibon">
+				<span class="print-setting"></span>7-11 超商 ibon 列印專用尺寸
+			</label>
+		</div>
+	  <div class="action-btn">
+	    <div class="col-4">
+	      <a href="{{.ParticipateURL}}"><button class="btn-secondary lg w100">重新填寫</button></a>
+	    </div>
+	    <div class="col-6">
+	      <button id="download-btn" class="btn-primary lg w100 flex-center"><i class="icon-download"></i>確認下載</button>
+	    </div>
+	  </div>
+	</div>
 </div>
 
 <script>
-  const controlPanel = document.getElementById("downloadArea")
-
+	const panelContainer = document.querySelector(".panel-container");
+	const downloadBtn = document.getElementById("download-btn");
+	let printSetting;
   let resizeTimeout;
+
   window.addEventListener("resize", function () {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      controlPanel.classList.remove("xs", "sm", "md");
+      panelContainer.classList.remove("xs", "sm", "md");
       if (window.visualViewport.scale < 0.45) {
-        controlPanel.classList.add("xs", "sm", "md");
+        panelContainer.classList.add("xs", "sm", "md");
       } else if (window.visualViewport.scale < 0.65) {
-        controlPanel.classList.add("sm", "md");
+        panelContainer.classList.add("sm", "md");
       } else if (window.visualViewport.scale < 0.8) {
-        controlPanel.classList.add("md");
+        panelContainer.classList.add("md");
       }
     }, 300);
   });
+
   document.addEventListener("DOMContentLoaded", () => {
-    controlPanel.classList.remove("xs", "sm", "md");
+		printSetting = "general";
+
+    panelContainer.classList.remove("xs", "sm", "md");
     if (window.visualViewport.scale < 0.45) {
-      controlPanel.classList.add("xs", "sm", "md")
+      panelContainer.classList.add("xs", "sm", "md")
     } else if (window.visualViewport.scale < 0.65) {
-      controlPanel.classList.add("sm", "md")
+      panelContainer.classList.add("sm", "md")
     } else if (window.visualViewport.scale < 0.8) {
-      controlPanel.classList.add("md")
+      panelContainer.classList.add("md")
     }
+
+		function scaleA4(scaleFactor) {
+			const div = document.querySelector('.a4-inner-container');
+			div.style.transform = `scale(${scaleFactor})`;
+			div.style.transformOrigin = "center";
+		}
+
+		document.querySelectorAll('input[name="print-setting"]').forEach(radio => {
+			radio.addEventListener('change', function () {
+				printSetting = this.value;
+				if (this.value === "general") {
+					scaleA4(1);
+				} else if (this.value === "ibon") {
+					scaleA4(1.04);
+				}
+			});
+		});
+
+		downloadBtn.addEventListener("click", (() => {
+			const printVer = (printSetting === "ibon") ? "ibon列印" : "一般列印"
+			const filename = `第{{.RecallStage}}階段連署書-{{.PoliticianName}}-${printVer}`;
+			downloadPDF(filename, '{{.RedirectURL}}');
+		}));
   });
 </script>
 {{- end }}

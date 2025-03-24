@@ -7,22 +7,24 @@
 	{{ template "mask" }}
 	{{ template "preview-control-panel" . }}
 	<div class="a4-landscape">
-		<div class="img-container">
-			<img src="{{.BaseURL}}/assets/images/stage-2-{{.PoliticianName}}.png">
+		<div class="a4-inner-container">
+			<div class="img-container">
+				<img src="{{.BaseURL}}/assets/images/stage-2-{{.PoliticianName}}.png" style="transform:rotate(0.1deg);">
+			</div>
+			<div class="inputField center md" style="left:22.2%; top:25.9%; letter-spacing:0.2em">
+				{{.Name}}
+			</div>
+			<div class="inputField center md" style="left:22.6%; top:30.5%; letter-spacing:0.71em">
+				{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+			</div>
+			<div class="inputField center sm" style="left:39%; top:29.6%; letter-spacing:0.02em">
+				{{.BirthYear}}.{{.BirthMonth}}.{{.BirthDate}}
+			</div>
+			<div class="inputField center xsm" style="left:61.9%; top:17.9%; width:33%; height:25%;">
+				{{.Address}}
+			</div>
+			<div class="whereToSign" style="left:83.1%; top:30.4%; width:7.8%; height:7.4%;"></div>
 		</div>
-		<div class="inputField center md" style="left:22.7%; top:26%; letter-spacing:0.73em">
-			{{.Name}}
-		</div>
-		<div class="inputField center md" style="left:22.6%; top:30.7%; letter-spacing:0.72em">
-			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
-		</div>
-		<div class="inputField center sm" style="left:39%; top:29.6%; letter-spacing:0.02em">
-			{{.BirthYear}}.{{.BirthMonth}}.{{.BirthDate}}
-		</div>
-		<div class="inputField center xsm" style="left:61.9%; top:18.1%; width:33%; height:25%;">
-			{{.Address}}
-		</div>
-		<div class="whereToSign" style="left:83.1%; top:30.4%; width:7.8%; height:7.4%;"></div>
 	</div>
 </body>
 </html>

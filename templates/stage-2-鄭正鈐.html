@@ -7,22 +7,24 @@
 	{{ template "mask" }}
 	{{ template "preview-control-panel" . }}
 	<div class="a4-landscape">
-		<div class="img-container">
-			<img src="{{.BaseURL}}/assets/images/stage-2-{{.PoliticianName}}.png">
+		<div class="a4-inner-container">
+			<div class="img-container">
+				<img src="{{.BaseURL}}/assets/images/stage-2-{{.PoliticianName}}.png">
+			</div>
+			<div class="inputField center md" style="left:21.3%; top:26.5%; letter-spacing:0.2em">
+				{{.Name}}
+			</div>
+			<div class="inputField center md" style="left:21.8%; top:31%; letter-spacing:0.71em">
+				{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+			</div>
+			<div class="inputField center sm whiteBg" style="text-align:right; left:38%; top:27.2%; width:11.5%; height:8%; letter-spacing:0.2em; line-height:24px;">
+				{{.BirthYear}} 年<br>{{.BirthMonth}} 月 {{.BirthDate}} 日
+			</div>
+			<div class="inputField center xsm whiteBg" style="left:61%; top:26.9%; width:32.8%; height:8.3%;">
+				{{.Address}}
+			</div>
+			<div class="whereToSign" style="left:82.1%; top:31%; width:7.6%; height:7.4%;"></div>
 		</div>
-		<div class="inputField center md" style="left:21.8%; top:26.6%; letter-spacing:0.73em">
-			{{.Name}}
-		</div>
-		<div class="inputField center md" style="left:21.8%; top:31.4%; letter-spacing:0.72em">
-			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
-		</div>
-		<div class="inputField center sm whiteBg" style="text-align:right; left:38%; top:27.2%; width:11.5%; height:8%; letter-spacing:0.2em; line-height:24px;">
-			{{.BirthYear}} 年<br>{{.BirthMonth}} 月 {{.BirthDate}} 日
-		</div>
-		<div class="inputField center xsm whiteBg" style="left:61%; top:26.9%; width:32.8%; height:8.3%;">
-			{{.Address}}
-		</div>
-		<div class="whereToSign" style="left:82.1%; top:31.1%; width:7.6%; height:7.4%;"></div>
 	</div>
 </body>
 </html>

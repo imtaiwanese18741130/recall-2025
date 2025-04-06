@@ -177,7 +177,6 @@ function generateQRCode(data, size) {
 	logo.style.fontSize = `${size * 0.075}px`;
 	logo.style.padding = `${size * 0.01}px ${size * 0.025}px`;
 	logo.style.borderRadius = `4px`;
-	logo.style.backgroundColor = `#00ff9c`;
 }
 
 async function downloadQRCode(data) {
@@ -201,7 +200,6 @@ async function downloadQRCode(data) {
     dlLogo.style.fontSize = `300px`;
     dlLogo.style.padding = `24px 24px`;
     dlLogo.style.borderRadius = `64px`;
-		dlLogo.style.backgroundColor = `#00ff9c`;
 
     const canvas = await html2canvas(dlQRCodeContainer, { backgroundColor: "#ffffff", scale: 1 });
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));

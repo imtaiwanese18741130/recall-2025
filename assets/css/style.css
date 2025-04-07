@@ -772,7 +772,6 @@ button.btn-black:hover {
 
 .faq .faq-row ul {
 	list-style: disc;
-	line-height: 4px;
 	padding-left: 32px;
 }
 
@@ -809,10 +808,6 @@ button.btn-black:hover {
 	font-size: 14px;
 	font-weight: 400;
 	color: #888888;
-}
-
-.answer li {
-	padding: 8px;
 }
 
 .faq-row.expanded .answer {

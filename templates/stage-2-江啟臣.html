@@ -11,20 +11,15 @@
 			<div class="img-container">
 				<img src="{{.BaseURL}}/assets/images/stage-2-{{.PoliticianName}}.png" style="transform:rotate(0.1deg);">
 			</div>
-			<div class="inputField center md" style="left:21.7%; top:26%; letter-spacing:0.2em">
-				{{.Name}}
-			</div>
-			<div class="inputField center md" style="left:22.3%; top:30.7%; letter-spacing:0.71em">
-				{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
-			</div>
-			<div class="inputField center sm" style="left:38.6%; top:29.8%; letter-spacing:0.02em">
-				{{.BirthYear}} 年 {{.BirthMonth}} 月 {{.BirthDate}} 日
-			</div>
-			<div class="inputField center addr-xsm" style="left:61.7%; top:18.4%; width:33.2%; height:25%;">
-				{{.Address}}
-			</div>
+			<div class="inputField center md" id="preview-name" style="left:21.7%; top:26%; letter-spacing:0.2em;"></div>
+			<div class="inputField center md" id="preview-id-number" style="left:22.3%; top:30.7%; letter-spacing:0.71em;"></div>
+			<div class="inputField center sm" id="preview-birth-date" style="left:38.6%; top:29.8%; letter-spacing:0.02em;"></div>
+			<div class="inputField center addr-xsm" id="preview-address" style="left:61.7%; top:18.4%; width:33.2%; height:25%;"></div>
 			<div class="whereToSign" style="left:82.9%; top:30.8%; width:7.8%; height:7.4%;"></div>
 		</div>
 	</div>
+	<script>
+		const dateDelimiter = "";
+	</script>
 </body>
 </html>

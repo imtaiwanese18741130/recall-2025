@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="banner">
-		<div class="section nav" style="justify-content: right;">
+		<div class="section nav" style="justify-content:right;">
 			<div class="nav-qrcode"><i class="icon-qrcode-reverse"></i></div>
 		</div>
 		<div class="section">
@@ -29,31 +29,31 @@
 			<h2>拿出『身分證』對照填寫，<br>製作連署書並印出</h2>
 			<div class="fill-form-notification">本網站不會保存您的個人資料，填寫資訊經加密處理且僅用於一次性生成連署書下載，請安心填寫。詳情請見<a href="#footer">服務政策與聲明</a>。</div>
 		</div>
-		<form class="recall-form" action="{{.PreviewURL}}" id="recall-form" method="post">
+		<form class="recall-form" action="{{.PreviewURL}}" id="recall-form" method="post" onsubmit="return cleanAndSubmit();">
   	  <div class="form-group">
   	    <label for="name">姓名</label>
 				<div class="input-group">
-  	    	<input type="text" id="name" name="name" required>
+  	    	<input type="text" id="name" required>
 				</div>
   	  </div>
   	  <div class="form-group">
   	    <label for="id-number">身分證字號</label>
 				<div class="input-group">
-  	    	<input type="text" id="id-number" name="id-number" style="text-transform: uppercase;" required>
+  	    	<input type="text" id="id-number" style="text-transform: uppercase;" required>
   	  	</div>
   	  </div>
   	  <div class="form-group birth-date">
   	    <label>民國出生年月日</label>
 				<div class="input-group">
-					<input type="number" name="birth-year" max="94" style="text-align:center;" required> 年
-					<input type="number" name="birth-month" min="1" style="text-align:center;" max="12" required> 月
-					<input type="number" name="birth-day" min="1" style="text-align:center;" max="31" required> 日
+					<input type="number" id="birth-year" max="94" style="text-align:center;" required> 年
+					<input type="number" id="birth-month" min="1" style="text-align:center;" max="12" required> 月
+					<input type="number" id="birth-day" min="1" style="text-align:center;" max="31" required> 日
 				</div>
   	  </div>
   	  <div class="form-group">
   	    <label for="address">戶籍地址</label>
 				<div class="input-group">
-  	    	<textarea class="input-address" type="text" id="address" name="address" required>{{.Address}}</textarea>
+  	    	<textarea class="input-address" type="text" id="address" required>{{.Address}}</textarea>
   	  	</div>
 				<div class="form-comment">請完全按照您國民身分證上<strong>住址</strong>欄位，<strong>完全對照填寫</strong></div>
   	  </div>
@@ -92,11 +92,13 @@
 		</div>
 	</div>
 	<script>
-		const submitButton = document.querySelector("button[type='submit']");
+		const name = document.getElementById("name");
 		const idInput = document.getElementById("id-number");
-		const birthYear = document.querySelector("input[name='birth-year']");
-		const birthMonth = document.querySelector("input[name='birth-month']");
-		const birthDay = document.querySelector("input[name='birth-day']");
+		const birthYear = document.getElementById("birth-year");
+		const birthMonth = document.getElementById("birth-month");
+		const birthDay = document.getElementById("birth-day");
+		const address = document.getElementById("address");
+		const submitButton = document.querySelector("button[type='submit']");
 
 		document.addEventListener("DOMContentLoaded", () => {
 			dialog.querySelector("h3").innerHTML = "我是新竹市選民<br>我要罷免『高虹安』";
@@ -184,6 +186,19 @@
 			}
 		});
 
+		function cleanAndSubmit() {
+			const data = {
+				name: name.value,
+				idNumber: idInput.value,
+				birthYear: birthYear.value,
+				birthMonth: birthMonth.value,
+				birthDay: birthDay.value,
+				address: address.value,
+			};
+
+			sessionStorage.setItem('previewData', JSON.stringify(data));
+			return true;
+		}
 	</script>
 </body>
 </html>

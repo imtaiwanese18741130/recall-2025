@@ -145,75 +145,21 @@ func (ctrl *Controller) PreviewLocalForm(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	qp, err := getRequestForm(r)
-	if err != nil {
-		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
-			HttpStatusCode: http.StatusBadRequest,
-			ErrorMessage:   "輸入有誤",
-			ReturnURL:      ctrl.AppBaseURL.String(),
-		})
-		return
-	}
-
 	up := RequestUriStageLegislator{Name: name, Stage: l.RecallStage}
-	data, err := qp.ToPreviewData(ctrl.Config, &up, l)
-	if err != nil {
-		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
-			HttpStatusCode: http.StatusBadRequest,
-			ErrorMessage:   err.Error(),
-			ReturnURL:      ctrl.AppBaseURL.String(),
-		})
-		return
+	stage := strconv.FormatUint(up.Stage, 10)
+
+	data := &PreviewData{
+		BaseURL:          ctrl.AppBaseURL.String(),
+		ParticipateURL:   l.ParticipateURL,
+		RedirectURL:      l.ParticipateURL.JoinPath("thank-you").String(),
+		PoliticianName:   up.Name,
+		ConstituencyName: l.ConstituencyName,
+		RecallStage:      up.Stage,
+		ImagePrefix:      fmt.Sprintf("stage-%s-%s", stage, up.Name),
 	}
 
 	tmpfile := l.GetTmplFilename()
 	ctrl.renderTemplate(w, tmpfile, data)
-}
-
-func getRequestForm(r *http.Request) (*RequestForm, error) {
-	r.ParseForm()
-
-	name := strings.TrimSpace(r.FormValue("name"))
-	if name == "" {
-		return nil, fmt.Errorf("invalid name")
-	}
-
-	idNumber := strings.TrimSpace(r.FormValue("id-number"))
-	if idNumber == "" {
-		return nil, fmt.Errorf("invalid id-number")
-	}
-
-	birthYear := strings.TrimSpace(r.FormValue("birth-year"))
-	if birthYear == "" {
-		return nil, fmt.Errorf("invalid date")
-	}
-
-	birthMonth := strings.TrimSpace(r.FormValue("birth-month"))
-	if birthMonth == "" {
-		return nil, fmt.Errorf("invalid date")
-	}
-
-	birthDay := strings.TrimSpace(r.FormValue("birth-day"))
-	if birthDay == "" {
-		return nil, fmt.Errorf("invalid date")
-	}
-
-	address := strings.TrimSpace(r.FormValue("address"))
-	if address == "" {
-		return nil, fmt.Errorf("empty address")
-	}
-
-	mobileNumber := strings.TrimSpace(r.FormValue("mobile-number"))
-
-	return &RequestForm{
-		Name:         name,
-		IdNumber:     idNumber,
-		BirthYear:    birthYear,
-		BirthMonth:   birthMonth,
-		BirthDay:     birthDay,
-		Address:      sanitizeAddress(address),
-		MobileNumber: mobileNumber,
-	}, nil
 }
 
 func (ctrl *Controller) ThankYou(w http.ResponseWriter, r *http.Request, name string) {
@@ -241,25 +187,16 @@ func (ctrl *Controller) MParticipate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *Controller) MPreviewLocalForm(w http.ResponseWriter, r *http.Request) {
-	qp, err := getRequestForm(r)
-	if err != nil {
-		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
-			HttpStatusCode: http.StatusBadRequest,
-			ErrorMessage:   "輸入有誤",
-			ReturnURL:      ctrl.AppBaseURL.String(),
-		})
-		return
+	data := &PreviewData{
+		BaseURL:          ctrl.AppBaseURL.String(),
+		ParticipateURL:   ctrl.AppBaseURL.JoinPath("mayor"),
+		RedirectURL:      ctrl.AppBaseURL.JoinPath("mayor", "thank-you").String(),
+		PoliticianName:   MayorName,
+		ConstituencyName: MayorCity,
+		RecallStage:      2,
+		ImagePrefix:      "stage-2-" + MayorName,
 	}
 
-	data, err := qp.ToMayorPreviewData(ctrl.Config)
-	if err != nil {
-		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
-			HttpStatusCode: http.StatusBadRequest,
-			ErrorMessage:   err.Error(),
-			ReturnURL:      ctrl.AppBaseURL.String(),
-		})
-		return
-	}
 	ctrl.renderTemplate(w, "stage-2-"+MayorName+".html", data)
 }
 
@@ -403,14 +340,12 @@ func (ctrl *Controller) LegislatorRouter(w http.ResponseWriter, r *http.Request)
 		name := parts[0]
 		switch parts[1] {
 		case "preview":
-			if r.Method == http.MethodPost {
-				if !ctrl.VerifyTurnstile(w, r) {
-					ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "不合法的請求", ctrl.AppBaseURL, ctrl.AppBaseURL))
-					return
-				} else {
-					ctrl.PreviewLocalForm(w, r, name)
-					return
-				}
+			if !ctrl.VerifyTurnstile(w, r) {
+				ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "不合法的請求", ctrl.AppBaseURL, ctrl.AppBaseURL))
+				return
+			} else {
+				ctrl.PreviewLocalForm(w, r, name)
+				return
 			}
 		case "thank-you":
 			if r.Method == http.MethodGet {
@@ -437,16 +372,6 @@ type RespSearchRecallConstituency struct {
 type ResultSearchRecallConstituency struct {
 	Divisions   Divisions         `json:"divisions,omitempty"`
 	Legislators RecallLegislators `json:"legislators,omitempty"`
-}
-
-type RequestForm struct {
-	Name         string
-	IdNumber     string
-	BirthYear    string
-	BirthMonth   string
-	BirthDay     string
-	Address      string
-	MobileNumber string
 }
 
 type RequestUriStageLegislator struct {
@@ -483,13 +408,6 @@ func (ctrl *Controller) PreviewOriginalLocalForm(w http.ResponseWriter, r *http.
 			PoliticianName:   name,
 			ConstituencyName: l.ConstituencyName,
 			RecallStage:      stage,
-			Name:             "邱吉爾",
-			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			BirthYear:        "888",
-			BirthMonth:       "11",
-			BirthDate:        "30",
-			MobileNumber:     "0987654321",
-			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
 		}
 	} else {
 		participateURL := ctrl.AppBaseURL.JoinPath("mayor")
@@ -500,13 +418,6 @@ func (ctrl *Controller) PreviewOriginalLocalForm(w http.ResponseWriter, r *http.
 			PoliticianName:   name,
 			ConstituencyName: MayorCity,
 			RecallStage:      stage,
-			Name:             "邱吉爾",
-			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			BirthYear:        "888",
-			BirthMonth:       "11",
-			BirthDate:        "30",
-			MobileNumber:     "0987654321",
-			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
 		}
 	}
 
@@ -527,135 +438,4 @@ type PreviewData struct {
 	ConstituencyName string
 	RecallStage      uint64
 	ImagePrefix      string
-	Name             string
-	IdNumber         IdNumber
-	BirthYear        string
-	BirthMonth       string
-	BirthDate        string
-	MobileNumber     string
-	Address          string
-}
-
-type IdNumber struct {
-	D0 string
-	D1 string
-	D2 string
-	D3 string
-	D4 string
-	D5 string
-	D6 string
-	D7 string
-	D8 string
-	D9 string
-}
-
-func (r RequestForm) ToPreviewData(cfg *Config, up *RequestUriStageLegislator, l *RecallLegislator) (*PreviewData, error) {
-	if !isValidIdNumber(r.IdNumber) {
-		return nil, fmt.Errorf("身份證輸入錯誤")
-	}
-
-	if l.RecallStage == 1 {
-		if r.MobileNumber != "" && !isValidMobileNumber(r.MobileNumber) {
-			return nil, fmt.Errorf("手機號碼輸入錯誤")
-		}
-	}
-
-	stage := strconv.FormatUint(up.Stage, 10)
-	redirectURL := l.ParticipateURL.JoinPath("thank-you")
-	imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
-
-	data := &PreviewData{
-		BaseURL:          cfg.AppBaseURL.String(),
-		ParticipateURL:   l.ParticipateURL,
-		RedirectURL:      redirectURL.String(),
-		PoliticianName:   up.Name,
-		ConstituencyName: l.ConstituencyName,
-		RecallStage:      up.Stage,
-		ImagePrefix:      imagePrefix,
-		Name:             r.Name,
-		BirthYear:        r.BirthYear,
-		BirthMonth:       r.BirthMonth,
-		BirthDate:        r.BirthDay,
-		MobileNumber:     r.MobileNumber,
-		Address:          r.Address,
-	}
-
-	for i := 0; i < len(r.IdNumber); i++ {
-		switch i {
-		case 0:
-			data.IdNumber.D0 = string(r.IdNumber[i])
-		case 1:
-			data.IdNumber.D1 = string(r.IdNumber[i])
-		case 2:
-			data.IdNumber.D2 = string(r.IdNumber[i])
-		case 3:
-			data.IdNumber.D3 = string(r.IdNumber[i])
-		case 4:
-			data.IdNumber.D4 = string(r.IdNumber[i])
-		case 5:
-			data.IdNumber.D5 = string(r.IdNumber[i])
-		case 6:
-			data.IdNumber.D6 = string(r.IdNumber[i])
-		case 7:
-			data.IdNumber.D7 = string(r.IdNumber[i])
-		case 8:
-			data.IdNumber.D8 = string(r.IdNumber[i])
-		case 9:
-			data.IdNumber.D9 = string(r.IdNumber[i])
-		}
-	}
-
-	return data, nil
-}
-
-func (r RequestForm) ToMayorPreviewData(cfg *Config) (*PreviewData, error) {
-	if !isValidIdNumber(r.IdNumber) {
-		return nil, fmt.Errorf("身份證輸入錯誤")
-	}
-
-	redirectURL := cfg.AppBaseURL.JoinPath("mayor", "thank-you")
-	imagePrefix := "stage-2-" + MayorName
-
-	data := &PreviewData{
-		BaseURL:          cfg.AppBaseURL.String(),
-		ParticipateURL:   cfg.AppBaseURL.JoinPath("mayor"),
-		RedirectURL:      redirectURL.String(),
-		PoliticianName:   MayorName,
-		ConstituencyName: MayorCity,
-		RecallStage:      2,
-		ImagePrefix:      imagePrefix,
-		Name:             r.Name,
-		BirthYear:        r.BirthYear,
-		BirthMonth:       r.BirthMonth,
-		BirthDate:        r.BirthDay,
-		MobileNumber:     r.MobileNumber,
-		Address:          r.Address,
-	}
-
-	for i := 0; i < len(r.IdNumber); i++ {
-		switch i {
-		case 0:
-			data.IdNumber.D0 = string(r.IdNumber[i])
-		case 1:
-			data.IdNumber.D1 = string(r.IdNumber[i])
-		case 2:
-			data.IdNumber.D2 = string(r.IdNumber[i])
-		case 3:
-			data.IdNumber.D3 = string(r.IdNumber[i])
-		case 4:
-			data.IdNumber.D4 = string(r.IdNumber[i])
-		case 5:
-			data.IdNumber.D5 = string(r.IdNumber[i])
-		case 6:
-			data.IdNumber.D6 = string(r.IdNumber[i])
-		case 7:
-			data.IdNumber.D7 = string(r.IdNumber[i])
-		case 8:
-			data.IdNumber.D8 = string(r.IdNumber[i])
-		case 9:
-			data.IdNumber.D9 = string(r.IdNumber[i])
-		}
-	}
-
-	return data, nil
 }

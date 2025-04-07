@@ -208,21 +208,6 @@ func (ctrl *Controller) MThankYou(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (ctrl *Controller) VerifyTurnstile(w http.ResponseWriter, r *http.Request) bool {
-	r.ParseForm()
-	token := r.FormValue("cf-turnstile-response")
-	if token == "" {
-		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
-		return false
-	}
-	success, err := ctrl.VerifyTurnstileToken(token)
-	if err != nil || !success {
-		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL, ctrl.AppBaseURL))
-		return false
-	}
-	return true
-}
-
 func parseInt(s string) int {
 	i, _ := strconv.Atoi(s)
 	return i
@@ -340,10 +325,7 @@ func (ctrl *Controller) LegislatorRouter(w http.ResponseWriter, r *http.Request)
 		name := parts[0]
 		switch parts[1] {
 		case "preview":
-			if !ctrl.VerifyTurnstile(w, r) {
-				ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "不合法的請求", ctrl.AppBaseURL, ctrl.AppBaseURL))
-				return
-			} else {
+			if r.Method == http.MethodPost {
 				ctrl.PreviewLocalForm(w, r, name)
 				return
 			}

@@ -4,7 +4,6 @@
 	{{ template "common-head" . }}
   <title>我要罷免{{.Legislator.PoliticianName}} - {{.Legislator.ConstituencyName}}</title>
   <meta name="description" property="og:description" content="我是{{.Legislator.ConstituencyName}}選民，我要罷免{{.Legislator.PoliticianName}}！">
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 </head>
 <body>
   <div class="banner">
@@ -72,12 +71,6 @@
   	  	</div>
 				<div class="form-comment">請完全按照您國民身分證上<strong>住址</strong>欄位，<strong>完全對照填寫</strong><br>若您戶籍所在縣市經過改制，身分證上的地址依然為舊制時，請以新制地址填寫。</div>
   	  </div>
-			<div class="form-group">
-  	    <label for="turnstile">人機驗證</label>
-				<div class="input-group">
-					<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}" data-theme="light"></div>
-				</div>
-			</div>
   	  <div class="form-group">
 				<div class="input-group">
 					{{- if .Legislator.FormDeployed}}

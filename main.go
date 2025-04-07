@@ -23,14 +23,26 @@ func main() {
 		panic("calc days left error: " + err.Error())
 	}
 	go func() {
-		ticker := time.NewTicker(1 * time.Hour)
-		defer ticker.Stop()
+		loc, err := time.LoadLocation("Asia/Taipei")
+		if err != nil {
+			log.Println("failed to load location:", err)
+			return
+		}
 
 		for {
+			now := time.Now().In(loc)
+
+			next := time.Date(
+				now.Year(), now.Month(), now.Day()+1,
+				0, 0, 0, 0, loc,
+			)
+
+			duration := time.Until(next)
+			time.Sleep(duration)
+
 			if err := ctrl.CalcDaysLeft(); err != nil {
 				log.Println("CalcDaysLeft error:", err)
 			}
-			<-ticker.C
 		}
 	}()
 

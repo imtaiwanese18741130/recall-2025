@@ -122,11 +122,10 @@ func (ctrl *Controller) Participate(w http.ResponseWriter, r *http.Request, name
 	switch l.RecallStage {
 	case 1, 2:
 		ctrl.renderTemplate(w, "fill-form.html", map[string]interface{}{
-			"BaseURL":          ctrl.AppBaseURL.String(),
-			"PreviewURL":       l.ParticipateURL.JoinPath("preview").String(),
-			"Address":          address,
-			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
-			"Legislator":       l,
+			"BaseURL":    ctrl.AppBaseURL.String(),
+			"PreviewURL": l.ParticipateURL.JoinPath("preview").String(),
+			"Address":    address,
+			"Legislator": l,
 		})
 	case 3, 4:
 		ctrl.renderTemplate(w, "vote-reminder.html", map[string]interface{}{
@@ -179,10 +178,9 @@ func (ctrl *Controller) ThankYou(w http.ResponseWriter, r *http.Request, name st
 
 func (ctrl *Controller) MParticipate(w http.ResponseWriter, r *http.Request) {
 	ctrl.renderTemplate(w, "mayor-fill-form.html", map[string]interface{}{
-		"BaseURL":          ctrl.AppBaseURL.String(),
-		"PreviewURL":       ctrl.AppBaseURL.JoinPath("mayor", "preview").String(),
-		"Address":          MayorCity,
-		"TurnstileSiteKey": ctrl.TurnstileSiteKey,
+		"BaseURL":    ctrl.AppBaseURL.String(),
+		"PreviewURL": ctrl.AppBaseURL.JoinPath("mayor", "preview").String(),
+		"Address":    MayorCity,
 	})
 }
 

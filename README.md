@@ -5,7 +5,7 @@
 1. 本 repo 之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的分發或商業用途。所有權利受法律保護，違者必究。
 1. 如有任何建議或問題，歡迎來信：<imtaiwanese18741130@gmail.com>
 
-#### Deployment
+#### 部署方法
 - macOS 本機端部署方法
     - 請至 Repo Releases 下載 localhost-server 最新版本程式，並解壓縮 [連結](https://github.com/imtaiwanese18741130/recall-2025/releases)
     - 請安裝 Docker Desktop 並開啟 [連結](https://docs.docker.com/desktop/setup/install/mac-install/)
@@ -36,5 +36,5 @@
         ```
     - 開啟瀏覽器，並前往 `http://localhost:8964/`
 
-##### Acknowledgments
-- [Brli](https://github.com/Brli) – For contributing the offline mode
+##### 感謝名單
+- [Brli](https://github.com/Brli) – 協助實作離線功能

@@ -7,6 +7,7 @@
 
 #### macOS 本機端部署方法
 - 請至 Repo Releases 下載最新版本程式，並解壓縮 [連結](https://github.com/imtaiwanese18741130/recall-2025/releases)
+- 請安裝 Docker Desktop [連結](https://docs.docker.com/desktop/setup/install/mac-install/)
 - 開啟 終端機(terminal)，可參考該[連結](https://support.apple.com/zh-tw/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac)
 - 前往程式檔案位置 (從上一步提取的資料夾根目錄)
     - (作法1) 在終端機中，使用 cd 指令前往剛剛解壓縮的資料夾(或者其他路徑)，例如：
@@ -19,6 +20,7 @@
 
 #### Windows 本機端部署方法
 - 請至 Repo Releases 下載最新版本程式，並解壓縮 [連結](https://github.com/imtaiwanese18741130/recall-2025/releases)
+- 請安裝 Docker Desktop [連結](https://docs.docker.com/desktop/setup/install/windows-install/)
 - 開啟 PowerShell，可以參考該[連結](https://learn.microsoft.com/zh-tw/powershell/scripting/learn/ps101/01-getting-started?view=powershell-7.4)
 - 前往程式檔案位置 (從上一步提取的資料夾根目錄)
     - (作法1) 在 PowerShell 中，使用 cd 指令前往剛剛解壓縮的資料夾(或者其他路徑)，例如：

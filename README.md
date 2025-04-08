@@ -37,4 +37,4 @@
     - 開啟瀏覽器，並前往 `http://localhost:8964/`
 
 ##### 感謝名單
-- [Brli](https://github.com/Brli) – 協助實作離線功能
+- [Brli](https://github.com/Brli) – 協助實作本地化功能

@@ -15,7 +15,7 @@
         cd ~/Downloads/recall-2025-localhost-server-v0.0.2
         ```
     - (作法2) 在終端機中輸入 `cd `（包含空格），然後將剛剛解壓縮的資料夾從 Finder 拖曳到終端機視窗，接著按下 Enter 鍵。
-- 在當前路徑執行程式 `/bin/sh local-depolyment/start.sh`
+- 在當前路徑執行程式 `/bin/sh ./local-depolyment/start.sh`
 - 開啟瀏覽器，並前往 `http://localhost:8964/`
 
 #### Docker Compose 本機端部署

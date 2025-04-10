@@ -6,14 +6,17 @@ const NewSearchCandidateHandler = (config) => {
 	const filterMunicipalitiesWrapper = config.filterMunicipalitiesWrapper;
 	const filterMunicipalitiesInput = config.filterMunicipalitiesInput;
 	const filterMunicipalitiesUl = config.filterMunicipalitiesUl;
+	const filterMunicipalitiesBackBtn = config.filterMunicipalitiesBackBtn;
 
 	const filterDistrictsWrapper = config.filterDistrictsWrapper;
 	const filterDistrictsInput = config.filterDistrictsInput;
 	const filterDistrictsUl = config.filterDistrictsUl;
+	const filterDistrictsBackBtn = config.filterDistrictsBackBtn;
 
 	const filterWardsWrapper = config.filterWardsWrapper;
 	const filterWardsInput = config.filterWardsInput;
 	const filterWardsUl = config.filterWardsUl;
+	const filterWardsBackBtn = config.filterWardsBackBtn;
 
 	let _currMunicipalities = [];
 	let _currDistricts = [];
@@ -69,6 +72,10 @@ const NewSearchCandidateHandler = (config) => {
 					filterMunicipalitiesWrapper,
 				);
 			});
+			filterMunicipalitiesBackBtn.addEventListener('click', () => {
+				filterMunicipalitiesUl.style.display = 'none';
+				filterMunicipalitiesWrapper.classList.remove("open");
+			});
 
 			// districts
 			document.addEventListener('click', (e) => {
@@ -94,6 +101,10 @@ const NewSearchCandidateHandler = (config) => {
 					filterDistrictsWrapper,
 				);
 			});
+			filterDistrictsBackBtn.addEventListener('click', () => {
+				filterDistrictsUl.style.display = 'none';
+				filterDistrictsWrapper.classList.remove("open");
+			});
 
 			// wards
 			document.addEventListener('click', (e) => {
@@ -118,6 +129,10 @@ const NewSearchCandidateHandler = (config) => {
 					},
 					filterWardsWrapper,
 				);
+			});
+			filterWardsBackBtn.addEventListener('click', () => {
+				filterWardsUl.style.display = 'none';
+				filterWardsWrapper.classList.remove("open");
 			});
 		},
 
@@ -363,12 +378,17 @@ document.addEventListener("DOMContentLoaded", () => {
 			filterMunicipalitiesWrapper: document.getElementById("municipalities-filter-wrapper"),
 			filterMunicipalitiesInput: document.getElementById("filter-municipalities-input"),
 			filterMunicipalitiesUl: document.getElementById("filter-municipalities-ul"),
+			filterMunicipalitiesBackBtn: document.getElementById("filter-municipalities-back-btn"),
+
 			filterDistrictsWrapper: document.getElementById("districts-filter-wrapper"),
 			filterDistrictsInput: document.getElementById("filter-districts-input"),
 			filterDistrictsUl: document.getElementById("filter-districts-ul"),
+			filterDistrictsBackBtn: document.getElementById("filter-districts-back-btn"),
+
 			filterWardsWrapper: document.getElementById("wards-filter-wrapper"),
 			filterWardsInput: document.getElementById("filter-wards-input"),
-			filterWardsUl: document.getElementById("filter-wards-ul")
+			filterWardsUl: document.getElementById("filter-wards-ul"),
+			filterWardsBackBtn: document.getElementById("filter-wards-back-btn"),
 		}
 	);
 	searchHdr.init();

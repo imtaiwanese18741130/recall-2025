@@ -211,51 +211,51 @@ const NewSearchCandidateHandler = (config) => {
 			filterMunicipalitiesUl.innerHTML = '';
 			filterMunicipalitiesUl.style.display = 'none';
 		},
-		fitlterMunicipalities(searchVal) {
-			if (_currDistricts.length === 0) {
+		fitlterMunicipalities(searchTerm) {
+			if (_currMunicipalities.length === 0) {
 				return [];
 			}
 
-			searchVal = searchVal.trim();
-			if (searchVal === "") {
-				return _currDistricts;
+			searchTerm = searchTerm.trim();
+			if (searchTerm === "") {
+				return _currMunicipalities;
 			}
 
-			return _currDistricts.filter(municipality => municipality.n.includes(searchVal));
+			return _currMunicipalities.filter(municipality => municipality.n.includes(searchTerm));
 		},
 
 		// Districts
 		setDistricts (districts) {
 			_currDistricts = districts;
 		},
-		fitlterDistricts (searchVal) {
+		fitlterDistricts (searchTerm) {
 			if (_currDistricts.length === 0) {
 				return [];
 			}
 
-			searchVal = searchVal.trim();
-			if (searchVal === "") {
+			searchTerm = searchTerm.trim();
+			if (searchTerm === "") {
 				return _currDistricts;
 			}
 
-			return _currDistricts.filter(district => district.n.includes(searchVal));
+			return _currDistricts.filter(district => district.n.includes(searchTerm));
 		},
 
 		// Wards
 		setWards(wards) {
 			_currWards = wards;
 		},
-		fitlterWards(searchVal) {
+		fitlterWards(searchTerm) {
 			if (_currWards.length === 0) {
 				return [];
 			}
 
-			searchVal = searchVal.trim();
-			if (searchVal === "") {
+			searchTerm = searchTerm.trim();
+			if (searchTerm === "") {
 				return _currWards;
 			}
 
-			return _currWards.filter(ward => ward.n.includes(searchVal));
+			return _currWards.filter(ward => ward.n.includes(searchTerm));
 		},
 
 		populateFilter(inputElem, ulElem, opts, callback) {

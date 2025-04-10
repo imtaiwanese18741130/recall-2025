@@ -3,28 +3,100 @@ const shareContainer = document.getElementById('share-container');
 const pepTalk = document.querySelector(`.pep-talk`);
 
 const NewSearchCandidateHandler = (config) => {
-	const filterMunicipalitiesWrapper = config.filterMunicipalitiesWrapper;
-	const filterMunicipalitiesInput = config.filterMunicipalitiesInput;
-	const filterMunicipalitiesUl = config.filterMunicipalitiesUl;
-	const filterMunicipalitiesBackBtn = config.filterMunicipalitiesBackBtn;
+	const layers = {
+		municipality: {
+			input: config.filterMunicipalitiesInput,
+			ul: config.filterMunicipalitiesUl,
+			wrapper: config.filterMunicipalitiesWrapper,
+			backBtn: config.filterMunicipalitiesBackBtn,
+			data: [],
+			selected: null,
+		},
+		district: {
+			input: config.filterDistrictsInput,
+			ul: config.filterDistrictsUl,
+			wrapper: config.filterDistrictsWrapper,
+			backBtn: config.filterDistrictsBackBtn,
+			data: [],
+			selected: null,
+		},
+		ward: {
+			input: config.filterWardsInput,
+			ul: config.filterWardsUl,
+			wrapper: config.filterWardsWrapper,
+			backBtn: config.filterWardsBackBtn,
+			data: [],
+			selected: null,
+		},
+	};
 
-	const filterDistrictsWrapper = config.filterDistrictsWrapper;
-	const filterDistrictsInput = config.filterDistrictsInput;
-	const filterDistrictsUl = config.filterDistrictsUl;
-	const filterDistrictsBackBtn = config.filterDistrictsBackBtn;
+	function hideDropdownOnClickOutside(wrapper, ul) {
+		document.addEventListener('click', (e) => {
+			if (!wrapper.contains(e.target)) {
+				ul.style.display = 'none';
+				wrapper.classList.remove("active");
+			}
+		});
+	};
 
-	const filterWardsWrapper = config.filterWardsWrapper;
-	const filterWardsInput = config.filterWardsInput;
-	const filterWardsUl = config.filterWardsUl;
-	const filterWardsBackBtn = config.filterWardsBackBtn;
+	function bindFilterEvents (level, selectFunc) {
+		const { input, ul, wrapper, backBtn } = layers[level];
 
-	let _currMunicipalities = [];
-	let _currDistricts = [];
-	let _currWards = [];
+		input.addEventListener('focus', () => {
+			populateFilter(input, ul, filterOptions(level, ""), selectFunc, wrapper);
+		});
+		input.addEventListener('input', (e) => {
+			populateFilter(input, ul, filterOptions(level, e.target.value.trim()), selectFunc, wrapper);
+		});
+		backBtn.addEventListener('click', () => {
+			ul.style.display = 'none';
+			wrapper.classList.remove("open");
+		});
 
-	let _selectMunicipality = null;
-	let _selectDistrict = null;
-	let _selectWard = null;
+		hideDropdownOnClickOutside(wrapper, ul);
+	};
+
+	function filterOptions (level, searchTerm) {
+		const opts = layers[level].data;
+		if (opts.length === 0) return [];
+		if (searchTerm === "") return opts;
+
+		return opts.filter(opt => opt.n.includes(searchTerm));
+	};
+
+	function populateFilter(inputElem, ulElem, opts, onClick, wrapperElem) {
+		ulElem.innerHTML = '';
+
+		opts.forEach(opt => {
+			const li = document.createElement('li');
+			li.value = opt.id;
+			li.textContent = opt.n;
+			li.addEventListener('click', () => {
+				inputElem.value = opt.n;
+				ulElem.style.display = 'none';
+				onClick(opt);
+
+				if (wrapperElem) {
+					wrapperElem.classList.remove("open");
+				}
+			});
+			li.addEventListener('mouseover', () => {
+				li.style.backgroundColor = '#f0f0f0';
+			});
+			li.addEventListener('mouseout', () => {
+				li.style.backgroundColor = '';
+			});
+			ulElem.appendChild(li);
+		});
+
+		ulElem.style.display = opts.length ? 'block' : 'none';
+
+		if (wrapperElem && opts.length) {
+			setTimeout(() => wrapperElem.classList.add("open"), 10);
+		} else if (wrapperElem) {
+			wrapperElem.classList.remove("open");
+		}
+	};
 
 	return {
 		init() {
@@ -36,114 +108,28 @@ const NewSearchCandidateHandler = (config) => {
 					showShareContainer();
 				} else if (Object.hasOwn(data.result, "divisions")) {
 					this.setMunicipalities(data.result.divisions);
+					this.resetMunicipalityFilter();
 				} else {
 					console.error("invalid district");
 				}
 			})
-			.catch(error => {
-				console.error(error);
-			})
-			.finally(() => {
-				mask.classList.remove('active');
-			});
+			.catch(error => console.error(error))
+			.finally(() => mask.classList.remove('active'));
 
-			// municipalities
-			document.addEventListener('click', (e) => {
-				if (!filterMunicipalitiesWrapper.contains(e.target)) {
-					filterMunicipalitiesUl.style.display = 'none';
-					filterMunicipalitiesWrapper.classList.remove("active");
-				}
-			});
-			filterMunicipalitiesInput.addEventListener('focus', () => {
-				this.populateFilter(filterMunicipalitiesInput, filterMunicipalitiesUl,
-					this.fitlterMunicipalities(""),
-					(municipality) => {
-						this.selectMunicipality(municipality);
-					},
-					filterMunicipalitiesWrapper,
-				);
-			});
-			filterMunicipalitiesInput.addEventListener('input', (e) => {
-				this.populateFilter(filterMunicipalitiesInput, filterMunicipalitiesUl,
-					this.fitlterMunicipalities(e.target.value.trim()),
-					(municipality) => {
-						this.selectMunicipality(municipality);
-					},
-					filterMunicipalitiesWrapper,
-				);
-			});
-			filterMunicipalitiesBackBtn.addEventListener('click', () => {
-				filterMunicipalitiesUl.style.display = 'none';
-				filterMunicipalitiesWrapper.classList.remove("open");
-			});
-
-			// districts
-			document.addEventListener('click', (e) => {
-				if (!filterDistrictsWrapper.contains(e.target)) {
-					filterDistrictsUl.style.display = 'none';
-				}
-			});
-			filterDistrictsInput.addEventListener('focus', () => {
-				this.populateFilter(filterDistrictsInput, filterDistrictsUl,
-					this.fitlterDistricts(""),
-					(district) => {
-						this.selectDistrict(district);
-					},
-					filterDistrictsWrapper,
-				);
-			});
-			filterDistrictsInput.addEventListener('input', (e) => {
-				this.populateFilter(filterDistrictsInput, filterDistrictsUl,
-					this.fitlterDistricts(e.target.value.trim()),
-					(district) => {
-						this.selectDistrict(district);
-					},
-					filterDistrictsWrapper,
-				);
-			});
-			filterDistrictsBackBtn.addEventListener('click', () => {
-				filterDistrictsUl.style.display = 'none';
-				filterDistrictsWrapper.classList.remove("open");
-			});
-
-			// wards
-			document.addEventListener('click', (e) => {
-				if (!filterWardsWrapper.contains(e.target)) {
-					filterWardsUl.style.display = 'none';
-				}
-			});
-			filterWardsInput.addEventListener('focus', () => {
-				this.populateFilter(filterWardsInput, filterWardsUl,
-					this.fitlterWards(""),
-					(ward) => {
-						this.selectWard(ward);
-					},
-					filterWardsWrapper,
-				);
-			});
-			filterWardsInput.addEventListener('input', (e) => {
-				this.populateFilter(filterWardsInput, filterWardsUl,
-					this.fitlterWards(e.target.value.trim()),
-					(ward) => {
-						this.selectWard(ward);
-					},
-					filterWardsWrapper,
-				);
-			});
-			filterWardsBackBtn.addEventListener('click', () => {
-				filterWardsUl.style.display = 'none';
-				filterWardsWrapper.classList.remove("open");
-			});
+			bindFilterEvents('municipality', this.selectMunicipality.bind(this));
+			bindFilterEvents('district', this.selectDistrict.bind(this));
+			bindFilterEvents('ward', this.selectWard.bind(this));
 		},
 
 		selectMunicipality(municipality) {
-			_selectMunicipality = municipality;
+			layers.municipality.selected = municipality;
+
 			this.resetDistrictFilter(false);
 			this.resetWardFilter(true);
 
 			mask.classList.add('active');
 			shareContainer.style.display = "none";
-			sendSearchConstituenciesReq(municipality.id, null, null)
+			sendSearchConstituenciesReq(layers.municipality.selected.id, null, null)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {
 					showShareContainer();
@@ -153,19 +139,15 @@ const NewSearchCandidateHandler = (config) => {
 					console.error("invalid municipality");
 				}
 			})
-			.catch(error => {
-				console.error(error);
-			})
-			.finally(() => {
-				mask.classList.remove('active');
-			});
+			.catch(error => console.error(error))
+			.finally(() => mask.classList.remove('active'));
 		},
 		selectDistrict(district) {
-			_selectDistrict = district;
+			layers.district.selected = district;
 
 			mask.classList.add('active');
 			shareContainer.style.display = "none";
-			sendSearchConstituenciesReq(_selectMunicipality.id, district.id, null)
+			sendSearchConstituenciesReq(layers.municipality.selected.id, layers.district.selected.id, null)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {
 					showShareContainer();
@@ -176,145 +158,63 @@ const NewSearchCandidateHandler = (config) => {
 					console.error("invalid district");
 				}
 			})
-			.catch(error => {
-				console.error(error);
-			})
-			.finally(() => {
-				mask.classList.remove('active');
-			});
+			.catch(error => console.error(error))
+			.finally(() => mask.classList.remove('active'));
 		},
 		selectWard(ward) {
-			_selectWard = ward;
+			layers.ward.selected = ward;
 
 			mask.classList.add('active');
 			shareContainer.style.display = "none";
-			sendSearchConstituenciesReq(_selectMunicipality.id, _selectDistrict.id, _selectWard.id)
+			sendSearchConstituenciesReq(layers.municipality.selected.id, layers.district.selected.id, layers.ward.selected.id)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {
 					showShareContainer();
 				} else if (Object.hasOwn(data.result, "legislators")) {
-					const address = _selectMunicipality.n + _selectDistrict.n + _selectWard.n;
+					const address = `${layers.municipality.selected.n}${layers.district.selected.n}${layers.ward.selected.n}`;
 					showFilteredCandidateContainer(data.result.legislators, address);
 				} else {
 					console.error("invalid ward");
 				}
 			})
-			.catch(error => {
-				console.error(error);
-			})
-			.finally(() => {
-				mask.classList.remove('active');
-			});
+			.catch(error => console.error(error))
+			.finally(() => mask.classList.remove('active'));
 		},
 
+		// Districts, Wards Resetters
+		resetMunicipalityFilter() {
+			layers.municipality.input.disabled = false;
+			layers.municipality.input.value = "";
+			layers.municipality.ul.innerHTML = '';
+			layers.municipality.ul.style.display = 'none';
+			layers.municipality.wrapper.classList.remove("active");
+		},
 		resetDistrictFilter(inputDisabled) {
-			_selectDistrict = null;
+			layers.district.selected = null;
 
-			filterDistrictsInput.disabled = inputDisabled;
-			filterDistrictsInput.value = "";
-			filterDistrictsUl.innerHTML = '';
-			filterDistrictsUl.style.display = 'none';
+			layers.district.input.disabled = inputDisabled;
+			layers.district.input.value = "";
+			layers.district.ul.innerHTML = '';
+			layers.district.ul.style.display = 'none';
 		},
 		resetWardFilter(inputDisabled) {
-			_selectWard = null;
+			layers.ward.selected = null;
 
-			filterWardsInput.disabled = inputDisabled;
-			filterWardsInput.value = "";
-			filterWardsUl.innerHTML = '';
-			filterWardsUl.style.display = 'none';
+			layers.ward.input.disabled = inputDisabled;
+			layers.ward.input.value = "";
+			layers.ward.ul.innerHTML = '';
+			layers.ward.ul.style.display = 'none';
 		},
 
-		// Municipalities
+		// Municipalities, Districts, Wards Setters
 		setMunicipalities(municipalities) {
-			_currMunicipalities = municipalities;
-
-			filterMunicipalitiesInput.disabled = false;
-			filterMunicipalitiesInput.value = "";
-			filterMunicipalitiesUl.innerHTML = '';
-			filterMunicipalitiesUl.style.display = 'none';
-			filterMunicipalitiesWrapper.classList.remove("active");
+			layers.municipality.data = municipalities;
 		},
-		fitlterMunicipalities(searchTerm) {
-			if (_currMunicipalities.length === 0) {
-				return [];
-			}
-
-			searchTerm = searchTerm.trim();
-			if (searchTerm === "") {
-				return _currMunicipalities;
-			}
-
-			return _currMunicipalities.filter(municipality => municipality.n.includes(searchTerm));
-		},
-
-		// Districts
 		setDistricts (districts) {
-			_currDistricts = districts;
+			layers.district.data = districts;
 		},
-		fitlterDistricts (searchTerm) {
-			if (_currDistricts.length === 0) {
-				return [];
-			}
-
-			searchTerm = searchTerm.trim();
-			if (searchTerm === "") {
-				return _currDistricts;
-			}
-
-			return _currDistricts.filter(district => district.n.includes(searchTerm));
-		},
-
-		// Wards
 		setWards(wards) {
-			_currWards = wards;
-		},
-		fitlterWards(searchTerm) {
-			if (_currWards.length === 0) {
-				return [];
-			}
-
-			searchTerm = searchTerm.trim();
-			if (searchTerm === "") {
-				return _currWards;
-			}
-
-			return _currWards.filter(ward => ward.n.includes(searchTerm));
-		},
-
-		populateFilter(inputElem, ulElem, opts, callback, wrapperElem) {
-			ulElem.innerHTML = '';
-
-			opts.forEach(opt => {
-				const li = document.createElement('li');
-				li.value = opt.id;
-				li.textContent = opt.n;
-				li.addEventListener('click', () => {
-					inputElem.value = opt.n;
-					ulElem.style.display = 'none';
-					callback(opt);
-
-					if (wrapperElem) {
-						wrapperElem.classList.remove("open");
-					}
-				});
-				li.addEventListener('mouseover', () => {
-					li.style.backgroundColor = '#f0f0f0';
-				});
-				li.addEventListener('mouseout', () => {
-					li.style.backgroundColor = '';
-				});
-				ulElem.appendChild(li);
-			});
-
-			ulElem.style.display = opts.length ? 'block' : 'none';
-
-			if (wrapperElem && opts.length) {
-				setTimeout(() => {
-					wrapperElem.classList.add("open");
-				}, 10);
-			} else if (wrapperElem) {
-				wrapperElem.classList.remove("open");
-			}
+			layers.ward.data = wards;
 		},
 	};
 }

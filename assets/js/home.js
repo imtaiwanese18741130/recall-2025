@@ -2,6 +2,203 @@ const filteredCandidateContainer = document.getElementById('filtered-candidate-c
 const shareContainer = document.getElementById('share-container');
 const pepTalk = document.querySelector(`.pep-talk`);
 
+const NewSearchCandidateHandler = (config) => {
+	const filterDistrictsWrapper = config.filterDistrictsWrapper;
+	const filterDistrictsInput = config.filterDistrictsInput;
+	const filterDistrictsUl = config.filterDistrictsUl;
+
+	const filterWardsWrapper = config.filterWardsWrapper;
+	const filterWardsInput = config.filterWardsInput;
+	const filterWardsUl = config.filterWardsUl;
+
+	let _currDistricts = [];
+	let _currWards = [];
+
+	let _selectMunicipality = null;
+	let _selectDistrict = null;
+	let _selectWard = null;
+
+	return {
+		init() {
+			document.addEventListener('click', (e) => {
+				if (!filterDistrictsWrapper.contains(e.target)) {
+					filterDistrictsUl.style.display = 'none';
+				}
+			});
+
+			document.addEventListener('click', (e) => {
+				if (!filterWardsWrapper.contains(e.target)) {
+					filterWardsUl.style.display = 'none';
+				}
+			});
+
+			// districts
+			filterDistrictsInput.addEventListener('focus', () => {
+				this.populateDistricts("");
+			});
+
+			filterDistrictsInput.addEventListener('input', (e) => {
+				this.populateDistricts(e.target.value.trim());
+			});
+
+			// wards
+			filterWardsInput.addEventListener('focus', () => {
+				this.populateWards("");
+			});
+			filterWardsInput.addEventListener('input', (e) => {
+				this.populateWards(e.target.value.trim());
+			});
+		},
+
+		selectMunicipality(municipality) {
+			_selectMunicipality = municipality;
+			this.resetDistrictFilter(false);
+			this.resetWardFilter(true);
+		},
+		selectDistrict(district) {
+			_selectDistrict = district;
+
+			sendAjaxRequest(_selectMunicipality.id, district.id, null)
+			.then(data => {
+				if (!Object.hasOwn(data, "result")) {
+					showShareContainer();
+				} else if (Object.hasOwn(data.result, "divisions")) {
+					this.setWards(data.result.divisions);
+					this.resetWardFilter(false);
+				} else {
+					console.error("invalid district");
+				}
+			})
+			.catch(error => {
+				console.error(error);
+			})
+			.finally(() => {
+				mask.classList.remove('active');
+			});
+		},
+		selectWard(ward) {
+			_selectWard = ward;
+
+			sendAjaxRequest(_selectMunicipality.id, _selectDistrict.id, ward.id)
+			.then(data => {
+				if (!Object.hasOwn(data, "result")) {
+					showShareContainer();
+				} else if (Object.hasOwn(data.result, "legislators")) {
+					const address = _selectMunicipality.n + _selectDistrict.n + ward.n;
+					showFilteredCandidateContainer(data.result.legislators, address);
+				} else {
+					console.error("invalid ward");
+				}
+			})
+			.catch(error => {
+				console.error(error);
+			})
+			.finally(() => {
+				mask.classList.remove('active');
+			});
+		},
+
+		resetDistrictFilter(inputDisabled) {
+			_selectDistrict = null;
+
+			filterDistrictsInput.disabled = inputDisabled;
+			filterDistrictsInput.value = "";
+			filterDistrictsUl.innerHTML = '';
+			filterDistrictsUl.style.display = 'none';
+		},
+		resetWardFilter(inputDisabled) {
+			_selectWard = null;
+
+			filterWardsInput.disabled = inputDisabled;
+			filterWardsInput.value = "";
+			filterWardsUl.innerHTML = '';
+			filterWardsUl.style.display = 'none';
+		},
+
+		// Districts
+		setDistricts (districts) {
+			_currDistricts = districts;
+		},
+		fitlterDistricts (searchVal) {
+			if (_currDistricts.length === 0) {
+				return [];
+			}
+
+			searchVal = searchVal.trim();
+			if (searchVal === "") {
+				return _currDistricts;
+			}
+
+			return _currDistricts.filter(district => district.n.includes(searchVal));
+		},
+		populateDistricts (searchTerm) {
+			const filteredDistricts = this.fitlterDistricts(searchTerm);
+			filterDistrictsUl.innerHTML = '';
+
+			filteredDistricts.forEach(district => {
+				const li = document.createElement('li');
+				li.value = district.id;
+				li.textContent = district.n;
+				li.addEventListener('click', () => {
+					filterDistrictsInput.value = district.n;
+					filterDistrictsUl.style.display = 'none';
+					this.selectDistrict(district);
+				});
+				li.addEventListener('mouseover', () => {
+					li.style.backgroundColor = '#f0f0f0';
+				});
+				li.addEventListener('mouseout', () => {
+					li.style.backgroundColor = '';
+				});
+				filterDistrictsUl.appendChild(li);
+			});
+
+			filterDistrictsUl.style.display = filteredDistricts.length ? 'block' : 'none';
+		},
+
+		// Wards
+		setWards(wards) {
+			_currWards = wards;
+		},
+		fitlterWards(searchVal) {
+			if (_currWards.length === 0) {
+				return [];
+			}
+
+			searchVal = searchVal.trim();
+			if (searchVal === "") {
+				return _currWards;
+			}
+
+			return _currWards.filter(ward => ward.n.includes(searchVal));
+		},
+		populateWards(searchTerm) {
+			const filteredWards = this.fitlterWards(searchTerm);
+			filterWardsUl.innerHTML = '';
+
+			filteredWards.forEach(ward => {
+				const li = document.createElement('li');
+				li.value = ward.id;
+				li.textContent = ward.n;
+				li.addEventListener('click', () => {
+					filterWardsInput.value = ward.n;
+					filterWardsUl.style.display = 'none';
+					this.selectWard(ward);
+				});
+				li.addEventListener('mouseover', () => {
+					li.style.backgroundColor = '#f0f0f0';
+				});
+				li.addEventListener('mouseout', () => {
+					li.style.backgroundColor = '';
+				});
+				filterWardsUl.appendChild(li);
+			});
+
+			filterWardsUl.style.display = filteredWards.length ? 'block' : 'none';
+		}
+	};
+}
+
 async function sendAjaxRequest(municipality, district, ward) {
 	let params = new URLSearchParams();
 
@@ -34,45 +231,39 @@ async function sendAjaxRequest(municipality, district, ward) {
 
 document.addEventListener("DOMContentLoaded", () => {
 	const municipalitiesSelect = document.getElementById("filter-municipalities");
-	const districtsSelect = document.getElementById("filter-districts");
-	const wardsSelect = document.getElementById("filter-wards");
 	const initMunicipalityHasFailed = (document.querySelector(`.municipalities ul[data-city="1"] li.recall-failed`) !== null) ? true : false;
 	if (initMunicipalityHasFailed) {
 		pepTalk.style.display = "flex";
 	}
 
-	const resetSelect = (select) => {
-		const defaultOption = select.querySelector('option[value=""]');
-		select.disabled = true;
-		select.innerHTML = "";
-		if (defaultOption) {
-			select.appendChild(defaultOption.cloneNode(true));
+	const searchHdr = NewSearchCandidateHandler(
+		{
+			filterDistrictsWrapper: document.getElementById("districts-filter-wrapper"),
+			filterDistrictsInput: document.getElementById("filter-districts-input"),
+			filterDistrictsUl: document.getElementById("filter-districts-ul"),
+			filterWardsWrapper: document.getElementById("wards-filter-wrapper"),
+			filterWardsInput: document.getElementById("filter-wards-input"),
+			filterWardsUl: document.getElementById("filter-wards-ul")
 		}
-	};
+	);
+	searchHdr.init();
 
-	const populateOptions = (select, divisions) => {
-		divisions.forEach(division => {
-			const elem = document.createElement("option");
-			elem.value = division.id;
-			elem.textContent = division.n;
-			select.appendChild(elem);
-		});
-		select.disabled = false;
-	};
-
+	// municipalities
 	municipalitiesSelect.addEventListener("change", () => {
 		mask.classList.add('active');
 		filteredCandidateContainer.innerHTML = "";
 		shareContainer.style.display = "none";
-		resetSelect(districtsSelect);
-		resetSelect(wardsSelect);
 
 		sendAjaxRequest(municipalitiesSelect.value, null, null)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {
 					showShareContainer();
 				} else if (Object.hasOwn(data.result, "divisions")) {
-					populateOptions(districtsSelect, data.result.divisions);
+					searchHdr.setDistricts(data.result.divisions);
+					searchHdr.selectMunicipality({
+						id: municipalitiesSelect.value,
+						n: municipalitiesSelect.selectedOptions[0].text
+					});
 				} else {
 					console.error("invalid municipality");
 				}
@@ -85,53 +276,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 	});
 
-	districtsSelect.addEventListener("change", () => {
-		mask.classList.add('active');
-		filteredCandidateContainer.innerHTML = "";
-		shareContainer.style.display = "none";
-		resetSelect(wardsSelect);
-
-		sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, null)
-			.then(data => {
-				if (!Object.hasOwn(data, "result")) {
-					showShareContainer();
-				} else if (Object.hasOwn(data.result, "divisions")) {
-					populateOptions(wardsSelect, data.result.divisions);
-				} else {
-					console.error("invalid district");
-				}
-			})
-			.catch(error => {
-				console.error(error);
-			})
-			.finally(() => {
-				mask.classList.remove('active');
-			});
-	});
-
-	wardsSelect.addEventListener("change", () => {
-		mask.classList.add('active');
-		filteredCandidateContainer.innerHTML = "";
-		shareContainer.style.display = "none";
-		sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, wardsSelect.value)
-			.then(data => {
-				if (!Object.hasOwn(data, "result")) {
-					showShareContainer();
-				} else if (Object.hasOwn(data.result, "legislators")) {
-					const address = municipalitiesSelect.selectedOptions[0].text + districtsSelect.selectedOptions[0].text + wardsSelect.selectedOptions[0].text;
-					showFilteredCandidateContainer(data.result.legislators, address);
-				} else {
-					console.error("invalid ward");
-				}
-			})
-			.catch(error => {
-				console.error(error);
-			})
-			.finally(() => {
-				mask.classList.remove('active');
-			});
-	});
-	
 	dialogMask.addEventListener("click", function(event) {
 		if (event.target === dialogClose || dialogClose.contains(event.target)) {
 			dialogMask.style.display = "none";

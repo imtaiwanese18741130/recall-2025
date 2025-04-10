@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.20" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.12" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -24,21 +24,57 @@
 			<h2>輸入戶籍地，<br>找出您有權罷免的立委</h2>
 			<div class="row">
 				<div id="municipalities-filter-wrapper" class="col-6 col-xs-12">
-					<input type="text" id="filter-municipalities-input" placeholder="縣市" disabled>
-					<ul id="filter-municipalities-ul">
-						{{- range $m := .Municipalities}}
-						{{- if gt $m.Id 0}}
-						<li data-value="{{$m.Id}}">{{$m.Name}}</li>
-						{{- end}}
-						{{- end}}
-					</ul>
+					<div class="row">
+							<div class="filter-back">
+								<svg width="50" height="50" viewBox="0 -2 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<g clip-path="url(#clip0_1138_3403)">
+										<path d="M19.825 25L25.425 30.6L24 32L16 24L24 16L25.425 17.4L19.825 23H32V25H19.825Z" fill="#00FF9C"/>
+									</g>
+									<defs>
+										<clipPath id="clip0_1138_3403">
+											<rect x="4" y="4" width="40" height="40" rx="20" fill="white"/>
+										</clipPath>
+									</defs>
+								</svg>
+							</div>
+							<input type="text" id="filter-municipalities-input" placeholder="縣市" disabled>
+					</div>
+					<ul id="filter-municipalities-ul"></ul>
 				</div>
 				<div id="districts-filter-wrapper" class="col-6 col-xs-12">
-					<input type="text" id="filter-districts-input" placeholder="行政區" disabled>
+					<div class="row">
+							<div class="filter-back">
+								<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<g clip-path="url(#clip0_1138_3403)">
+										<path d="M19.825 25L25.425 30.6L24 32L16 24L24 16L25.425 17.4L19.825 23H32V25H19.825Z" fill="#00FF9C"/>
+									</g>
+									<defs>
+										<clipPath id="clip0_1138_3403">
+											<rect x="4" y="4" width="40" height="40" rx="20" fill="white"/>
+										</clipPath>
+									</defs>
+								</svg>
+							</div>
+						<input type="text" id="filter-districts-input" placeholder="行政區" disabled>
+					</div>
 					<ul id="filter-districts-ul"></ul>
 				</div>
 				<div id="wards-filter-wrapper" class="col-12">
-					<input type="text" id="filter-wards-input" placeholder="鄉鎮村里" disabled>
+					<div class="row">
+							<div class="filter-back">
+								<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<g clip-path="url(#clip0_1138_3403)">
+										<path d="M19.825 25L25.425 30.6L24 32L16 24L24 16L25.425 17.4L19.825 23H32V25H19.825Z" fill="#00FF9C"/>
+									</g>
+									<defs>
+										<clipPath id="clip0_1138_3403">
+											<rect x="4" y="4" width="40" height="40" rx="20" fill="white"/>
+										</clipPath>
+									</defs>
+								</svg>
+							</div>
+						<input type="text" id="filter-wards-input" placeholder="鄉鎮村里" disabled>
+					</div>
 					<ul id="filter-wards-ul"></ul>
 				</div>
 			</div>

@@ -43,6 +43,7 @@ func main() {
 
 	mux.HandleFunc("/", withRecovery(ctrl.Home))
 	mux.HandleFunc("/authorization-letter", withRecovery(ctrl.AuthorizationLetter))
+	mux.HandleFunc("/apis/municipalities", withRecovery(ctrl.ListMunicipalities))
 	mux.HandleFunc("/apis/constituencies", withRecovery(ctrl.SearchRecallConstituency))
 	mux.HandleFunc("/preview/stages/", withRecovery(ctrl.PreviewOriginalLocalForm))
 	mux.HandleFunc("/legislators/", withRecovery(ctrl.LegislatorRouter))

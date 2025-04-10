@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.13" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.17" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -23,15 +23,15 @@
 		<div class="filters pb-sm">
 			<h2>輸入戶籍地，<br>找出您有權罷免的立委</h2>
 			<div class="row">
-				<div class="col-6 col-xs-12">
-					<select id="filter-municipalities">
-						<option value="" disabled selected>縣市</option>
+				<div id="municipalities-filter-wrapper" class="col-6 col-xs-12">
+					<input type="text" id="filter-municipalities-input" placeholder="縣市" disabled>
+					<ul id="filter-municipalities-ul">
 						{{- range $m := .Municipalities}}
 						{{- if gt $m.Id 0}}
-						<option value="{{$m.Id}}">{{$m.Name}}</option>
+						<li data-value="{{$m.Id}}">{{$m.Name}}</li>
 						{{- end}}
 						{{- end}}
-					</select>
+					</ul>
 				</div>
 				<div id="districts-filter-wrapper" class="col-6 col-xs-12">
 					<input type="text" id="filter-districts-input" placeholder="行政區" disabled>

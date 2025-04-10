@@ -1168,18 +1168,6 @@ button.btn-black:hover {
 	padding: 12px;
 }
 
-.filters select {
-	width: 100%;
-	height: 60px;
-	padding: 8px 12px;
-	font-size: 16px;
-	border: 1px solid var(--aug-color);
-	border-radius: 6px;
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-}
-
 .filters input {
 	width: 100%;
 	height: 60px;
@@ -1215,12 +1203,12 @@ button.btn-black:hover {
 
 .filters .row > div::after {
 	content: "";
-  width: 10px;
-  height: 5px;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='5' viewBox='0 0 10 5' fill='none' xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath d='M5.31787 4.81787C5.07373 5.06201 4.67725 5.06201 4.43311 4.81787L0.683105 1.06787C0.438965 0.82373 0.438965 0.427246 0.683105 0.183105C0.927246 -0.0610351 1.32373 -0.0610351 1.56787 0.183105L4.87647 3.4917L8.18506 0.185059C8.4292 -0.0590821 8.82568 -0.0590821 9.06982 0.185059C9.31396 0.429199 9.31396 0.825683 9.06982 1.06982L5.31982 4.81982L5.31787 4.81787Z' fill='%232D2D2D'/%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+	width: 10px;
+	height: 5px;
+	background-image: url("data:image/svg+xml,%3Csvg width='10' height='5' viewBox='0 0 10 5' fill='none' xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath d='M5.31787 4.81787C5.07373 5.06201 4.67725 5.06201 4.43311 4.81787L0.683105 1.06787C0.438965 0.82373 0.438965 0.427246 0.683105 0.183105C0.927246 -0.0610351 1.32373 -0.0610351 1.56787 0.183105L4.87647 3.4917L8.18506 0.185059C8.4292 -0.0590821 8.82568 -0.0590821 9.06982 0.185059C9.31396 0.429199 9.31396 0.825683 9.06982 1.06982L5.31982 4.81982L5.31787 4.81787Z' fill='%232D2D2D'/%3E%3C/svg%3E");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 	position: absolute;
 	top: 50%;
 	right: 32px;

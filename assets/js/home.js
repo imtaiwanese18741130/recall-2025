@@ -15,6 +15,7 @@ const NewSearchCandidateHandler = (config) => {
 	const filterWardsInput = config.filterWardsInput;
 	const filterWardsUl = config.filterWardsUl;
 
+	let _currMunicipalities = [];
 	let _currDistricts = [];
 	let _currWards = [];
 
@@ -203,7 +204,7 @@ const NewSearchCandidateHandler = (config) => {
 
 		// Municipalities
 		setMunicipalities(municipalities) {
-			_currDistricts = municipalities;
+			_currMunicipalities = municipalities;
 
 			filterMunicipalitiesInput.disabled = false;
 			filterMunicipalitiesInput.value = "";

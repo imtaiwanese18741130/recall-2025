@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.11" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.12" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -33,15 +33,13 @@
 						{{- end}}
 					</select>
 				</div>
-				<div class="col-6 col-xs-12">
-					<select id="filter-districts" disabled>
-						<option value="" disabled selected>行政區</option>
-					</select>
+				<div id="districts-filter-wrapper" class="col-6 col-xs-12">
+					<input type="text" id="filter-districts-input" placeholder="行政區" disabled>
+					<ul id="filter-districts-ul"></ul>
 				</div>
-				<div class="col-12">
-					<select id="filter-wards" disabled>
-						<option value="" disabled selected>鄉鎮村里</option>
-					</select>
+				<div id="wards-filter-wrapper" class="col-12">
+					<input type="text" id="filter-wards-input" placeholder="鄉鎮村里" disabled>
+					<ul id="filter-wards-ul"></ul>
 				</div>
 			</div>
 		</div>

@@ -48,6 +48,7 @@ const NewSearchCandidateHandler = (config) => {
 			document.addEventListener('click', (e) => {
 				if (!filterMunicipalitiesWrapper.contains(e.target)) {
 					filterMunicipalitiesUl.style.display = 'none';
+					filterMunicipalitiesWrapper.classList.remove("active");
 				}
 			});
 			filterMunicipalitiesInput.addEventListener('focus', () => {
@@ -56,6 +57,7 @@ const NewSearchCandidateHandler = (config) => {
 					(municipality) => {
 						this.selectMunicipality(municipality);
 					},
+					filterMunicipalitiesWrapper,
 				);
 			});
 			filterMunicipalitiesInput.addEventListener('input', (e) => {
@@ -64,6 +66,7 @@ const NewSearchCandidateHandler = (config) => {
 					(municipality) => {
 						this.selectMunicipality(municipality);
 					},
+					filterMunicipalitiesWrapper,
 				);
 			});
 
@@ -79,6 +82,7 @@ const NewSearchCandidateHandler = (config) => {
 					(district) => {
 						this.selectDistrict(district);
 					},
+					filterDistrictsWrapper,
 				);
 			});
 			filterDistrictsInput.addEventListener('input', (e) => {
@@ -87,6 +91,7 @@ const NewSearchCandidateHandler = (config) => {
 					(district) => {
 						this.selectDistrict(district);
 					},
+					filterDistrictsWrapper,
 				);
 			});
 
@@ -102,6 +107,7 @@ const NewSearchCandidateHandler = (config) => {
 					(ward) => {
 						this.selectWard(ward);
 					},
+					filterWardsWrapper,
 				);
 			});
 			filterWardsInput.addEventListener('input', (e) => {
@@ -110,6 +116,7 @@ const NewSearchCandidateHandler = (config) => {
 					(ward) => {
 						this.selectWard(ward);
 					},
+					filterWardsWrapper,
 				);
 			});
 		},
@@ -166,12 +173,12 @@ const NewSearchCandidateHandler = (config) => {
 
 			mask.classList.add('active');
 			shareContainer.style.display = "none";
-			sendSearchConstituenciesReq(_selectMunicipality.id, _selectDistrict.id, ward.id)
+			sendSearchConstituenciesReq(_selectMunicipality.id, _selectDistrict.id, _selectWard.id)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {
 					showShareContainer();
 				} else if (Object.hasOwn(data.result, "legislators")) {
-					const address = _selectMunicipality.n + _selectDistrict.n + ward.n;
+					const address = _selectMunicipality.n + _selectDistrict.n + _selectWard.n;
 					showFilteredCandidateContainer(data.result.legislators, address);
 				} else {
 					console.error("invalid ward");
@@ -210,6 +217,7 @@ const NewSearchCandidateHandler = (config) => {
 			filterMunicipalitiesInput.value = "";
 			filterMunicipalitiesUl.innerHTML = '';
 			filterMunicipalitiesUl.style.display = 'none';
+			filterMunicipalitiesWrapper.classList.remove("active");
 		},
 		fitlterMunicipalities(searchTerm) {
 			if (_currMunicipalities.length === 0) {
@@ -258,7 +266,7 @@ const NewSearchCandidateHandler = (config) => {
 			return _currWards.filter(ward => ward.n.includes(searchTerm));
 		},
 
-		populateFilter(inputElem, ulElem, opts, callback) {
+		populateFilter(inputElem, ulElem, opts, callback, wrapperElem) {
 			ulElem.innerHTML = '';
 
 			opts.forEach(opt => {
@@ -269,6 +277,10 @@ const NewSearchCandidateHandler = (config) => {
 					inputElem.value = opt.n;
 					ulElem.style.display = 'none';
 					callback(opt);
+
+					if (wrapperElem) {
+						wrapperElem.classList.remove("open");
+					}
 				});
 				li.addEventListener('mouseover', () => {
 					li.style.backgroundColor = '#f0f0f0';
@@ -280,6 +292,14 @@ const NewSearchCandidateHandler = (config) => {
 			});
 
 			ulElem.style.display = opts.length ? 'block' : 'none';
+
+			if (wrapperElem && opts.length) {
+				setTimeout(() => {
+					wrapperElem.classList.add("open");
+				}, 10);
+			} else if (wrapperElem) {
+				wrapperElem.classList.remove("open");
+			}
 		},
 	};
 }

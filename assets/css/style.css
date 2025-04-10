@@ -1215,6 +1215,74 @@ button.btn-black:hover {
 	transform: translateY(-50%);
 }
 
+.filter-back{
+	display: none;
+	width: 15%;
+}
+
+.filter-back::after{
+	display: none;
+}
+
+@media (max-width: 600px) {
+	#municipalities-filter-wrapper.open,
+	#districts-filter-wrapper.open,
+	#wards-filter-wrapper.open{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+		z-index: 900;
+		padding: 0;
+	}
+
+	#municipalities-filter-wrapper.open .row,
+	#districts-filter-wrapper.open .row,
+	#wards-filter-wrapper.open .row {
+		position: relative;
+		align-items: center;
+	}
+
+	#municipalities-filter-wrapper.open .row::after,
+	#districts-filter-wrapper.open .row::after,
+	#wards-filter-wrapper.open .row::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 20px;
+		right: 20px;
+		height: 1px;
+		background-color: #c3c3c3;
+	}
+
+	#municipalities-filter-wrapper.open .filter-back,
+	#districts-filter-wrapper.open .filter-back,
+	#wards-filter-wrapper.open .filter-back{
+		display: block;
+	}
+	#municipalities-filter-wrapper.open>ul,
+	#districts-filter-wrapper.open>ul,
+	#wards-filter-wrapper.open>ul{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		max-height: 100%;
+		padding: 12px;
+		border: none;
+	}
+
+	#municipalities-filter-wrapper.open input,
+	#districts-filter-wrapper.open input,
+	#wards-filter-wrapper.open input{
+		border: none;
+		border-radius: 0;
+		width: 83%;
+	}
+
+}
+
 /* *************************************
 	zone-filters
 **************************************** */

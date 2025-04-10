@@ -51,7 +51,7 @@ const NewSearchCandidateHandler = (config) => {
 			});
 			filterMunicipalitiesInput.addEventListener('focus', () => {
 				this.populateFilter(filterMunicipalitiesInput, filterMunicipalitiesUl,
-					_currDistricts,
+					this.fitlterMunicipalities(""),
 					(municipality) => {
 						this.selectMunicipality(municipality);
 					},
@@ -59,7 +59,7 @@ const NewSearchCandidateHandler = (config) => {
 			});
 			filterMunicipalitiesInput.addEventListener('input', (e) => {
 				this.populateFilter(filterMunicipalitiesInput, filterMunicipalitiesUl,
-					_currDistricts.filter(municipality => municipality.n.includes(e.target.value.trim())),
+					this.fitlterMunicipalities(e.target.value.trim()),
 					(municipality) => {
 						this.selectMunicipality(municipality);
 					},

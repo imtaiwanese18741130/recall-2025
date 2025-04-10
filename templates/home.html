@@ -25,7 +25,8 @@
 			<div class="row">
 				<div id="municipalities-filter-wrapper" class="col-6 col-xs-12">
 					<div class="row">
-							<div class="filter-back">
+						<div class="filter-back">
+							<button id="filter-municipalities-back-btn">
 								<svg width="50" height="50" viewBox="0 -2 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_1138_3403)">
 										<path d="M19.825 25L25.425 30.6L24 32L16 24L24 16L25.425 17.4L19.825 23H32V25H19.825Z" fill="#00FF9C"/>
@@ -36,14 +37,16 @@
 										</clipPath>
 									</defs>
 								</svg>
-							</div>
-							<input type="text" id="filter-municipalities-input" placeholder="縣市" disabled>
+							</button>
+						</div>
+						<input type="text" id="filter-municipalities-input" placeholder="縣市" disabled>
 					</div>
 					<ul id="filter-municipalities-ul"></ul>
 				</div>
 				<div id="districts-filter-wrapper" class="col-6 col-xs-12">
 					<div class="row">
-							<div class="filter-back">
+						<div class="filter-back">
+							<button id="filter-districts-back-btn">
 								<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_1138_3403)">
 										<path d="M19.825 25L25.425 30.6L24 32L16 24L24 16L25.425 17.4L19.825 23H32V25H19.825Z" fill="#00FF9C"/>
@@ -54,14 +57,16 @@
 										</clipPath>
 									</defs>
 								</svg>
-							</div>
+							</button>
+						</div>
 						<input type="text" id="filter-districts-input" placeholder="行政區" disabled>
 					</div>
 					<ul id="filter-districts-ul"></ul>
 				</div>
 				<div id="wards-filter-wrapper" class="col-12">
 					<div class="row">
-							<div class="filter-back">
+						<div class="filter-back">
+							<button id="filter-wards-back-btn">
 								<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_1138_3403)">
 										<path d="M19.825 25L25.425 30.6L24 32L16 24L24 16L25.425 17.4L19.825 23H32V25H19.825Z" fill="#00FF9C"/>
@@ -72,7 +77,8 @@
 										</clipPath>
 									</defs>
 								</svg>
-							</div>
+							</button>
+						</div>
 						<input type="text" id="filter-wards-input" placeholder="鄉鎮村里" disabled>
 					</div>
 					<ul id="filter-wards-ul"></ul>

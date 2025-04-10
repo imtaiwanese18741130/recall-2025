@@ -1224,6 +1224,11 @@ button.btn-black:hover {
 	display: none;
 }
 
+.filter-back button{
+	padding: 1px 1px;
+	background-color: #ffffff;
+}
+
 @media (max-width: 600px) {
 	#municipalities-filter-wrapper.open,
 	#districts-filter-wrapper.open,

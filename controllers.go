@@ -209,16 +209,18 @@ func (ctrl *Controller) MThankYou(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *Controller) VerifyTurnstile(w http.ResponseWriter, r *http.Request) bool {
-	r.ParseForm()
-	token := r.FormValue("cf-turnstile-response")
-	if token == "" {
-		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
-		return false
-	}
-	success, err := ctrl.VerifyTurnstileToken(token)
-	if err != nil || !success {
-		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL, ctrl.AppBaseURL))
-		return false
+	if ctrl.TurnstileSiteKey != "" || ctrl.TurnstileSecretKey != "" {
+		r.ParseForm()
+		token := r.FormValue("cf-turnstile-response")
+		if token == "" {
+			ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return false
+		}
+		success, err := ctrl.VerifyTurnstileToken(token)
+		if err != nil || !success {
+			ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return false
+		}
 	}
 	return true
 }

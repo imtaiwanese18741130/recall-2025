@@ -58,6 +58,7 @@ const NewSearchCandidateHandler = (config) => {
 		selectDistrict(district) {
 			_selectDistrict = district;
 
+			mask.classList.add('active');
 			sendAjaxRequest(_selectMunicipality.id, district.id, null)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {
@@ -79,6 +80,7 @@ const NewSearchCandidateHandler = (config) => {
 		selectWard(ward) {
 			_selectWard = ward;
 
+			mask.classList.add('active');
 			sendAjaxRequest(_selectMunicipality.id, _selectDistrict.id, ward.id)
 			.then(data => {
 				if (!Object.hasOwn(data, "result")) {

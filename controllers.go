@@ -60,6 +60,23 @@ func (ctrl *Controller) AuthorizationLetter(w http.ResponseWriter, r *http.Reque
 	})
 }
 
+func (ctrl *Controller) ListMunicipalities(w http.ResponseWriter, r *http.Request) {
+	divisions := make(Divisions, 0)
+	for _, m := range ctrl.Municipalities {
+		if m.Division.Id == 0 {
+			continue
+		}
+		divisions = append(divisions, m.Division)
+	}
+
+	writeJSON(w, http.StatusOK, RespListMunicipalities{
+		Message: http.StatusText(http.StatusOK),
+		Result: &ResultListMunicipalities{
+			Divisions: divisions,
+		},
+	})
+}
+
 func (ctrl *Controller) SearchRecallConstituency(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	var qp RequestQuerySearchRecallConstituency
@@ -374,6 +391,14 @@ type ResultSearchRecallConstituency struct {
 	Legislators RecallLegislators `json:"legislators,omitempty"`
 }
 
+type RespListMunicipalities struct {
+	Message string                    `json:"message"`
+	Result  *ResultListMunicipalities `json:"result,omitempty"`
+}
+
+type ResultListMunicipalities struct {
+	Divisions Divisions `json:"divisions,omitempty"`
+}
 type RequestUriStageLegislator struct {
 	Name  string
 	Stage uint64

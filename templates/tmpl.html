@@ -100,8 +100,10 @@
 				printSetting = this.value;
 				if (this.value === "general") {
 					scaleA4(1);
+					document.getElementById('print-btn').disabled = false;
 				} else if (this.value === "ibon") {
 					scaleA4(1.04);
+					document.getElementById('print-btn').disabled = true;
 				}
 			});
 		});

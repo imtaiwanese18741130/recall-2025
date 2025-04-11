@@ -42,7 +42,7 @@ const NewSearchCandidateHandler = (config) => {
 		});
 	};
 
-	function bindFilterEvents (level, selectFunc) {
+	function bindFilterEvents (level, selectFunc, resetFunc) {
 		const { input, ul, wrapper, backBtn } = layers[level];
 
 		input.addEventListener('focus', () => {
@@ -52,26 +52,54 @@ const NewSearchCandidateHandler = (config) => {
 			populateFilter(input, ul, filterOptions(level, e.target.value.trim()), selectFunc, wrapper);
 		});
 		backBtn.addEventListener('click', () => {
-			ul.style.display = 'none';
+			resetFunc(true);
 			wrapper.classList.remove("open");
 		});
 
 		hideDropdownOnClickOutside(wrapper, ul);
 	};
 
+	function generateSynonymVariants(str) {
+		const variants = new Set([str]);
+		const synonymMap = {
+			"台": ["臺"],
+			"臺": ["台"],
+		};
+
+		for (const [key, values] of Object.entries(synonymMap)) {
+			if (str.includes(key)) {
+				values.forEach(val => {
+					variants.add(str.replace(new RegExp(key, "g"), val));
+				});
+			}
+		}
+
+		return Array.from(variants);
+	}
+
 	function filterOptions (level, searchTerm) {
 		const opts = layers[level].data;
-		const title = layers[level].title;
 
 		if (opts.length === 0) return [];
 		if (searchTerm === "") return opts;
 
-		filteredOpts = opts.filter(opt => opt.n.includes(searchTerm));
+		const searchTermVariants = generateSynonymVariants(searchTerm.toLowerCase());
+
+		filteredOpts = opts.filter(opt => {
+			const optNameVariants = generateSynonymVariants(opt.n.toLowerCase());
+
+			return searchTermVariants.some(searchVariant =>
+				optNameVariants.some(optVariant =>
+					optVariant.includes(searchVariant)
+				)
+			);
+		});
+
 		if (filteredOpts.length === 0) {
 			return [
 				{
 					id: null,
-					n: `請輸入正確${title}`
+					n: `請輸入正確${layers[level].title}`
 				}
 			];
 		}
@@ -136,9 +164,9 @@ const NewSearchCandidateHandler = (config) => {
 			.catch(error => console.error(error))
 			.finally(() => mask.classList.remove('active'));
 
-			bindFilterEvents('municipality', this.selectMunicipality.bind(this));
-			bindFilterEvents('district', this.selectDistrict.bind(this));
-			bindFilterEvents('ward', this.selectWard.bind(this));
+			bindFilterEvents('municipality', this.selectMunicipality.bind(this), this.resetMunicipalityFilter.bind(this));
+			bindFilterEvents('district', this.selectDistrict.bind(this), this.resetDistrictFilter.bind(this));
+			bindFilterEvents('ward', this.selectWard.bind(this), this.resetWardFilter.bind(this));
 		},
 
 		selectMunicipality(municipality) {
@@ -208,6 +236,9 @@ const NewSearchCandidateHandler = (config) => {
 			layers.municipality.ul.innerHTML = '';
 			layers.municipality.ul.style.display = 'none';
 			layers.municipality.wrapper.classList.remove("active");
+
+			this.resetDistrictFilter(true);
+			this.resetWardFilter(true);
 		},
 		resetDistrictFilter(inputDisabled) {
 			layers.district.selected = null;
@@ -216,6 +247,8 @@ const NewSearchCandidateHandler = (config) => {
 			layers.district.input.value = "";
 			layers.district.ul.innerHTML = '';
 			layers.district.ul.style.display = 'none';
+
+			this.resetWardFilter(true);
 		},
 		resetWardFilter(inputDisabled) {
 			layers.ward.selected = null;

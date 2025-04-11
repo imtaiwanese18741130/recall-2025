@@ -1,0 +1,12 @@
+services:
+  recall-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recall-service
+    env_file:
+      - .env
+    ports:
+      - "8964:8964"
+    command: /bin/sh -c "while true; do sleep 1000; done"
+    working_dir: /var/www/app

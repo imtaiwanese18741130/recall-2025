@@ -4,9 +4,9 @@
 	{{ template "common-head" . }}
   <title>我要罷免高虹安 - 新竹市</title>
   <meta name="description" property="og:description" content="我是新竹市選民，我要罷免高虹安！">
+	{{- if .TurnstileSiteKey}}
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+	{{- end}}
 </head>
 <body>
   <div class="banner">
@@ -57,12 +57,14 @@
   	  	</div>
 				<div class="form-comment">請完全按照您國民身分證上<strong>住址</strong>欄位，<strong>完全對照填寫</strong></div>
   	  </div>
+			{{- if .TurnstileSiteKey}}
 			<div class="form-group">
   	    <label for="turnstile">人機驗證</label>
 				<div class="input-group">
 					<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}" data-theme="light"></div>
 				</div>
 			</div>
+			{{- end}}
   	  <div class="form-group">
 				<div class="input-group">
   	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作第 2 階段連署書</button>

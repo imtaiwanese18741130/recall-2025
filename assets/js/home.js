@@ -5,6 +5,7 @@ const pepTalk = document.querySelector(`.pep-talk`);
 const NewSearchCandidateHandler = (config) => {
 	const layers = {
 		municipality: {
+			title: "縣市",
 			input: config.filterMunicipalitiesInput,
 			ul: config.filterMunicipalitiesUl,
 			wrapper: config.filterMunicipalitiesWrapper,
@@ -13,6 +14,7 @@ const NewSearchCandidateHandler = (config) => {
 			selected: null,
 		},
 		district: {
+			title: "行政區",
 			input: config.filterDistrictsInput,
 			ul: config.filterDistrictsUl,
 			wrapper: config.filterDistrictsWrapper,
@@ -21,6 +23,7 @@ const NewSearchCandidateHandler = (config) => {
 			selected: null,
 		},
 		ward: {
+			title: "鄉鎮村里",
 			input: config.filterWardsInput,
 			ul: config.filterWardsUl,
 			wrapper: config.filterWardsWrapper,
@@ -58,10 +61,22 @@ const NewSearchCandidateHandler = (config) => {
 
 	function filterOptions (level, searchTerm) {
 		const opts = layers[level].data;
+		const title = layers[level].title;
+
 		if (opts.length === 0) return [];
 		if (searchTerm === "") return opts;
 
-		return opts.filter(opt => opt.n.includes(searchTerm));
+		filteredOpts = opts.filter(opt => opt.n.includes(searchTerm));
+		if (filteredOpts.length === 0) {
+			return [
+				{
+					id: null,
+					n: `請輸入正確${title}`
+				}
+			];
+		}
+
+		return filteredOpts
 	};
 
 	function populateFilter(inputElem, ulElem, opts, onClick, wrapperElem) {
@@ -71,21 +86,26 @@ const NewSearchCandidateHandler = (config) => {
 			const li = document.createElement('li');
 			li.value = opt.id;
 			li.textContent = opt.n;
-			li.addEventListener('click', () => {
-				inputElem.value = opt.n;
-				ulElem.style.display = 'none';
-				onClick(opt);
 
-				if (wrapperElem) {
-					wrapperElem.classList.remove("open");
-				}
-			});
-			li.addEventListener('mouseover', () => {
-				li.style.backgroundColor = '#f0f0f0';
-			});
-			li.addEventListener('mouseout', () => {
-				li.style.backgroundColor = '';
-			});
+			if (opt.id !== null) {
+				li.addEventListener('click', () => {
+					inputElem.value = opt.n;
+					ulElem.style.display = 'none';
+					onClick(opt);
+
+					if (wrapperElem) {
+						wrapperElem.classList.remove("open");
+					}
+				});
+
+				li.addEventListener('mouseover', () => {
+					li.style.backgroundColor = '#f0f0f0';
+				});
+				li.addEventListener('mouseout', () => {
+					li.style.backgroundColor = '';
+				});
+			}
+
 			ulElem.appendChild(li);
 		});
 

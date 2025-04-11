@@ -103,10 +103,10 @@
 								{{- if lt $rl.DaysLeft 0}}
 									<i class="icon-urgent"></i>
 								{{- end}}
-								{{- if gt $rl.DaysLeft 0}}倒數 {{$rl.DaysLeft}} 天{{- else }}請儘速繳交，罷團已開始造冊{{- end }}
+								{{- if ge $rl.DaysLeft 0}}倒數 {{$rl.DaysLeft}} 天{{- else }}最後補交機會！{{- end }}
 							</div>
 							<div class="safety-cutoff-date">
-							{{- if gt $rl.DaysLeft 0}}
+							{{- if ge $rl.DaysLeft 0}}
 								{{$rl.SafetyCutoffDateStr}}前繳交以利罷團作業
 							{{- else }}
 								罷團已開始造冊, 請盡速補交

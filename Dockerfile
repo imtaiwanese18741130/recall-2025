@@ -13,7 +13,7 @@ COPY --from=golang-builder /go/src/github.com/imtaiwanese18741130/recall-2025/as
 COPY --from=golang-builder /go/src/github.com/imtaiwanese18741130/recall-2025/templates /var/www/app/templates
 WORKDIR /var/www/app
 
-EXPOSE 8080
-ENV APP_PORT 8080
+EXPOSE 8964
+ENV APP_PORT 8964
 
 ENTRYPOINT ["./recall-2025"]

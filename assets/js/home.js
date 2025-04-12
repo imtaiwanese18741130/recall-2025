@@ -33,30 +33,45 @@ const NewSearchCandidateHandler = (config) => {
 		},
 	};
 
-	function hideDropdownOnClickOutside(wrapper, ul) {
-		document.addEventListener('click', (e) => {
-			if (!wrapper.contains(e.target)) {
-				ul.style.display = 'none';
-				wrapper.classList.remove("active");
-			}
-		});
-	};
-
-	function bindFilterEvents (level, selectFunc, resetFunc) {
+	function bindFilterEvents (level, selectFunc, goBackFunc) {
 		const { input, ul, wrapper, backBtn } = layers[level];
 
-		input.addEventListener('focus', () => {
+		input.addEventListener('focus', (e) => {
+			// e.preventDefault();
+			// setTimeout(() => {
+			// 	input.focus();
+			// }, 1000);
+
 			populateFilter(input, ul, filterOptions(level, ""), selectFunc, wrapper);
+
+
+			// if (window.innerWidth <= 600) {
+			// 	setTimeout(() => {
+			// 		console.log("scrollIntoView");
+			// 		input.scrollIntoView(true);
+			// 	}, 1000);
+			// }
+
+			// if (window.visualViewport) {
+			// 	console.log("visualViewport");
+			// 	const viewportHeight = window.visualViewport.height;
+			// 	const offsetTop = window.visualViewport.offsetTop;
+			// 	const filterMunicipalitiesUl = document.getElementById('filter-municipalities-ul');
+			// 	filterMunicipalitiesUl.style.height = `${viewportHeight-125}px`;
+			// 	filterMunicipalitiesUl.style.top = `${offsetTop}px`;
+			// }
 		});
 		input.addEventListener('input', (e) => {
 			populateFilter(input, ul, filterOptions(level, e.target.value.trim()), selectFunc, wrapper);
 		});
 		backBtn.addEventListener('click', () => {
-			resetFunc(true);
+			goBackFunc(true);
 			wrapper.classList.remove("open");
 		});
 
-		hideDropdownOnClickOutside(wrapper, ul);
+		document.addEventListener('click', (e) => {
+			if (!wrapper.contains(e.target)) goBackFunc(false);
+		});
 	};
 
 	function generateSynonymVariants(str) {
@@ -164,9 +179,9 @@ const NewSearchCandidateHandler = (config) => {
 			.catch(error => console.error(error))
 			.finally(() => mask.classList.remove('active'));
 
-			bindFilterEvents('municipality', this.selectMunicipality.bind(this), this.resetMunicipalityFilter.bind(this));
-			bindFilterEvents('district', this.selectDistrict.bind(this), this.resetDistrictFilter.bind(this));
-			bindFilterEvents('ward', this.selectWard.bind(this), this.resetWardFilter.bind(this));
+			bindFilterEvents('municipality', this.selectMunicipality.bind(this), this.goBackMunicipality.bind(this));
+			bindFilterEvents('district', this.selectDistrict.bind(this), this.goBackDistrict.bind(this));
+			bindFilterEvents('ward', this.selectWard.bind(this), this.goBackWard.bind(this));
 		},
 
 		selectMunicipality(municipality) {
@@ -193,6 +208,8 @@ const NewSearchCandidateHandler = (config) => {
 		selectDistrict(district) {
 			layers.district.selected = district;
 
+			this.resetWardFilter(false);
+
 			mask.classList.add('active');
 			shareContainer.style.display = "none";
 			sendSearchConstituenciesReq(layers.municipality.selected.id, layers.district.selected.id, null)
@@ -201,7 +218,6 @@ const NewSearchCandidateHandler = (config) => {
 					showShareContainer();
 				} else if (Object.hasOwn(data.result, "divisions")) {
 					this.setWards(data.result.divisions);
-					this.resetWardFilter(false);
 				} else {
 					console.error("invalid district");
 				}
@@ -229,13 +245,12 @@ const NewSearchCandidateHandler = (config) => {
 			.finally(() => mask.classList.remove('active'));
 		},
 
-		// Districts, Wards Resetters
+		// Municipalities, Districts, Wards Reset
 		resetMunicipalityFilter() {
 			layers.municipality.input.disabled = false;
 			layers.municipality.input.value = "";
 			layers.municipality.ul.innerHTML = '';
 			layers.municipality.ul.style.display = 'none';
-			layers.municipality.wrapper.classList.remove("active");
 
 			this.resetDistrictFilter(true);
 			this.resetWardFilter(true);
@@ -255,6 +270,26 @@ const NewSearchCandidateHandler = (config) => {
 
 			layers.ward.input.disabled = inputDisabled;
 			layers.ward.input.value = "";
+			layers.ward.ul.innerHTML = '';
+			layers.ward.ul.style.display = 'none';
+		},
+
+		// Municipalities, Districts, Wards GoBack
+		goBackMunicipality(forGoBack) {
+			if (forGoBack) layers.municipality.input.disabled = false;
+			layers.municipality.input.value = (layers.municipality.selected) ? layers.municipality.selected.n : "";
+			layers.municipality.ul.innerHTML = '';
+			layers.municipality.ul.style.display = 'none';
+		},
+		goBackDistrict(forGoBack) {
+			if (forGoBack) layers.district.input.disabled = (layers.district.data.length > 0) ? false : true;
+			layers.district.input.value = (layers.district.selected) ? layers.district.selected.n : "";
+			layers.district.ul.innerHTML = '';
+			layers.district.ul.style.display = 'none';
+		},
+		goBackWard(forGoBack) {
+			if (forGoBack) layers.ward.input.disabled = (layers.ward.data.length > 0) ? false : true;
+			layers.ward.input.value = (layers.ward.selected) ? layers.ward.selected.n : "";
 			layers.ward.ul.innerHTML = '';
 			layers.ward.ul.style.display = 'none';
 		},

@@ -1659,3 +1659,8 @@ button.btn-black:hover {
 	object-fit: contain;
 	opacity: 0.5;
 }
+
+.cloud-print-options {
+	display: flex;
+	gap: 16px;
+}

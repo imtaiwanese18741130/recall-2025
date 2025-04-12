@@ -25,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
 <script src="{{.BaseURL}}/assets/js/common.js?v0.1.12" defer></script>
-<script src="{{.BaseURL}}/assets/js/preview.js?v0.0.13" defer></script>
+<script src="{{.BaseURL}}/assets/js/preview.js?v0.0.14" defer></script>
 {{- end }}
 
 {{- define "preview-control-panel" }}
@@ -100,8 +100,10 @@
 				printSetting = this.value;
 				if (this.value === "general") {
 					scaleA4(1);
+					document.getElementById('print-btn').disabled = false;
 				} else if (this.value === "ibon") {
 					scaleA4(1.04);
+					document.getElementById('print-btn').disabled = true;
 				}
 			});
 		});

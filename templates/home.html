@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.14" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.12" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -28,7 +28,8 @@
 						<div class="filter-back">
 							<button id="filter-municipalities-back-btn"><i class="icon-go-back"></i></button>
 						</div>
-						<input type="text" id="filter-municipalities-input" placeholder="縣市" disabled>
+						<input type="text" id="filter-municipalities-input-view" placeholder="縣市" readonly disabled>
+						<input type="text" id="filter-municipalities-input-typing" placeholder="縣市" disabled style="display:none;">
 					</div>
 					<ul id="filter-municipalities-ul"></ul>
 				</div>
@@ -37,7 +38,8 @@
 						<div class="filter-back">
 							<button id="filter-districts-back-btn"><i class="icon-go-back"></i></button>
 						</div>
-						<input type="text" id="filter-districts-input" placeholder="行政區" disabled>
+						<input type="text" id="filter-districts-input-view" placeholder="行政區" readonly disabled>
+						<input type="text" id="filter-districts-input-typing" placeholder="行政區" disabled style="display:none;">
 					</div>
 					<ul id="filter-districts-ul"></ul>
 				</div>
@@ -46,7 +48,8 @@
 						<div class="filter-back">
 							<button id="filter-wards-back-btn"><i class="icon-go-back"></i></button>
 						</div>
-						<input type="text" id="filter-wards-input" placeholder="鄉鎮村里" disabled>
+						<input type="text" id="filter-wards-input-view" placeholder="鄉鎮村里" readonly disabled>
+						<input type="text" id="filter-wards-input-typing" placeholder="鄉鎮村里" disabled style="display:none;">
 					</div>
 					<ul id="filter-wards-ul"></ul>
 				</div>

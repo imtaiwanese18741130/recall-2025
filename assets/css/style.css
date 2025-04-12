@@ -1298,6 +1298,12 @@ button.btn-black:hover {
 		width: 83%;
 	}
 
+	#municipalities-filter-wrapper.open input:focus-visible,
+	#districts-filter-wrapper.open input:focus-visible,
+	#wards-filter-wrapper.open input:focus-visible{
+		border: none;
+		outline: none;
+	}
 }
 
 /* *************************************

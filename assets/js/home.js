@@ -40,19 +40,27 @@ const NewSearchCandidateHandler = (config) => {
 		const { inputView, inputTyping, ul, wrapper, backBtn } = layers[level];
 
 		inputView.addEventListener('click', (e) => {
+			const isMobile = window.matchMedia('(max-width: 600px)').matches;
+			if (!isMobile) {
+				initUlAndInputForDesktop();
+			}
+
 			inputView.style.display = 'none';
 			inputTyping.style.display = 'block';
 			inputTyping.value = inputView.value;
 
 			populateFilter(inputView, inputTyping, ul, filterOptions(level, ""), clickFunc, wrapper);
 
-			const isMobile = window.matchMedia('(max-width: 600px)').matches;
+			if (isMobile) setTimeout(() => wrapper.classList.add("open"), 10);
 			if (!isMobile) {
 				inputTyping.focus();
 			}
 		});
 		inputTyping.addEventListener('input', (e) => {
+			const isMobile = window.matchMedia('(max-width: 600px)').matches;
 			populateFilter(inputView, inputTyping, ul, filterOptions(level, e.target.value.trim()), clickFunc, wrapper);
+
+			if (isMobile) setTimeout(() => wrapper.classList.add("open"), 10);
 		});
 		inputTyping.addEventListener('keydown', (e) => {
 			const items = ul.querySelectorAll('li');
@@ -99,6 +107,16 @@ const NewSearchCandidateHandler = (config) => {
 		});
 	};
 
+	function initUlAndInputForDesktop() {
+		Object.keys(layers).forEach(key => {
+			layers[key].ul.innerHTML = '';
+			layers[key].ul.style.display = 'none';
+			layers[key].inputTyping.value = '';
+			layers[key].inputTyping.style.display = 'none';
+			layers[key].inputView.style.display = 'block';
+		});
+	}
+
 	function ensureVisible(ul, element) {
 		const ulRect = ul.getBoundingClientRect();
 		const elRect = element.getBoundingClientRect();
@@ -113,8 +131,7 @@ const NewSearchCandidateHandler = (config) => {
 	function generateSynonymVariants(str) {
 		const variants = new Set([str]);
 		const synonymMap = {
-			"台": ["臺"],
-			"臺": ["台"],
+			"台": ["臺"], "臺": ["台"],
 		};
 
 		for (const [key, values] of Object.entries(synonymMap)) {
@@ -146,7 +163,7 @@ const NewSearchCandidateHandler = (config) => {
 			);
 		});
 
-		if (filteredOpts.length === 0) {
+		if (!filteredOpts.length) {
 			return [
 				{
 					id: null,
@@ -159,7 +176,6 @@ const NewSearchCandidateHandler = (config) => {
 	};
 
 	function populateFilter(inputView, inputTyping, ul, opts, onClick, wrapperElem) {
-		wrapperElem.classList.add("open");
 		ul.innerHTML = '';
 
 		opts.forEach((opt, idx) => {
@@ -229,6 +245,7 @@ const NewSearchCandidateHandler = (config) => {
 			bindFilterEvents('ward', this.selectWard.bind(this), this.goBackWard.bind(this));
 		},
 
+		// Municipalities, Districts, Wards Selectors
 		selectMunicipality(municipality) {
 			layers.municipality.selected = municipality;
 
@@ -236,6 +253,7 @@ const NewSearchCandidateHandler = (config) => {
 			this.resetDistrictFilter(false);
 
 			mask.classList.add('active');
+			filteredCandidateContainer.innerHTML = "";
 			shareContainer.style.display = "none";
 			sendSearchConstituenciesReq(layers.municipality.selected.id, null, null)
 			.then(data => {
@@ -258,6 +276,7 @@ const NewSearchCandidateHandler = (config) => {
 			this.resetWardFilter(false);
 
 			mask.classList.add('active');
+			filteredCandidateContainer.innerHTML = "";
 			shareContainer.style.display = "none";
 			sendSearchConstituenciesReq(layers.municipality.selected.id, layers.district.selected.id, null)
 			.then(data => {
@@ -277,6 +296,7 @@ const NewSearchCandidateHandler = (config) => {
 			layers.ward.selected = ward;
 
 			mask.classList.add('active');
+			filteredCandidateContainer.innerHTML = "";
 			shareContainer.style.display = "none";
 			sendSearchConstituenciesReq(layers.municipality.selected.id, layers.district.selected.id, layers.ward.selected.id)
 			.then(data => {

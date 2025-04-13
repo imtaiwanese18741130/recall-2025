@@ -116,10 +116,12 @@
 								{{- if ge $rl.DaysLeft 0}}倒數 {{$rl.DaysLeft}} 天{{- else }}最後補交機會！{{- end }}
 							</div>
 							<div class="safety-cutoff-date">
-							{{- if ge $rl.DaysLeft 0}}
-								{{$rl.SafetyCutoffDateStr}}前繳交以利罷團作業
-							{{- else }}
-								罷團已開始造冊, 請盡速補交
+							{{- if ne $rl.SafetyCutoffDateStr ""}}
+								{{- if ge $rl.DaysLeft 0}}
+									{{$rl.SafetyCutoffDateStr}}前繳交以利罷團作業
+								{{- else }}
+									罷團已開始造冊, 請盡速補交
+								{{- end }}
 							{{- end }}
 							</div>
 						</div>

@@ -549,8 +549,8 @@ function showFilteredCandidateContainer(legislators, address) {
 						<div class="urgency">
 							<div class="days-left">
 								${legislator.safetyCutoffDateStr !== '' ? `<i class="icon-urgent"></i>
-								${safetyCutoffDateStr && legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
-								${safetyCutoffDateStr &&legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
+								${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
+								${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
 								${legislator.daysLeft > 0
 									? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
 									: `請儘速繳交，罷團已開始造冊`}` : ''}

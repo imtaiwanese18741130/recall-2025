@@ -1351,6 +1351,10 @@ button.btn-black:hover {
 	gap: 32px;
 }
 
+.candidate-container> .candidate-action {
+	width: 100%;
+}
+
 .candidate-container-row{
 	display: flex;
 	align-items: center;

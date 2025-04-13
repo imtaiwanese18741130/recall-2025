@@ -207,7 +207,7 @@ body {
 	padding: 8px 0 0 32px;
 	font-size: 14px;
 }
-.preview-control-panel .panel-container ul li{
+.preview-control-panel .panel-container ul li {
 	margin-bottom: 4px;
 }
 .preview-control-panel .panel-container .print-setting-container {
@@ -277,6 +277,9 @@ input[type="radio"]:checked + .print-setting::before {
 	width: 20px;
 	height: 16px;
 }
+.panel-container.md ul {
+	font-size: 14px;
+}
 .panel-container.md .print-setting {
 	width: 25px;
 	height: 25px;
@@ -317,9 +320,12 @@ input[type="radio"]:checked + .print-setting::before {
 .panel-container.sm label {
 	font-size: 26px;
 }
-.panel-container.md i {
+.panel-container.sm i {
 	width: 24px;
 	height: 19px;
+}
+.panel-container.sm ul {
+	font-size: 17px;
 }
 .panel-container.sm .print-setting {
 	width: 30px;
@@ -350,6 +356,9 @@ input[type="radio"]:checked + .print-setting::before {
 .panel-container.xs i {
 	width: 40px;
 	height: 32px;
+}
+.panel-container.xs ul {
+	font-size: 30px;
 }
 .panel-container.xs .print-setting {
 	width: 40px;

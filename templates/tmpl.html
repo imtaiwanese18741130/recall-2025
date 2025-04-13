@@ -19,8 +19,8 @@
 <meta name="format-detection" content="address=no">
 <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
 <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.12">
-<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.16">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.13">
+<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.18">
 <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
@@ -31,7 +31,12 @@
 {{- define "preview-control-panel" }}
 <div class="preview-control-panel">
 	<div class="panel-container">
-		<h6>請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」皆與身分證內容完全相同。若縣市改制則以新制地址填寫。</h6>
+		<h6>
+			<i class="icon-notify"></i>請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」皆與身分證內容完全相同。若縣市改制則以新制地址填寫。
+		</h6>
+		<h6>
+			<i class="icon-notify"></i><strong>注意！注意！注意！列印時的設定：</strong>若為一般印表機 (非 ibon 列印者)，請以<strong>「實際大小」(100%)</strong> 進行列印。避免尺寸縮放。
+		</h6>
 		<div class="print-setting-container">
 			<label>
 				<input type="radio" name="print-setting" value="general" checked>
@@ -43,13 +48,11 @@
 			</label>
 		</div>
 		<div class="action-btn">
-			<div class="col-2">
-				<a href="{{.ParticipateURL}}"><button class="btn-secondary lg w100 flex-center">取消</button></a>
-			</div>
-			<div class="col-4">
+			<a href="{{.ParticipateURL}}" style="margin:0 auto;">取消</a>
+			<div class="col-5">
 				<button id="print-btn" class="btn-secondary lg w100 flex-center"><i class="icon-print"></i>列印</button>
 			</div>
-			<div class="col-4">
+			<div class="col-5">
 				<button id="download-btn" class="btn-primary lg w100 flex-center"><i class="icon-download"></i>確認下載</button>
 			</div>
 		</div>

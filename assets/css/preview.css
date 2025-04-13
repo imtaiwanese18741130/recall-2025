@@ -251,6 +251,7 @@ input[type="radio"]:checked + .print-setting::before {
   border-radius: 50%;
 }
 .panel-container.md {
+	font-size: 24px;
 	padding: 18px;
 }
 .panel-container.md button {
@@ -263,6 +264,10 @@ input[type="radio"]:checked + .print-setting::before {
 .panel-container.md label {
 	font-size: 16px;
 	margin-right: 0.5em;
+}
+.panel-container.md i {
+	width: 20px;
+	height: 16px;
 }
 .panel-container.md .print-setting {
 	width: 25px;
@@ -289,6 +294,7 @@ input[type="radio"]:checked + .print-setting::before {
 	text-align: center;
 }
 .panel-container.sm {
+	font-size: 28px;
 	width: 100%;
 	padding: 24px;
 }
@@ -303,6 +309,10 @@ input[type="radio"]:checked + .print-setting::before {
 .panel-container.sm label {
 	font-size: 26px;
 }
+.panel-container.md i {
+	width: 24px;
+	height: 19px;
+}
 .panel-container.sm .print-setting {
 	width: 30px;
 	height: 30px;
@@ -313,6 +323,7 @@ input[type="radio"]:checked + .print-setting::before {
 	height: 15px;
 }
 .panel-container.xs {
+	font-size: 40px;
 	width: 100%;
 	padding: 36px;
 	gap: 32px;
@@ -327,6 +338,10 @@ input[type="radio"]:checked + .print-setting::before {
 }
 .panel-container.xs label {
 	font-size: 38px;
+}
+.panel-container.xs i {
+	width: 40px;
+	height: 32px;
 }
 .panel-container.xs .print-setting {
 	width: 40px;

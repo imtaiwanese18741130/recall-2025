@@ -528,9 +528,9 @@ function showFilteredCandidateContainer(legislators, address) {
 
 					if (legislator.recallStage === 1 || legislator.recallStage === 2) {
 						if (legislator.formDeployed) {
-							candidateAction = `<a href="${legislator.participateURL}?address=${address}"><button class="btn-primary lg">連署罷免</button></a>`;
+							candidateAction = `<a href="${legislator.participateURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`;
 						} else {
-							candidateAction = `<button class="btn-primary lg" disabled>${legislator.recallStage} 階準備中</button>`
+							candidateAction = `<button class="btn-primary lg w100" disabled>${legislator.recallStage} 階準備中</button>`
 						}
 					} else {
 						candidateAction = `<a href="${legislator.calendarURL}" target="_blank"><button class="btn-primary lg w100">加入 Google 日曆提醒投票</button></a>`;
@@ -545,19 +545,19 @@ function showFilteredCandidateContainer(legislators, address) {
 				</div>
 				<div class="recall-stage-container">
 					${recallStages}
-					<div class="candidate-action">
-						<div class="urgency">
-							<div class="days-left">
-								${legislator.safetyCutoffDateStr !== '' ? `<i class="icon-urgent"></i>
-								${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
-								${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
-								${legislator.daysLeft > 0
-									? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
-									: `請儘速繳交，罷團已開始造冊`}` : ''}
-							</div>
+				</div>
+				<div class="candidate-action">
+					<div class="urgency">
+						<div class="days-left">
+							${legislator.safetyCutoffDateStr !== '' ? `<i class="icon-urgent"></i>
+							${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
+							${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
+							${legislator.daysLeft > 0
+								? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
+								: `請儘速繳交，罷團已開始造冊`}` : ''}
 						</div>
-						${candidateAction}
 					</div>
+					${candidateAction}
 				</div>
 				${legislator.recallStatus === "ONGOING" ? "<p>罷免需經兩個階段連署，兩階段都通過後才進行投票決定罷免結果。請大家務必三個階段都完整參與！</p>" : ''}`;
 			filteredCandidateContainer.appendChild(candidateContainer);

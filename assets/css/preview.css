@@ -279,6 +279,7 @@ input[type="radio"]:checked + .print-setting::before {
 }
 .panel-container.md ul {
 	font-size: 14px;
+	padding-left: 32px;
 }
 .panel-container.md .print-setting {
 	width: 25px;
@@ -326,6 +327,7 @@ input[type="radio"]:checked + .print-setting::before {
 }
 .panel-container.sm ul {
 	font-size: 17px;
+	padding-left: 48px;
 }
 .panel-container.sm .print-setting {
 	width: 30px;
@@ -358,7 +360,8 @@ input[type="radio"]:checked + .print-setting::before {
 	height: 32px;
 }
 .panel-container.xs ul {
-	font-size: 30px;
+	font-size: 36px;
+	padding-left: 60px;
 }
 .panel-container.xs .print-setting {
 	width: 40px;

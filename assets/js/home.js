@@ -548,12 +548,12 @@ function showFilteredCandidateContainer(legislators, address) {
 					<div class="candidate-action">
 						<div class="urgency">
 							<div class="days-left">
-								<i class="icon-urgent"></i>
-								${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
-								${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
+								${legislator.safetyCutoffDateStr !== '' ? `<i class="icon-urgent"></i>
+								${safetyCutoffDateStr && legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
+								${safetyCutoffDateStr &&legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
 								${legislator.daysLeft > 0
 									? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
-									: `請儘速繳交，罷團已開始造冊`}
+									: `請儘速繳交，罷團已開始造冊`}` : ''}
 							</div>
 						</div>
 						${candidateAction}

@@ -202,6 +202,14 @@ body {
 	margin: 0;
 	font-size: 16px;
 }
+.preview-control-panel .panel-container ul {
+	list-style: disc;
+	padding: 8px 0 0 32px;
+	font-size: 14px;
+}
+.preview-control-panel .panel-container ul li{
+	margin-bottom: 4px;
+}
 .preview-control-panel .panel-container .print-setting-container {
 	display: flex;
 	flex-direction: column;

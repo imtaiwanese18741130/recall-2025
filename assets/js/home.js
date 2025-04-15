@@ -552,7 +552,7 @@ function showFilteredCandidateContainer(legislators, address) {
 							${legislator.safetyCutoffDateStr !== '' ? `<i class="icon-urgent"></i>
 							${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
 							${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
-							${legislator.daysLeft > 0
+							${legislator.daysLeft >= 0
 								? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
 								: `請儘速繳交，罷團已開始造冊`}` : ''}
 						</div>

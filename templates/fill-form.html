@@ -30,7 +30,7 @@
 					{{- if lt .Legislator.DaysLeft 0}}
 					<i class="icon-urgent"></i>
 					{{- end}}
-					{{- if gt .Legislator.DaysLeft 0}}
+					{{- if ge .Legislator.DaysLeft 0}}
 						{{.Legislator.SafetyCutoffDateStr}}截止，倒數 {{.Legislator.DaysLeft}} 天
 					{{- else}}
 						請儘速繳交，罷團已開始造冊

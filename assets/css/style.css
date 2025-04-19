@@ -786,8 +786,8 @@ button.btn-black:hover {
 
 .icon-arrow {
   display: inline-block;
-  width: 10px;
-  height: 5px;
+  min-width: 10px;
+  min-height: 5px;
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5" fill="none"><path d="M5 5L0 0H10L5 5Z" fill="%232D2D2D"/></svg>');
   background-size: contain;
   background-repeat: no-repeat;

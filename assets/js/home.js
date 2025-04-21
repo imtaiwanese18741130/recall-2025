@@ -553,7 +553,7 @@ function showFilteredCandidateContainer(legislators, address) {
 							${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
 							${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
 							${legislator.daysLeft >= 0
-								? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
+								? `${legislator.safetyCutoffDateStr}前繳交以利罷團作業`
 								: `請儘速繳交，罷團已開始造冊`}` : ''}
 						</div>
 					</div>

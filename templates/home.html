@@ -133,13 +133,6 @@
 						{{- else if eq $rl.RecallStatus "FAILED"}}
 							<span class="lg fw400">連署未通過</span>
 						{{- else}}
-							{{- if lt $rl.RecallStage 3}}
-								{{- if $rl.FormDeployed}}
-								<a href="{{$rl.ParticipateURL}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
-								{{- else}}
-								<button class="btn-primary md w100" disabled>{{$rl.RecallStage}} 階準備中</button>
-								{{- end}}
-							{{- end}}
 							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" data-has-maintainer="{{if $rl.HasCalendarMaintainer}}true{{else}}false{{end}}">+ 罷免行事曆</button>
 						{{- end}}
 					</div>

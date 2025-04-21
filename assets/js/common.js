@@ -8,6 +8,11 @@ async function preparePDF(filename, redirectURL, nextAction) {
 	const mask = document.querySelector('.mask');
 	mask.classList.add('active');
 
+	let pdfScale = 1.5;
+	if (nextAction === 'preview') {
+		pdfScale = 3;
+	}
+
 	try {
 		let pdf;
 		for (const [index, container] of containers.entries()) {
@@ -22,12 +27,12 @@ async function preparePDF(filename, redirectURL, nextAction) {
 
 			const pdfWidth = pdf.internal.pageSize.getWidth();
 			const canvas = await html2canvas(container, {
-				scale: 1.5,
+				scale: pdfScale,
 				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
 			});
-			const imgData = canvas.toDataURL('image/png', 1.0);
+			const imgData = canvas.toDataURL('image/jpeg', 3.0);
 			const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+			pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
 		}
 
 		if (nextAction === 'download') {

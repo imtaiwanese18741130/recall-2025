@@ -182,6 +182,14 @@
 					birthDay.focus();
 					return;
 				}
+
+				const pattern = /\d+\s*鄰/;
+				if (!pattern.test(address.value)) {
+					alert("地址缺少「鄰」資訊，請依照您戶籍的「鄰」輸入。");
+					event.preventDefault();
+					address.focus();
+					return;
+				}
 			});
 
 			function isValidDate(year, month, day) {

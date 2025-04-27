@@ -1,4 +1,7 @@
 async function preparePDF(filename, redirectURL, nextAction) {
+	// Wait 0.1 seconds to ensure the DOM is fully loaded
+	await new Promise((resolve) => setTimeout(resolve, 100));
+
 	const { jsPDF } = window.jspdf;
 	const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
 	if (containers.length === 0) {

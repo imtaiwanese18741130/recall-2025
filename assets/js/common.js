@@ -22,7 +22,7 @@ async function preparePDF(filename, redirectURL, nextAction) {
 
 			const pdfWidth = pdf.internal.pageSize.getWidth();
 			const canvas = await html2canvas(container, {
-				scale: 5.5,
+				scale: 4,
 				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
 			});
 			const imgData = canvas.toDataURL('image/jpeg', 1.0);

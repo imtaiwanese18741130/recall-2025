@@ -549,12 +549,14 @@ function showFilteredCandidateContainer(legislators, address) {
 				<div class="candidate-action">
 					<div class="urgency">
 						<div class="days-left">
-							${legislator.safetyCutoffDateStr !== '' ? `<i class="icon-urgent"></i>
-							${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
-							${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
 							${legislator.daysLeft >= 0
-								? `${legislator.safetyCutoffDateStr}前繳交以利罷團作業`
-								: `請儘速繳交，罷團已開始造冊`}` : ''}
+								? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>罷團已開始造冊，請儘速繳交`
+								: legislator.recallStatus === "ONGOING"
+									? legislator.isShortage
+										? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>未達安全份數，請儘速連署繳交！`
+										: `數量已達安全份數`
+									: ''
+								}
 						</div>
 					</div>
 					${candidateAction}

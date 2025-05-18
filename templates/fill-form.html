@@ -23,17 +23,14 @@
 			</div>
 			<div class="legislator-urgency">
 				<div class="days-left">
-					<i class="icon-urgent"></i>
-					{{- if lt .Legislator.DaysLeft 15}}
-					<i class="icon-urgent"></i>
-					{{- end }}
-					{{- if lt .Legislator.DaysLeft 0}}
-					<i class="icon-urgent"></i>
-					{{- end}}
 					{{- if ge .Legislator.DaysLeft 0}}
-						{{.Legislator.SafetyCutoffDateStr}}前繳交以利罷團作業
+						<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>罷團已開始造冊, 請盡速繳交
 					{{- else}}
-						請儘速繳交，罷團已開始造冊
+						{{- if .Legislator.IsShortage }}
+							<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>未達安全份數，請儘速連署繳交！
+						{{- else }}
+							數量已達安全份數
+						{{- end }}
 					{{- end}}
 				</div>
 			</div>

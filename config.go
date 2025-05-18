@@ -252,6 +252,8 @@ type RecallLegislator struct {
 	ByElectionDate        *string  `json:"byElectionDate"`
 	ByElectionEventURL    *string  `json:"byElectionEventURL"`
 	SafetyCutoffDate      *string  `json:"safetyCutoffDate"`
+	EndedDate             *string  `json:"endedDate"`
+	IsShortage            bool     `json:"isShortage"`
 	ConstituencyName      string   `json:"constituencyName"`
 	ParticipateURL        *url.URL `json:"-"`
 	ParticipateURLString  string   `json:"participateURL"`
@@ -260,12 +262,12 @@ type RecallLegislator struct {
 }
 
 func (r *RecallLegislator) CalcDaysLeft(now time.Time) {
-	if r.SafetyCutoffDate == nil || *r.SafetyCutoffDate == "" {
+	if r.EndedDate == nil || *r.EndedDate == "" {
 		r.DaysLeft = 0
 		return
 	}
 
-	cutoff, err := time.Parse("2006-01-02", *r.SafetyCutoffDate)
+	cutoff, err := time.Parse("2006-01-02", *r.EndedDate)
 	if err != nil {
 		r.DaysLeft = 0
 		return

@@ -673,6 +673,8 @@ button.btn-black:hover {
 }
 
 .candidate .urgency .safety-cutoff-date {
+	display: flex;
+	align-items: center;
 	font-weight: 400;
 	font-size: 14px;
 	color: #888888;

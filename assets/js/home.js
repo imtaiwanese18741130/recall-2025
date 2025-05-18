@@ -550,10 +550,10 @@ function showFilteredCandidateContainer(legislators, address) {
 					<div class="urgency">
 						<div class="days-left">
 							${legislator.daysLeft >= 0
-								? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>罷團已開始造冊，請儘速繳交`
+								? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>造冊中，請儘速繳交！`
 								: legislator.recallStatus === "ONGOING"
 									? legislator.isShortage
-										? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>未達安全份數，請儘速連署！`
+										? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>未安全，請儘速連署！`
 										: `數量已達安全份數`
 									: ''
 								}

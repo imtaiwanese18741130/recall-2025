@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS golang-builder
+FROM golang:1.24-alpine AS golang-builder
 
 WORKDIR /go/src/github.com/imtaiwanese18741130/recall-2025
 COPY . .

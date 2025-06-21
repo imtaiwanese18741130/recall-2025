@@ -179,6 +179,8 @@ const (
 	JSONConfigAdministrativeDivisions = "json-config/administrative-divisions.json"
 )
 
+var weekdayStrings = [...]string{"日", "一", "二", "三", "四", "五", "六"}
+
 // config: recall-legislator
 func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint64]RecallLegislators, error) {
 	file, err := os.Open(JSONConfigRecallLegislators)
@@ -204,6 +206,15 @@ func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint6
 				return nil, nil, err
 			}
 			r.SafetyCutoffDateStr = fmt.Sprintf("%d 月 %d 日", t.Month(), t.Day())
+		}
+
+		if r.VotingDate != nil && *r.VotingDate != "" {
+			t, err := time.Parse("2006-01-02", *r.VotingDate)
+			if err != nil {
+				return nil, nil, err
+			}
+			r.VotingDateWeekdayStr = fmt.Sprintf("%d 月 %d 日 (%s)", t.Month(), t.Day(), weekdayStrings[t.Weekday()])
+			r.VotingDateStr = fmt.Sprintf("%d 月 %d 日", t.Month(), t.Day())
 		}
 
 		if _, exists := rlmap[r.ConstituencyId]; !exists {
@@ -249,6 +260,8 @@ type RecallLegislator struct {
 	HasCalendarMaintainer bool     `json:"hasCalendarMaintainer"`
 	VotingDate            *string  `json:"votingDate"`
 	VotingEventURL        *string  `json:"votingEventURL"`
+	VotingDateStr         string   `json:"votingDateStr"`
+	VotingDateWeekdayStr  string   `json:"votingDateWeekdayStr"`
 	ByElectionDate        *string  `json:"byElectionDate"`
 	ByElectionEventURL    *string  `json:"byElectionEventURL"`
 	SafetyCutoffDate      *string  `json:"safetyCutoffDate"`

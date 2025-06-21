@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.16" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.16ba1aaaaaa11aiaaaa1" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -110,9 +110,11 @@
 									<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>造冊中，請儘速繳交！
 								{{- else }}
 									{{- if $rl.IsShortage }}
-										<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>未安全，請儘速連署！
+										<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！！
+									{{- else if $rl.VotingDateStr }}
+										{{ $rl.VotingDateStr }} 回家投票！
 									{{- else }}
-										數量已達安全份數
+										尚待中選會公告
 									{{- end }}
 								{{- end }}
 							</div>
@@ -125,7 +127,16 @@
 						{{- else if eq $rl.RecallStatus "FAILED"}}
 							<span class="lg fw400">連署未通過</span>
 						{{- else}}
-							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" data-has-maintainer="{{if $rl.HasCalendarMaintainer}}true{{else}}false{{end}}">+ 罷免行事曆</button>
+							{{- if lt $rl.RecallStage 3}}
+								{{- if and $rl.FormDeployed $rl.IsShortage }}
+								<a href="{{$rl.ParticipateURL}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
+								{{- end}}
+							{{- else if eq $rl.RecallStage 3}}
+								{{- if $rl.VotingDateStr }}
+									<a href="{{$rl.ParticipateURL}}"><button class="btn-primary md w100 fw700">回家投票</button></a>
+								{{- end }}
+							{{- end}}
+							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" data-has-maintainer="{{if $rl.HasCalendarMaintainer}}true{{else}}false{{end}}">+ 投票提醒</button>
 						{{- end}}
 					</div>
 				</div>

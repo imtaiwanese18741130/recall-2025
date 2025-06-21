@@ -112,7 +112,7 @@
 									{{- if $rl.IsShortage }}
 										<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！！
 									{{- else if $rl.VotingDateStr }}
-										{{ $rl.VotingDateStr }} 回家投票！
+										<span style="font-weight: bold; color: #000;">{{ $rl.VotingDateStr }} 回家投票</span>
 									{{- else }}
 										尚待中選會公告
 									{{- end }}

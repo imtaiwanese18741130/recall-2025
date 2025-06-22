@@ -34,26 +34,26 @@ func main() {
 		}
 	}()
 
-	mux := http.NewServeMux()
+	r := NewRouteRegistrar()
+	r.Set404Response(ctrl.NotFound())
 
-	mux.HandleFunc("/health/v1/ping", withRecovery(ctrl.Ping))
-	mux.HandleFunc("/robots.txt", withRecovery(ctrl.RobotsTxt))
-	mux.HandleFunc("/sitemap.xml", withRecovery(ctrl.Sitemap))
-	mux.HandleFunc("/assets/", withRecovery(ctrl.GetAsset))
+	r.GET("/health/v1/ping", ctrl.Ping())
+	r.GET("/robots.txt", ctrl.RobotsTxt())
+	r.GET("/sitemap.xml", ctrl.Sitemap())
+	r.GET("/assets/", ctrl.GetAsset())
 
-	mux.HandleFunc("/", withRecovery(ctrl.Home))
-	mux.HandleFunc("/authorization-letter", withRecovery(ctrl.AuthorizationLetter))
-	mux.HandleFunc("/apis/municipalities", withRecovery(ctrl.ListMunicipalities))
-	mux.HandleFunc("/apis/constituencies", withRecovery(ctrl.SearchRecallConstituency))
-	mux.HandleFunc("/preview/stages/", withRecovery(ctrl.PreviewOriginalLocalForm))
-	mux.HandleFunc("/legislators/", withRecovery(ctrl.LegislatorRouter))
-	mux.HandleFunc("/mayor", withRecovery(ctrl.MParticipate))
-	mux.HandleFunc("/mayor/preview", withRecovery(ctrl.MPreviewLocalForm))
-	mux.HandleFunc("/mayor/thank-you", withRecovery(ctrl.MThankYou))
+	r.GET("/{$}", ctrl.Home())
+	r.GET("/authorization-letter", ctrl.AuthorizationLetter())
+	r.GET("/apis/municipalities", ctrl.ListMunicipalities())
+	r.GET("/apis/constituencies", ctrl.SearchRecallConstituency())
+	r.GET("/preview/{name}", ctrl.PreviewOriginalLocalForm())
+	r.GET("/legislators/{name}", ctrl.Participate())
+	r.POST("/legislators/{name}/preview", ctrl.Preview())
+	r.GET("/legislators/{name}/thank-you", ctrl.ThankYou())
 
 	srv := &http.Server{
 		Addr:         ":" + cfg.AppPort,
-		Handler:      logRequest(mux),
+		Handler:      logRequest(r.GetMux()),
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,
@@ -62,17 +62,6 @@ func main() {
 	log.Printf("Listening on port %s", cfg.AppPort)
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatal(err)
-	}
-}
-
-func withRecovery(h http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		defer func() {
-			if err := recover(); err != nil {
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			}
-		}()
-		h(w, r)
 	}
 }
 

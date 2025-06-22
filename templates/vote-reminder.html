@@ -142,45 +142,32 @@
       <h1>{{ .Legislator.VotingDateWeekdayStr }}</h1>
       <h2>『 {{ .Legislator.PoliticianName }} 』罷免案投票日</h2>
 
-      <div class="description">
-        罷免案投票日，請務必回到「戶籍地」投票！<br>
-        投票時，若您同意罷免請蓋在同意罷免上
-      </div>
-
+      <div class="description">罷免案投票日，請務必回到「戶籍地」投票！<br>投票時，請蓋同意罷免</div>
       <img class="ballot-img" src="{{.BaseURL}}/assets/images/agree-recall.png" alt="同意罷免">
 
       <div class="info-box">
-        <p>【搭台鐵/高鐵】 乘車前28天可開始預訂<br>
-        ＊高鐵提早搶票可享早鳥優惠最低65折</p>
-        <p>【搭客運】 乘車前15~17天可開始預訂<br>
+        <p>【搭台鐵/高鐵】 乘車前 28 天可開始預訂<br>
+        ＊高鐵提早搶票可享早鳥優惠最低 65 折</p>
+        <p>【搭客運】 乘車前 15~17 天可開始預訂<br>
         ＊各家客運時間不同</p>
-        <p>【搭飛機】 現在就可預訂!!</p>
+        <p>【搭飛機】現在就可預訂！</p>
       </div>
     </div>
 
     <div class="bottom-actions">
       <div class="btn-row">
-        <a
-          href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip123/query"
-          class="btn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip123/query" class="btn" target="_blank" rel="noopener noreferrer">
           <img src="{{.BaseURL}}/assets/images/tra.png" alt="台鐵圖示" class="btn-icon" />
           <span>台鐵訂票</span>
         </a>
 
-        <a
-          href="https://irs.thsrc.com.tw/IMINT/?utm_source=thsrc&utm_medium=btnlink&utm_term=booking"
-          class="btn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://irs.thsrc.com.tw/IMINT/?utm_source=thsrc&utm_medium=btnlink&utm_term=booking" class="btn" target="_blank" rel="noopener noreferrer">
           <img src="{{.BaseURL}}/assets/images/thsr.png" alt="高鐵圖示" class="btn-icon" />
           <span>高鐵訂票</span>
         </a>
       </div>
-      <div class="btn-full" onclick="shareVoteRemiderLink(`{{.Legislator.VotingDateWeekdayStr}}`, `{{.Legislator.PoliticianName}}`)">提醒親友，一起提早訂車票！</div>
+
+      <button class="btn-black lg w100" onclick="shareVoteRemiderLink(`{{.Legislator.VotingDateWeekdayStr}}`, `{{.Legislator.PoliticianName}}`)">提醒親友，一起提早訂車票！</button>
     </div>
   </div>
 </body>
@@ -190,16 +177,9 @@
   function goBackHome() {
     window.location.href = "{{.BaseURL}}";
   }
+
   function shareVoteRemiderLink(dateStr, politicianName) {
-    const textContent = `
-嗨~ 
-`+dateStr+` 是`+ politicianName + `罷免案投票日, 記得回戶籍地投票!
-如果你也要搭車回家投票, 趕快跟我一起提早訂車票吧!
-
-台鐵: https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip123/query
-
-高鐵: https://irs.thsrc.com.tw/IMINT/?utm_source=thsrc&utm_medium=btnlink&utm_term=booking`
-
+    const textContent = `嗨～`+dateStr+` 是【`+ politicianName + `】罷免案投票日，記得回戶籍地，投下同意票！`
     shareLink(textContent, "")
   }
 </script>

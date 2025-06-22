@@ -11,7 +11,6 @@ import (
 	"path"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type Controller struct {
@@ -24,17 +23,6 @@ func NewController(cfg *Config, tmpl *template.Template) *Controller {
 		Config:    cfg,
 		Templates: tmpl,
 	}
-}
-
-func (ctrl *Controller) CalcDaysLeft() error {
-	loc, err := time.LoadLocation("Asia/Taipei")
-	if err != nil {
-		return err
-	}
-
-	now := time.Now().In(loc)
-	ctrl.Config.CalcDaysLeft(now)
-	return nil
 }
 
 func (ctrl *Controller) Home() http.HandlerFunc {
@@ -171,7 +159,6 @@ func (ctrl *Controller) ThankYou() http.HandlerFunc {
 		ctrl.renderTemplate(w, "thank-you.html", map[string]interface{}{
 			"BaseURL":        ctrl.AppBaseURL.String(),
 			"ParticipateURL": l.ParticipateURL,
-			"CalendarURL":    l.CalendarURL,
 			"CsoURL":         l.CsoURL,
 		})
 	}

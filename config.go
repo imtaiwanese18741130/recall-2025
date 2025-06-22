@@ -200,16 +200,9 @@ func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint6
 	for _, r := range rows {
 		r.ParticipateURL = baseURL.JoinPath("legislators", r.PoliticianName)
 		r.ParticipateURLString = r.ParticipateURL.String()
-		if r.SafetyCutoffDate != nil && *r.SafetyCutoffDate != "" {
-			t, err := time.Parse("2006-01-02", *r.SafetyCutoffDate)
-			if err != nil {
-				return nil, nil, err
-			}
-			r.SafetyCutoffDateStr = fmt.Sprintf("%d 月 %d 日", t.Month(), t.Day())
-		}
 
 		if r.VotingDate != nil && *r.VotingDate != "" {
-			t, err := time.Parse("2006-01-02", *r.VotingDate)
+			t, err := time.Parse(time.RFC3339, *r.VotingDate)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -239,54 +232,27 @@ func (rs RecallLegislators) HasLegislatorInMunicipality(municipalityId uint64) b
 	return false
 }
 
-func (rs *RecallLegislators) CalcDaysLeft(now time.Time) {
-	for _, r := range *rs {
-		r.CalcDaysLeft(now)
-	}
-}
-
 type RecallLegislator struct {
-	ConstituencyId        uint64   `json:"constituencyId"`
-	MunicipalityId        uint64   `json:"municipalityId"`
-	Term                  uint64   `json:"term"`
-	MunicipalityName      string   `json:"municipalityName"`
-	ConstituencyNum       uint64   `json:"constituencyNum"`
-	PoliticianName        string   `json:"politicianName"`
-	RecallStage           uint64   `json:"recallStage"`
-	RecallStatus          string   `json:"recallStatus"`
-	FormDeployed          bool     `json:"formDeployed"`
-	CsoURL                string   `json:"csoURL"`
-	CalendarURL           string   `json:"calendarURL"`
-	HasCalendarMaintainer bool     `json:"hasCalendarMaintainer"`
-	VotingDate            *string  `json:"votingDate"`
-	VotingEventURL        *string  `json:"votingEventURL"`
-	VotingDateStr         string   `json:"votingDateStr"`
-	VotingDateWeekdayStr  string   `json:"votingDateWeekdayStr"`
-	ByElectionDate        *string  `json:"byElectionDate"`
-	ByElectionEventURL    *string  `json:"byElectionEventURL"`
-	SafetyCutoffDate      *string  `json:"safetyCutoffDate"`
-	EndedDate             *string  `json:"endedDate"`
-	IsShortage            bool     `json:"isShortage"`
-	ConstituencyName      string   `json:"constituencyName"`
-	ParticipateURL        *url.URL `json:"-"`
-	ParticipateURLString  string   `json:"participateURL"`
-	DaysLeft              int      `json:"daysLeft"`
-	SafetyCutoffDateStr   string   `json:"safetyCutoffDateStr"`
-}
-
-func (r *RecallLegislator) CalcDaysLeft(now time.Time) {
-	if r.EndedDate == nil || *r.EndedDate == "" {
-		r.DaysLeft = 0
-		return
-	}
-
-	cutoff, err := time.Parse("2006-01-02", *r.EndedDate)
-	if err != nil {
-		r.DaysLeft = 0
-		return
-	}
-
-	r.DaysLeft = int(cutoff.Sub(now).Hours() / 24)
+	ConstituencyId       uint64   `json:"constituencyId"`
+	MunicipalityId       uint64   `json:"municipalityId"`
+	Term                 uint64   `json:"term"`
+	MunicipalityName     string   `json:"municipalityName"`
+	ConstituencyNum      uint64   `json:"constituencyNum"`
+	PoliticianName       string   `json:"politicianName"`
+	RecallStage          uint64   `json:"recallStage"`
+	RecallStatus         string   `json:"recallStatus"`
+	CsoURL               string   `json:"csoURL"`
+	VotingDate           *string  `json:"votingDate"`
+	VotingEventURL       *string  `json:"votingEventURL"`
+	VotingDateStr        string   `json:"votingDateStr"`
+	VotingDateWeekdayStr string   `json:"votingDateWeekdayStr"`
+	ByElectionDate       *string  `json:"byElectionDate"`
+	ByElectionEventURL   *string  `json:"byElectionEventURL"`
+	EndedDate            *string  `json:"endedDate"`
+	IsShortage           bool     `json:"isShortage"`
+	ConstituencyName     string   `json:"constituencyName"`
+	ParticipateURL       *url.URL `json:"-"`
+	ParticipateURLString string   `json:"participateURL"`
 }
 
 func (r RecallLegislator) IsPetitioning() bool {

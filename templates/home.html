@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.17" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.18" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -106,16 +106,12 @@
 						{{- if eq $rl.RecallStatus "ONGOING" }}
 						<div class="urgency">
 							<div class="safety-cutoff-date">
-								{{- if ge $rl.DaysLeft 0}}
-									<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>造冊中，請儘速繳交！
+								{{- if $rl.IsShortage }}
+									<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！
+								{{- else if $rl.VotingDateStr }}
+									<span style="font-weight: bold; color: #000;">{{ $rl.VotingDateStr }}回家投票</span>
 								{{- else }}
-									{{- if $rl.IsShortage }}
-										<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！！
-									{{- else if $rl.VotingDateStr }}
-										<span style="font-weight: bold; color: #000;">{{ $rl.VotingDateStr }} 回家投票</span>
-									{{- else }}
-										尚待中選會公告
-									{{- end }}
+									尚待中選會公告
 								{{- end }}
 							</div>
 						</div>
@@ -128,15 +124,15 @@
 							<span class="lg fw400">連署未通過</span>
 						{{- else}}
 							{{- if lt $rl.RecallStage 3}}
-								{{- if and $rl.FormDeployed $rl.IsShortage }}
+								{{- if $rl.IsShortage }}
 								<a href="{{$rl.ParticipateURL}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
 								{{- end}}
 							{{- else if eq $rl.RecallStage 3}}
 								{{- if $rl.VotingDateStr }}
 									<a href="{{$rl.ParticipateURL}}"><button class="btn-primary md w100 fw700">回家投票</button></a>
+									<a href="{{$rl.VotingEventURL}}" target="_blank"><button class="btn-secondary md w100">+ 投票提醒</button></a>
 								{{- end }}
 							{{- end}}
-							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" data-has-maintainer="{{if $rl.HasCalendarMaintainer}}true{{else}}false{{end}}">+ 投票提醒</button>
 						{{- end}}
 					</div>
 				</div>
@@ -187,30 +183,6 @@
 				showDialog();
 			}));
 
-			document.querySelectorAll(".municipalities button[data-url]").forEach(elem => {
-				elem.addEventListener("click", ( async (event) => {
-					mask.classList.add('active');
-					const elem = event.target;
-					const calendarURL = elem.getAttribute("data-url");
-					const hasMaintainer = elem.getAttribute("data-has-maintainer");
-					const li = elem.closest("li");
-					const lagislatorName = li.querySelector("li .candidate-name").firstChild.textContent;
-					const constituencyName = li.querySelector("li .candidate-zone").innerHTML;
-					dialog.querySelector("h3").innerHTML = `罷免行事曆<br>${constituencyName} - ${lagislatorName}`;
-					dialog.querySelector(".content").innerHTML = `
-						<div class="dialog-calendar-status">
-							${hasMaintainer === "true"
-								? '<i class="icon-is-active active"></i>行事曆狀態：罷免團體已接管'
-								: '<i class="icon-is-active inactive"></i>行事曆狀態：等待罷免團體接管'}
-						</div>
-						<p>行事曆內容由該選區罷免團體接管後，陸續更新罷免最新活動。請新增行事曆並持續關注，不錯過罷免重要時程！</p>
-						<div class="dialog-action">
-							<a href="${calendarURL}" target="_blank"><button class="btn-primary lg w100">前往新增行事曆</button></a>
-						</div>`;
-					mask.classList.remove('active');
-					showDialog();
-				}));
-			});
 		});
 	</script>
 </body>

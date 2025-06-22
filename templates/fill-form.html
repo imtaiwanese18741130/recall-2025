@@ -23,15 +23,11 @@
 			</div>
 			<div class="legislator-urgency">
 				<div class="days-left">
-					{{- if ge .Legislator.DaysLeft 0}}
-						<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>造冊中，請儘速繳交！
-					{{- else}}
-						{{- if .Legislator.IsShortage }}
-							<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！！
-						{{- else }}
-							數量已達安全份數
-						{{- end }}
-					{{- end}}
+					{{- if .Legislator.IsShortage }}
+						<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！
+					{{- else }}
+						數量已達安全份數
+					{{- end }}
 				</div>
 			</div>
 		</div>
@@ -77,11 +73,7 @@
 			</div>
   	  <div class="form-group">
 				<div class="input-group">
-					{{- if .Legislator.FormDeployed}}
   	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作第 {{.Legislator.RecallStage}} 階段連署書</button>
-					{{- else}}
-  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;" disabled>{{.Legislator.RecallStage}} 階準備中</button>
-					{{- end}}
   	  	</div>
   	  </div>
   	  <div class="form-group">

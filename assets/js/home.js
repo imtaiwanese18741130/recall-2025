@@ -627,7 +627,7 @@ function showFilteredCandidateContainer(legislators, address) {
           } else {
             candidateAction = `
 			<a href="${legislator.participateURL}"><button class="btn-primary lg w100">回家投票！馬上訂車票</button></a>
-			<a href="${legislator.calendarURL}" target="_blank"><button class="btn-black lg w100">加入 Google 日曆提醒投票</button></a>
+			<a href="${legislator.votingEventURL}" target="_blank"><button class="btn-black lg w100">加入 Google 日曆提醒投票</button></a>
 			`;
           }
           break;
@@ -645,15 +645,12 @@ function showFilteredCandidateContainer(legislators, address) {
 					<div class="urgency">
 						<div class="days-left">
 							${
-                legislator.daysLeft >= 0
-                  ? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>造冊中，請儘速繳交！`
-                  : legislator.recallStatus === "ONGOING"
+              	legislator.recallStatus === "ONGOING"
                   ? legislator.isShortage
-                    ? `<i class="icon-urgent"></i><i class="icon-urgent"></i>
-					<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！！`
+                    ? `<i class="icon-urgent"></i><i class="icon-urgent"></i><i class="icon-urgent"></i>儘速補件！`
                     : legislator.votingDate
-                    ? `<span style="font-size: 1.2em;">${legislator.votingDateStr}<br>請回戶籍地投票！</span>`
-                    : `尚待中選會公告`
+                    	? `<span style="font-size: 1.2em;">${legislator.votingDateStr}<br>請回戶籍地投票！</span>`
+                    	: `尚待中選會公告`
                   : "罷免連署未達成門檻。別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！"
               }
 						</div>
@@ -662,7 +659,7 @@ function showFilteredCandidateContainer(legislators, address) {
 				</div>
 				${
           legislator.recallStatus === "ONGOING"
-            ? "<p>現行的公職人員罷免制度為分2階段徵求選民連署，通過之後第3階段再進行選民投票決定罷免結果。請大家務必3階段全部跟到最後一刻！</p>"
+            ? "<p>現行的公職人員罷免制度為分 2 階段徵求選民連署，通過之後第三階段再進行選民投票決定罷免結果。請大家務必 3 階段全部跟到最後一刻！</p>"
             : ""
         }`;
       filteredCandidateContainer.appendChild(candidateContainer);

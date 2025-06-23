@@ -619,11 +619,7 @@ function showFilteredCandidateContainer(legislators, address) {
           recallStages = `<div class="recall-stage-flow">${recallStages}</div>`;
 
           if (legislator.recallStage === 1 || legislator.recallStage === 2) {
-            if (legislator.formDeployed) {
-              candidateAction = `<a href="${legislator.participateURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`;
-            } else {
-              candidateAction = `<button class="btn-primary lg w100" disabled>${legislator.recallStage} 階準備中</button>`;
-            }
+						candidateAction = `<a href="${legislator.participateURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`;
           } else {
             candidateAction = `
 			<a href="${legislator.participateURL}"><button class="btn-primary lg w100">回家投票！馬上訂車票</button></a>

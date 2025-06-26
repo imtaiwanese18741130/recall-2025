@@ -25,7 +25,7 @@ func main() {
 	r.GET("/health/v1/ping", ctrl.Ping())
 	r.GET("/robots.txt", ctrl.RobotsTxt())
 	r.GET("/sitemap.xml", ctrl.Sitemap())
-	r.GET("/assets/", ctrl.GetAsset())
+	r.GET("/assets/{filetype}/{filename}", ctrl.GetAsset())
 
 	r.GET("/{$}", ctrl.Home())
 	r.GET("/authorization-letter", ctrl.AuthorizationLetter())

@@ -10,7 +10,6 @@ import (
 	"os"
 	"path"
 	"strconv"
-	"strings"
 )
 
 type Controller struct {
@@ -267,13 +266,7 @@ func (ctrl *Controller) Sitemap() http.HandlerFunc {
 
 func (ctrl *Controller) GetAsset() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		parts := strings.Split(strings.TrimPrefix(r.URL.Path, "/assets/"), "/")
-		if len(parts) < 2 {
-			http.NotFound(w, r)
-			return
-		}
-
-		filePath := path.Join("assets", parts[0], parts[1])
+		filePath := path.Join("assets", r.PathValue("filetype"), r.PathValue("filename"))
 		if _, err := os.Stat(filePath); os.IsNotExist(err) {
 			http.NotFound(w, r)
 			return
